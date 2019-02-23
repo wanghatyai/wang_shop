@@ -4,9 +4,17 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wang_shop/database_helper.dart';
 
 
-void main() => runApp(MyApp());
+void main() {
+
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
+  databaseHelper.initDatabase();
+
+  runApp(MyApp());
+
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -42,6 +50,8 @@ class LoginPage extends StatefulWidget{
 }
 
 class LoginPageState extends State<LoginPage>{
+
+  final _loginForm = GlobalKey<FormState>();
 
   TextEditingController ctrlUser = TextEditingController();
   TextEditingController ctrlPass = TextEditingController();
@@ -104,6 +114,7 @@ class LoginPageState extends State<LoginPage>{
                   image: AssetImage("assets/logo-login.png"),
               ),
               Form(
+                key: _loginForm,
                 child: Container(
                     padding: EdgeInsets.all(40),
                     child: Column(
@@ -116,6 +127,9 @@ class LoginPageState extends State<LoginPage>{
                             hintText: "Username",
                           ),
                           keyboardType: TextInputType.text,
+                          validator: (String val){
+                            if(val.isEmpty) return 'กรุณากรอกข้อมูล';
+                          },
                         ),
                         TextFormField(
                           controller: ctrlPass,
@@ -125,6 +139,9 @@ class LoginPageState extends State<LoginPage>{
                             hintText: "Password",
                           ),
                           keyboardType: TextInputType.text,
+                          validator: (String val){
+                            if(val.isEmpty) return 'กรุณากรอกข้อมูล';
+                          },
                         ),
                         Padding(
                             padding: EdgeInsets.only(top: 20)
@@ -134,7 +151,14 @@ class LoginPageState extends State<LoginPage>{
                             textColor: Colors.black,
                             child: Text("Login"),
                             //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
-                            onPressed: () => _doLogin(),
+                            onPressed: () {
+                              if(_loginForm.currentState.validate()){
+                                _doLogin();
+                                print('Login OK');
+                              }else{
+                                print('Login Fail');
+                              }
+                            },
                         )
                       ],
                     )
@@ -233,4 +257,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-//test git push
