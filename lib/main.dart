@@ -51,6 +51,8 @@ class LoginPage extends StatefulWidget{
 
 class LoginPageState extends State<LoginPage>{
 
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
+
   final _loginForm = GlobalKey<FormState>();
 
   TextEditingController ctrlUser = TextEditingController();
@@ -68,12 +70,12 @@ class LoginPageState extends State<LoginPage>{
     );
   }
 
-  _saveData(key, val) async {
+  /*_saveData(key, val) async {
     SharedPreferences prefer = await SharedPreferences.getInstance();
     setState(() {
       prefer.setString(key, val);
     });
-  }
+  }*/
 
   _doLogin() async{
     final response = await http.post(
@@ -85,9 +87,16 @@ class LoginPageState extends State<LoginPage>{
       print(jsonResponse['error']);
 
       if(jsonResponse['error']=='0'){
+        
+        Map user = {
+          'code': jsonResponse['ccode'],
+          'name': jsonResponse['name'],
+        };
 
-        _saveData('name', jsonResponse['name']);
-        _saveData('code', jsonResponse['ccode']);
+        //await databaseHelper.saveData(user);
+
+        //_saveData('name', jsonResponse['name']);
+        //_saveData('code', jsonResponse['ccode']);
 
         Navigator.pushReplacementNamed(context, '/Home');
       }else{

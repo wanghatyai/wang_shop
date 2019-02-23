@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
 import 'package:wang_shop/history.dart';
+import 'package:wang_shop/database_helper.dart';
 
 
 class Home extends StatefulWidget {
@@ -22,7 +23,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  String username = "";
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
+
+  getUser() async {
+    var res = await databaseHelper.getList();
+    print(res);
+
+  }
+
+  List username = [];
   String value;
 
   /*_readData(key,val) async {
@@ -31,19 +40,21 @@ class _HomeState extends State<Home> {
     //print(val);
   }*/
 
-  _readData(key,val) async {
+  /*_readData(key,val) async {
     SharedPreferences prefer = await SharedPreferences.getInstance();
     val = prefer.getString(key);
     print(val);
-  }
+  }*/
 
   @override
   void initState(){
     super.initState();
-    _readData('name',username);
-    print(_readData('name',username));
-    print(username);
+    //_readData('name',username);
+    //print(_readData('name',username));
+    //print(username);
     //_readData('name');
+    getUser();
+
   }
 
   /*Widget appBar = AppBar(
@@ -80,7 +91,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("Home-${_readData('name',username)}"),
+        title: Text("Home-${username}"),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.account_circle), onPressed: (){})
         ],
