@@ -23,16 +23,22 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  List user = [];
+  String name;
+  String value;
+
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   getUser() async {
     var res = await databaseHelper.getList();
     print(res);
 
-  }
+    setState(() {
+      user = res;
+      name = user[0]['name'];
+    });
 
-  List username = [];
-  String value;
+  }
 
   /*_readData(key,val) async {
     SharedPreferences prefer = await SharedPreferences.getInstance();
@@ -91,7 +97,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("Home-${username}"),
+        title: Text("Home-${name}"),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.account_circle), onPressed: (){})
         ],
