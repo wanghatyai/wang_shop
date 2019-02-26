@@ -12,7 +12,7 @@ class _ProductProPageState extends State<ProductProPage> {
 
   ScrollController _scrollController = new ScrollController();
 
-  var product;
+  List product;
   bool isLoading = true;
   int perPage = 30;
 
@@ -20,13 +20,15 @@ class _ProductProPageState extends State<ProductProPage> {
 
     final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$page&act=$act');
 
+    //print('http://wangpharma.com/API/product.php?PerPage=$page&act=$act');
+
     if(res.statusCode == 200){
-      var jsonRes = json.decode(res.body);
+      //var jsonRes = json.decode(res.body);
       //print(jsonRes);
 
       setState(() {
         isLoading = false;
-        product = jsonRes;
+        product = json.decode(res.body);
 
         print(product);
         print(product.length);
@@ -37,7 +39,7 @@ class _ProductProPageState extends State<ProductProPage> {
       //print(product.length);
 
     }else{
-      print('error');
+      throw Exception('Failed load Json');
     }
   }
 
@@ -48,8 +50,10 @@ class _ProductProPageState extends State<ProductProPage> {
     getProduct(perPage,'Pro');
 
     _scrollController.addListener((){
+      //print(_scrollController.position.pixels);
       if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
         perPage = product.length + 30;
+        print("per-$perPage");
         getProduct(perPage,'Pro');
       }
     });
