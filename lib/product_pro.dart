@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:wang_shop/product_model.dart';
+
 class ProductProPage extends StatefulWidget {
   @override
   _ProductProPageState createState() => _ProductProPageState();
@@ -12,13 +14,15 @@ class _ProductProPageState extends State<ProductProPage> {
 
   ScrollController _scrollController = new ScrollController();
 
-  List product;
+  //Product product;
+  List<Product> productAll = [];
   bool isLoading = true;
   int perPage = 30;
+  String act = "Pro";
 
-  getProduct(int page, String act) async{
+  getProduct() async{
 
-    final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$page&act=$act');
+    final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
 
     //print('http://wangpharma.com/API/product.php?PerPage=$page&act=$act');
 
@@ -28,15 +32,36 @@ class _ProductProPageState extends State<ProductProPage> {
 
       setState(() {
         isLoading = false;
-        product = json.decode(res.body);
 
-        print(product);
-        print(product.length);
+        //print(productRAW);
+        //productAll = Product.fromJson(productRAW);
+
+        //productAll = productRAW.map<String, dynamic>((m) => m as String).toList();
+        //var productCon = productRAW as Map<String, dynamic>;
+
+        //print(productCon);
+
+        //productAll = (productRAW as List).map((p) => Product.fromJson(p)).toList();
+
+        var jsonData = json.decode(res.body);
+
+        for(var u in jsonData){
+          Product product = Product(u['id'], u['nproductMain'], u['pcode'], u['nproductENG'], u['pic']);
+
+          //print(u['nproductMain']);
+
+          productAll.add(product);
+
+        }
+        perPage = perPage + productAll.length;
+
+        print(productAll);
+        print(productAll.length);
+
+        return productAll;
 
       });
 
-      //print(product);
-      //print(product.length);
 
     }else{
       throw Exception('Failed load Json');
@@ -47,14 +72,12 @@ class _ProductProPageState extends State<ProductProPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getProduct(perPage,'Pro');
+    getProduct();
 
     _scrollController.addListener((){
       //print(_scrollController.position.pixels);
       if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
-        perPage = product.length + 30;
-        print("per-$perPage");
-        getProduct(perPage,'Pro');
+        getProduct();
       }
     });
   }
@@ -70,19 +93,21 @@ class _ProductProPageState extends State<ProductProPage> {
   Widget build(BuildContext context) {
       return Scaffold(
         body: isLoading ? CircularProgressIndicator()
-            : ListView.builder(
-              controller: _scrollController,
-              itemBuilder: (context, int index){
-                return ListTile(
-                  onTap: (){},
-                  leading: Image.network('http://www.wangpharma.com/cms/product/${product[index]['pic']}',width: 70, height: 70,),
-                  title: Text('${product[index]['nproduct']}'),
-                  subtitle: Text('${product[index]['nproductENG']}'),
-                  trailing: Icon(Icons.shopping_basket),
-                );
-              },
-              itemCount: product != null ? product.length : 0,
+            :ListView.builder(
+                      controller: _scrollController,
+                      itemBuilder: (context, int index){
+                        return ListTile(
+                          onTap: (){},
+                          leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index].productPic}',width: 70, height: 70,),
+                          title: Text('${productAll[index].productName}'),
+                          subtitle: Text('${productAll[index].productNameENG}'),
+                          trailing: Icon(Icons.shopping_basket),
+                        );
+                      },
+                      itemCount: productAll != null ? productAll.length : 0,
             ),
+
+
     );
   }
 
