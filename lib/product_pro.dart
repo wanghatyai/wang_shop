@@ -15,16 +15,18 @@ class _ProductProPageState extends State<ProductProPage> {
   ScrollController _scrollController = new ScrollController();
 
   //Product product;
-  List<Product> productAll = [];
+  List productAll = [];
   bool isLoading = true;
   int perPage = 30;
   String act = "Pro";
+
+  var product;
 
   getProduct() async{
 
     final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
 
-    //print('http://wangpharma.com/API/product.php?PerPage=$page&act=$act');
+    print('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
 
     if(res.statusCode == 200){
       //var jsonRes = json.decode(res.body);
@@ -33,27 +35,19 @@ class _ProductProPageState extends State<ProductProPage> {
       setState(() {
         isLoading = false;
 
-        //print(productRAW);
-        //productAll = Product.fromJson(productRAW);
-
-        //productAll = productRAW.map<String, dynamic>((m) => m as String).toList();
-        //var productCon = productRAW as Map<String, dynamic>;
-
-        //print(productCon);
-
-        //productAll = (productRAW as List).map((p) => Product.fromJson(p)).toList();
-
         var jsonData = json.decode(res.body);
 
-        for(var u in jsonData){
+        /*for(var u in jsonData){
           Product product = Product(u['id'], u['nproductMain'], u['pcode'], u['nproductENG'], u['pic']);
 
           //print(u['nproductMain']);
 
           productAll.add(product);
 
-        }
-        perPage = perPage + productAll.length;
+        }*/
+
+        jsonData.forEach((products) => productAll.add(products));
+        perPage = productAll.length;
 
         print(productAll);
         print(productAll.length);
@@ -98,9 +92,9 @@ class _ProductProPageState extends State<ProductProPage> {
                       itemBuilder: (context, int index){
                         return ListTile(
                           onTap: (){},
-                          leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index].productPic}',width: 70, height: 70,),
-                          title: Text('${productAll[index].productName}'),
-                          subtitle: Text('${productAll[index].productNameENG}'),
+                          leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index]['pic']}',width: 70, height: 70,),
+                          title: Text('${productAll[index]['nproductMain']}'),
+                          subtitle: Text('${productAll[index]['nproductENG']}'),
                           trailing: Icon(Icons.shopping_basket),
                         );
                       },
