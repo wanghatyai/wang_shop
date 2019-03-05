@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("Home-${name}"),
+        title: Text("${name}"),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.account_circle), onPressed: (){})
         ],

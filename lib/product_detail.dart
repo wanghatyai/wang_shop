@@ -35,8 +35,9 @@ class _productDetailPageState extends State<productDetailPage> {
               ),
             ),
           ),
+          Text(widget.product['nproductENG'].toString()),
           MaterialButton(
-            color: Colors.green,
+            color: Colors.deepOrange,
             textColor: Colors.white,
             minWidth: double.infinity,
             height: 50,
