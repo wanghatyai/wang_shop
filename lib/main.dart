@@ -84,7 +84,7 @@ class LoginPageState extends State<LoginPage>{
 
     if(response.statusCode == 200){
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse['error']);
+      //print(jsonResponse['error']);
 
       if(jsonResponse['error']=='0'){
         
@@ -92,6 +92,9 @@ class LoginPageState extends State<LoginPage>{
           'code': jsonResponse['ccode'],
           'name': jsonResponse['name'],
         };
+
+        //var resDB = await databaseHelper.getList();
+        //print(resDB);
 
         //await databaseHelper.saveData(user);
 

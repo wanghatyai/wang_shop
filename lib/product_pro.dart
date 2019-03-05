@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:wang_shop/product_model.dart';
+import 'package:wang_shop/product_detail.dart';
 
 class ProductProPage extends StatefulWidget {
   @override
@@ -26,7 +27,7 @@ class _ProductProPageState extends State<ProductProPage> {
 
     final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
 
-    print('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
+    //print('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
 
     if(res.statusCode == 200){
       //var jsonRes = json.decode(res.body);
@@ -91,7 +92,11 @@ class _ProductProPageState extends State<ProductProPage> {
                       controller: _scrollController,
                       itemBuilder: (context, int index){
                         return ListTile(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
+                          },
                           leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index]['pic']}',width: 70, height: 70,),
                           title: Text('${productAll[index]['nproductMain']}'),
                           subtitle: Text('${productAll[index]['nproductENG']}'),
