@@ -26,8 +26,9 @@ class _productDetailPageState extends State<productDetailPage> {
       body: Column(
         children: <Widget>[
           Image.network('http://www.wangpharma.com/cms/product/${widget.product['pic']}',fit: BoxFit.contain, width:double.infinity, height: 250,),
+          Text("รหัสสินค้า : ${widget.product['pcode']}"),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(4),
             child: Text(
                 widget.product['nproductMain'].toString(),
                 style: new TextStyle(
