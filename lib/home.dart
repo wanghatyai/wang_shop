@@ -9,6 +9,7 @@ import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
 import 'package:wang_shop/history.dart';
 import 'package:wang_shop/database_helper.dart';
+import 'package:wang_shop/order.dart';
 
 
 class Home extends StatefulWidget {
@@ -99,7 +100,11 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.green,
         title: Text("${name}"),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.account_circle), onPressed: (){})
+          IconButton(
+              icon: Icon(Icons.shopping_cart),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
+          })
         ],
       ),
       body: pages[currentIndex],
