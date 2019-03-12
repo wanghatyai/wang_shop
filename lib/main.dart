@@ -6,11 +6,14 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wang_shop/database_helper.dart';
 
+import 'package:wang_shop/order.dart';
+
 
 void main() {
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
   databaseHelper.initDatabase();
+  databaseHelper.initDatabaseOrder();
 
   runApp(MyApp());
 
@@ -25,6 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'WangShop',
       routes: <String,WidgetBuilder>{
         '/Home': (BuildContext context) => Home(),
+        '/Order': (BuildContext context) => OrderPage(),
       },
       theme: ThemeData(
         // This is the theme of your application.
