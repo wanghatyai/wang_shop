@@ -19,11 +19,37 @@ class DatabaseHelper {
     name TEXT)
   ''';
 
+  String sqlCreateOrder = '''
+  create table if not exists orders(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    code TEXT, 
+    unit TEXT, 
+    amount INTEGER)
+  ''';
+
   Future<Database> getDb() async {
     if (_db == null) {
       io.Directory documentDirectory = await getApplicationDocumentsDirectory();
 
       String path = join(documentDirectory.path, 'members.db');
+
+      print(path);
+
+      await _lock.synchronized(() async {
+        if (_db == null) {
+          _db = await openDatabase(path, version: 1);
+        }
+      });
+    }
+
+    return _db;
+  }
+
+  Future<Database> getDbOrder() async {
+    if (_db == null) {
+      io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+      String path = join(documentDirectory.path, 'orders.db');
 
       print(path);
 
@@ -44,10 +70,25 @@ class DatabaseHelper {
     print('Table is created');
   }
 
+  Future initDatabaseOrder() async {
+    var dbClient = await getDbOrder();
+    // Create table
+    await dbClient.rawQuery(sqlCreateOrder);
+    print('Table Order is created');
+  }
+
   Future getList() async {
     var dbClient = await getDb();
     var sql = '''
       SELECT * FROM members
+    ''';
+    return await dbClient.rawQuery(sql);
+  }
+
+  Future getOrder() async {
+    var dbClient = await getDbOrder();
+    var sql = '''
+      SELECT * FROM orders
     ''';
     return await dbClient.rawQuery(sql);
   }
@@ -58,6 +99,14 @@ class DatabaseHelper {
       DELETE FROM members WHERE id=?
     ''';
     return await dbClient.rawQuery(sql, [id]);
+  }
+
+  Future removeAll() async {
+    var dbClient = await getDbOrder();
+    var sql = '''
+      DELETE FROM orders
+    ''';
+    return await dbClient.rawQuery(sql);
   }
 
   Future getDetail(int id) async {
@@ -82,6 +131,23 @@ class DatabaseHelper {
     ]);
 
     print('Saved!');
+  }
+
+  Future saveOrder(Map order) async {
+    var dbClient = await getDbOrder();
+
+    String sql = '''
+    INSERT INTO orders(code, unit, amount)
+    VALUES(?, ?, ?)
+    ''';
+
+    await dbClient.rawQuery(sql, [
+      order['code'],
+      order['unit'],
+      order['amount'],
+    ]);
+
+    print('Saved Order!');
   }
 
   Future updateData(Map member) async {
