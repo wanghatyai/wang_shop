@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'package:wang_shop/database_helper.dart';
 
 class productDetailPage extends StatefulWidget {
+
 
   var product;
   productDetailPage({Key key, this.product}) : super(key: key);
@@ -16,9 +18,13 @@ class productDetailPage extends StatefulWidget {
 class _productDetailPageState extends State<productDetailPage> {
   @override
 
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
+
   //List<DropdownMenuItem<String>> units = [];
   List units = [];
   String _currentUnit;
+
+  TextEditingController valAmount = TextEditingController();
 
   /*loadUnits(){
     units = [];
@@ -53,6 +59,9 @@ class _productDetailPageState extends State<productDetailPage> {
 
     if(widget.product['unit1'].toString() != "null"){
       units.add(widget.product['unit1'].toString());
+      //setState(() {
+        //_currentUnit = widget.product['unit1'].toString();
+      //});
     }
     if(widget.product['unit2'].toString() != "null"){
       units.add(widget.product['unit2'].toString());
@@ -60,6 +69,7 @@ class _productDetailPageState extends State<productDetailPage> {
     if(widget.product['unit3'].toString() != "null"){
       units.add(widget.product['unit3'].toString());
     }
+
 
     //loadUnits();
     //print(widget.product['unit3'].toString());
@@ -69,6 +79,14 @@ class _productDetailPageState extends State<productDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.product['nproductMain'].toString()),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.shopping_cart),
+              onPressed: (){
+                //Navigator.pushReplacementNamed(context, '/Order');
+              }
+          )
+        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(5),
@@ -96,21 +114,45 @@ class _productDetailPageState extends State<productDetailPage> {
                         fontSize: 18
                     ),
                   ),
-                  DropdownButton(
-                    hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
-                    items: units.map((dropDownStringItem){
-                      return DropdownMenuItem<String>(
-                        value: dropDownStringItem,
-                        child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
-                      );
-                    }).toList(),
-                    onChanged: (newValueSelected){
-                      _onDropDownItemSelected(newValueSelected);
-                      print(this._currentUnit);
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                          controller: valAmount,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: "จำนวน",
+                          ),
+                          keyboardType: TextInputType.number,
+                          validator: (String val){
+                            if(val.isEmpty) return 'กรุณากรอกข้อมูล';
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: DropdownButton(
+                          hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
+                          items: units.map((dropDownStringItem){
+                            return DropdownMenuItem<String>(
+                              value: dropDownStringItem,
+                              child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
+                            );
+                          }).toList(),
+                          onChanged: (newValueSelected){
+                            _onDropDownItemSelected(newValueSelected);
+                            print(this._currentUnit);
 
-                    },
-                    value: _currentUnit,
+                          },
+                          value: _currentUnit,
 
+                        ),
+
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
                   ),
                   MaterialButton(
                     color: Colors.deepOrange,
@@ -126,6 +168,7 @@ class _productDetailPageState extends State<productDetailPage> {
                     ),
                     //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
                     onPressed: () {
+                      addToOrder();
                     },
                   )
                 ],
@@ -140,9 +183,36 @@ class _productDetailPageState extends State<productDetailPage> {
 
   _onDropDownItemSelected(newValueSelected){
     setState(() {
-      this._currentUnit = newValueSelected;
-      print('select--${units}');
+      _currentUnit = newValueSelected;
+      //print('select--${units}');
     });
   }
+
+  addToOrder() async{
+    Map order = {
+      'code': widget.product['pcode'].toString(),
+      'unit': _currentUnit,
+      'amount': valAmount.text,
+    };
+
+    await databaseHelper.saveOrder(order);
+
+    print(order);
+    Navigator.pushReplacementNamed(context, '/Home');
+
+  }
+
+  /*_defaultDropDownItemSelected(newValueSelected){
+
+    setState(() {
+      if(_currentUnit != ""){
+        _currentUnit = newValueSelected;
+      }else{
+        _currentUnit = widget.product['unit1'].toString();
+      }
+    });
+      //print('select--${units}');
+
+  }*/
 }
 
