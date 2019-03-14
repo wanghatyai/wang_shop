@@ -201,8 +201,8 @@ class _productDetailPageState extends State<productDetailPage> {
     await databaseHelper.saveOrder(order);
 
     print(order);
-    Navigator.pushReplacementNamed(context, '/Home');
-
+    //Navigator.pushReplacementNamed(context, '/Home');
+    Navigator.pop(context);
   }
 
 /*_defaultDropDownItemSelected(newValueSelected){
