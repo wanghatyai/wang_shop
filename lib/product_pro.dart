@@ -3,8 +3,11 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/product_detail.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductProPage extends StatefulWidget {
   @override
@@ -12,6 +15,8 @@ class ProductProPage extends StatefulWidget {
 }
 
 class _ProductProPageState extends State<ProductProPage> {
+
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   ScrollController _scrollController = new ScrollController();
 
@@ -84,6 +89,15 @@ class _ProductProPageState extends State<ProductProPage> {
     super.dispose();
   }
 
+  showToastAddFast(){
+    Fluttertoast.showToast(
+        msg: "เพิ่มรายการแล้ว",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 3
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
       return Scaffold(
@@ -100,7 +114,12 @@ class _ProductProPageState extends State<ProductProPage> {
                           leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index]['pic']}',width: 70, height: 70,),
                           title: Text('${productAll[index]['nproductMain']}'),
                           subtitle: Text('${productAll[index]['nproductENG']}'),
-                          trailing: Icon(Icons.shopping_basket),
+                          trailing: IconButton(
+                            icon: Icon(Icons.shopping_basket, color: Colors.teal),
+                            onPressed: (){
+                              addToOrderFast(productAll[index]);
+                            }
+                          ),
                         );
                       },
                       itemCount: productAll != null ? productAll.length : 0,
@@ -108,6 +127,24 @@ class _ProductProPageState extends State<ProductProPage> {
 
 
     );
+  }
+
+  addToOrderFast(productFast) async{
+    Map order = {
+      'code': productFast['pcode'].toString(),
+      'name': productFast['nproductMain'].toString(),
+      'pic': productFast['pic'].toString(),
+      'unit': productFast['unit1'].toString(),
+      'amount': 1,
+    };
+
+    showToastAddFast();
+
+      print(order);
+    await databaseHelper.saveOrder(order);
+
+    //Navigator.pushReplacementNamed(context, '/Home');
+
   }
 
 }
