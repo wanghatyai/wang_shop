@@ -23,8 +23,14 @@ class DatabaseHelper {
   create table if not exists orders(
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     code TEXT, 
+    name TEXT, 
+    pic TEXT, 
     unit TEXT, 
     amount INTEGER)
+  ''';
+
+  String sqlDropTableOrder = '''
+  DROP TABLE orders
   ''';
 
   Future<Database> getDb() async {
@@ -75,6 +81,13 @@ class DatabaseHelper {
     // Create table
     await dbClient.rawQuery(sqlCreateOrder);
     print('Table Order is created');
+  }
+
+  Future dropTableOrder() async {
+    var dbClient = await getDbOrder();
+    // Create table
+    await dbClient.rawQuery(sqlDropTableOrder);
+    print('dropTableOrder');
   }
 
   Future getList() async {
@@ -137,12 +150,14 @@ class DatabaseHelper {
     var dbClient = await getDbOrder();
 
     String sql = '''
-    INSERT INTO orders(code, unit, amount)
-    VALUES(?, ?, ?)
+    INSERT INTO orders(code, name, pic, unit, amount)
+    VALUES(?, ?, ?, ?, ?)
     ''';
 
     await dbClient.rawQuery(sql, [
       order['code'],
+      order['name'],
+      order['pic'],
       order['unit'],
       order['amount'],
     ]);
