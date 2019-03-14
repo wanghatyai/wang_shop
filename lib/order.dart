@@ -31,15 +31,34 @@ class _OrderPageState extends State<OrderPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('รายการสินค้า'),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.check_box),
+              onPressed: (){
+                //Navigator.pushReplacementNamed(context, '/Order');
+              }
+          )
+        ],
       ),
       body: ListView.builder(
-          itemBuilder: (context, int index){
-            return ListTile(
+        itemBuilder: (context, int index){
+          return ListTile(
+              onTap: (){
+
+              },
+              leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',width: 70, height: 70,),
               title: Text('${orders[index]['code']}'),
-            );
-          },
-          itemCount: orders != null ? orders.length : 0,
-          ),
+              subtitle: Row(
+                children: <Widget>[
+                  Expanded(child: Text('${orders[index]['name']}')),
+                  Expanded(child: Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}')),
+                ],
+              ),
+              trailing: Icon(Icons.delete_forever, color: Colors.red),
+          );
+        },
+        itemCount: orders != null ? orders.length : 0,
+      ),
     );
   }
 }
