@@ -114,6 +114,14 @@ class DatabaseHelper {
     return await dbClient.rawQuery(sql, [id]);
   }
 
+  Future removeOrder(int id) async {
+    var dbClient = await getDbOrder();
+    var sql = '''
+      DELETE FROM orders WHERE id=?
+    ''';
+    return await dbClient.rawQuery(sql, [id]);
+  }
+
   Future removeAll() async {
     var dbClient = await getDbOrder();
     var sql = '''
