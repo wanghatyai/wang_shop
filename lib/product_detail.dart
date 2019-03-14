@@ -60,7 +60,7 @@ class _productDetailPageState extends State<productDetailPage> {
     if(widget.product['unit1'].toString() != "null"){
       units.add(widget.product['unit1'].toString());
       //setState(() {
-        //_currentUnit = widget.product['unit1'].toString();
+      //_currentUnit = widget.product['unit1'].toString();
       //});
     }
     if(widget.product['unit2'].toString() != "null"){
@@ -77,6 +77,7 @@ class _productDetailPageState extends State<productDetailPage> {
     //print(_units);
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text(widget.product['nproductMain'].toString()),
         actions: <Widget>[
@@ -104,10 +105,10 @@ class _productDetailPageState extends State<productDetailPage> {
                   ),
 
                   Text("ชื่อไทย : ${widget.product['nproductMain']}",
-                      style: TextStyle(
-                          fontSize: 18
-                      ),
+                    style: TextStyle(
+                        fontSize: 18
                     ),
+                  ),
 
                   Text("ชื่ออังกฤษ : ${widget.product['nproductENG']}",
                     style: TextStyle(
@@ -191,6 +192,8 @@ class _productDetailPageState extends State<productDetailPage> {
   addToOrder() async{
     Map order = {
       'code': widget.product['pcode'].toString(),
+      'name': widget.product['nproductMain'].toString(),
+      'pic': widget.product['pic'].toString(),
       'unit': _currentUnit,
       'amount': valAmount.text,
     };
@@ -202,7 +205,7 @@ class _productDetailPageState extends State<productDetailPage> {
 
   }
 
-  /*_defaultDropDownItemSelected(newValueSelected){
+/*_defaultDropDownItemSelected(newValueSelected){
 
     setState(() {
       if(_currentUnit != ""){
