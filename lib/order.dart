@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wang_shop/database_helper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class OrderPage extends StatefulWidget {
   @override
@@ -21,9 +22,20 @@ class _OrderPageState extends State<OrderPage> {
     });
   }
 
+  showToastRemove(){
+    Fluttertoast.showToast(
+        msg: "ลบรายการแล้ว",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 3
+    );
+  }
+
   removeOrder(int id) async{
     await databaseHelper.removeOrder(id);
     getOrderAll();
+    showToastRemove();
+
   }
 
   void initState(){
@@ -45,7 +57,10 @@ class _OrderPageState extends State<OrderPage> {
           )
         ],
       ),
-      body: ListView.builder(
+      body: ListView.separated(
+        separatorBuilder: (context, index) => Divider(
+          color: Colors.black,
+        ),
         itemBuilder: (context, int index){
           return ListTile(
               onTap: (){
@@ -53,10 +68,12 @@ class _OrderPageState extends State<OrderPage> {
               },
               leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',width: 70, height: 70,),
               title: Text('${orders[index]['code']}'),
-              subtitle: Row(
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(child: Text('${orders[index]['name']}')),
-                  Expanded(child: Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}')),
+                  Text('${orders[index]['name']}'),
+                  Text('จำนวน ${orders[index]['amount']} : หน่วย ${orders[index]['unit']}',
+                    style: TextStyle(fontSize: 18),),
                 ],
               ),
               trailing: IconButton(
