@@ -14,6 +14,7 @@ void main() {
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
   databaseHelper.initDatabase();
   databaseHelper.initDatabaseOrder();
+  //databaseHelper.dropTableOrder();
 
   runApp(MyApp());
 
