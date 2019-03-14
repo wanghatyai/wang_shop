@@ -21,6 +21,11 @@ class _OrderPageState extends State<OrderPage> {
     });
   }
 
+  removeOrder(int id) async{
+    await databaseHelper.removeOrder(id);
+    getOrderAll();
+  }
+
   void initState(){
     super.initState();
     getOrderAll();
@@ -54,7 +59,12 @@ class _OrderPageState extends State<OrderPage> {
                   Expanded(child: Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}')),
                 ],
               ),
-              trailing: Icon(Icons.delete_forever, color: Colors.red),
+              trailing: IconButton(
+                  icon: Icon(Icons.delete_forever, color: Colors.red),
+                  onPressed: (){
+                      removeOrder(orders[index]['id']);
+                  }
+              ),
           );
         },
         itemCount: orders != null ? orders.length : 0,
