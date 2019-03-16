@@ -13,7 +13,7 @@ class _OrderPageState extends State<OrderPage> {
 
   List orders = [];
 
-  List units = ['ขวด','กลอง'];
+  List units = [];
   String _currentUnit;
 
   getOrderAll() async{
@@ -34,8 +34,42 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  editOrderDialog(id){
+  saveEditOrderDialog(id, unit, amount) async {
+    Map order = {
+      'id': id,
+      'unit': unit,
+      'amount': amount,
+    };
+    await databaseHelper.updateOrder(order);
+    getOrderAll();
+  }
+
+  editOrderDialog(order){
+
+    units = [];
+
+    //if(_currentUnit.isEmpty){
+      _currentUnit = order['unit'].toString();
+    //}else{
+      //_currentUnit = this._currentUnit;
+    //}
+
+    if(order['unit1'].toString() != "NULL"){
+      units.add(order['unit1'].toString());
+    }
+    if(order['unit2'].toString() != "NULL"){
+      units.add(order['unit2'].toString());
+    }
+    if(order['unit3'].toString() != "NULL"){
+      units.add(order['unit3'].toString());
+    }
+
+    print(_currentUnit);
+    print(units);
+
     TextEditingController editAmount = TextEditingController();
+
+    editAmount.text = order['amount'].toString();
 
     return showDialog(context: context, builder: (context) {
         return SimpleDialog(
@@ -74,7 +108,13 @@ class _OrderPageState extends State<OrderPage> {
 
             SimpleDialogOption(
               onPressed: (){
-                Navigator.pop(context);
+
+                    saveEditOrderDialog(order['id'],this._currentUnit,editAmount.text);
+                    //print(order['id']);
+                    //print(this._currentUnit);
+                    //print(editAmount.text);
+                    Navigator.pop(context);
+
               },
               child: Text(
                   'ตกลง',
@@ -92,11 +132,13 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   _onDropDownItemSelected(newValueSelected){
-    setState(() {
-      _currentUnit = newValueSelected;
+    //setState(() {
+      this._currentUnit = newValueSelected;
       //print('select--${units}');
-    });
+    //});
   }
+
+
 
   removeOrder(int id) async{
     await databaseHelper.removeOrder(id);
@@ -131,7 +173,9 @@ class _OrderPageState extends State<OrderPage> {
         itemBuilder: (context, int index){
           return ListTile(
               onTap: (){
-                editOrderDialog(orders[index]['id']);
+                setState(() {
+                  editOrderDialog(orders[index]);
+                });
               },
               leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',width: 70, height: 70,),
               title: Text('${orders[index]['code']}'),
