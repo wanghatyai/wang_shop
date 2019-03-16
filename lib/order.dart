@@ -13,6 +13,9 @@ class _OrderPageState extends State<OrderPage> {
 
   List orders = [];
 
+  List units = ['ขวด','กลอง'];
+  String _currentUnit;
+
   getOrderAll() async{
     var res = await databaseHelper.getOrder();
     print(res);
@@ -29,6 +32,70 @@ class _OrderPageState extends State<OrderPage> {
         gravity: ToastGravity.CENTER,
         timeInSecForIos: 3
     );
+  }
+
+  editOrderDialog(id){
+    TextEditingController editAmount = TextEditingController();
+
+    return showDialog(context: context, builder: (context) {
+        return SimpleDialog(
+          title: Text('แก้ไขรายการ'),
+          children: <Widget>[
+            //Text('จำนวน'),
+            TextField(
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: "จำนวน",
+              ),
+              keyboardType: TextInputType.number,
+              controller: editAmount,
+            ),
+
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: DropdownButton(
+                hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
+                items: units.map((dropDownStringItem){
+                  return DropdownMenuItem<String>(
+                    value: dropDownStringItem,
+                    child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
+                  );
+                }).toList(),
+                onChanged: (newValueSelected){
+                  _onDropDownItemSelected(newValueSelected);
+                  print(this._currentUnit);
+
+                },
+                value: _currentUnit,
+
+              ),
+            ),
+
+            SimpleDialogOption(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              child: Text(
+                  'ตกลง',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold
+                  )
+              ),
+            ),
+          ],
+
+
+        );
+    });
+  }
+
+  _onDropDownItemSelected(newValueSelected){
+    setState(() {
+      _currentUnit = newValueSelected;
+      //print('select--${units}');
+    });
   }
 
   removeOrder(int id) async{
@@ -64,7 +131,7 @@ class _OrderPageState extends State<OrderPage> {
         itemBuilder: (context, int index){
           return ListTile(
               onTap: (){
-
+                editOrderDialog(orders[index]['id']);
               },
               leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',width: 70, height: 70,),
               title: Text('${orders[index]['code']}'),
