@@ -173,9 +173,9 @@ class _OrderPageState extends State<OrderPage> {
         itemBuilder: (context, int index){
           return ListTile(
               onTap: (){
-                setState(() {
+                //setState(() {
                   editOrderDialog(orders[index]);
-                });
+                //});
               },
               leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',width: 70, height: 70,),
               title: Text('${orders[index]['code']}'),
