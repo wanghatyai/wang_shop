@@ -130,11 +130,35 @@ class _ProductProPageState extends State<ProductProPage> {
   }
 
   addToOrderFast(productFast) async{
+
+    var unit1;
+    var unit2;
+    var unit3;
+
+    if(productFast['unit1'].toString() != "null"){
+      unit1 = productFast['unit1'].toString();
+    }else{
+      unit1 = 'NULL';
+    }
+    if(productFast['unit2'].toString() != "null"){
+      unit2 = productFast['unit2'].toString();
+    }else{
+      unit2 = 'NULL';
+    }
+    if(productFast['unit3'].toString() != "null"){
+      unit3 = productFast['unit3'].toString();
+    }else{
+      unit3 = 'NULL';
+    }
+
     Map order = {
       'code': productFast['pcode'].toString(),
       'name': productFast['nproductMain'].toString(),
       'pic': productFast['pic'].toString(),
       'unit': productFast['unit1'].toString(),
+      'unit1': unit1,
+      'unit2': unit2,
+      'unit3': unit3,
       'amount': 1,
     };
 
