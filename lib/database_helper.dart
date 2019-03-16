@@ -26,6 +26,9 @@ class DatabaseHelper {
     name TEXT, 
     pic TEXT, 
     unit TEXT, 
+    unit1 TEXT , 
+    unit2 TEXT NULL , 
+    unit3 TEXT NULL , 
     amount INTEGER)
   ''';
 
@@ -158,8 +161,8 @@ class DatabaseHelper {
     var dbClient = await getDbOrder();
 
     String sql = '''
-    INSERT INTO orders(code, name, pic, unit, amount)
-    VALUES(?, ?, ?, ?, ?)
+    INSERT INTO orders(code, name, pic, unit, unit1, unit2, unit3, amount)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?)
     ''';
 
     await dbClient.rawQuery(sql, [
@@ -167,6 +170,9 @@ class DatabaseHelper {
       order['name'],
       order['pic'],
       order['unit'],
+      order['unit1'],
+      order['unit2'],
+      order['unit3'],
       order['amount'],
     ]);
 
@@ -185,6 +191,23 @@ class DatabaseHelper {
       member['code'],
       member['name'],
       member['id'],
+    ]);
+
+    print('Updated!');
+  }
+
+  Future updateOrder(Map order) async {
+    var dbClient = await getDbOrder();
+
+    String sql = '''
+    UPDATE orders SET unit=?, amount=?
+    WHERE id=?
+    ''';
+
+    await dbClient.rawQuery(sql, [
+      order['unit'],
+      order['amount'],
+      order['id'],
     ]);
 
     print('Updated!');
