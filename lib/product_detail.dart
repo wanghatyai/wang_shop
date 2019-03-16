@@ -190,11 +190,35 @@ class _productDetailPageState extends State<productDetailPage> {
   }
 
   addToOrder() async{
+
+    var unit1;
+    var unit2;
+    var unit3;
+
+    if(widget.product['unit1'].toString() != "null"){
+      unit1 = widget.product['unit1'].toString();
+    }else{
+      unit1 = 'NULL';
+    }
+    if(widget.product['unit2'].toString() != "null"){
+      unit2 = widget.product['unit2'].toString();
+    }else{
+      unit2 = 'NULL';
+    }
+    if(widget.product['unit3'].toString() != "null"){
+      unit3 = widget.product['unit3'].toString();
+    }else{
+      unit3 = 'NULL';
+    }
+
     Map order = {
       'code': widget.product['pcode'].toString(),
       'name': widget.product['nproductMain'].toString(),
       'pic': widget.product['pic'].toString(),
       'unit': _currentUnit,
+      'unit1': unit1,
+      'unit2': unit2,
+      'unit3': unit3,
       'amount': valAmount.text,
     };
 
