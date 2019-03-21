@@ -10,6 +10,7 @@ import 'package:wang_shop/product_hot.dart';
 import 'package:wang_shop/history.dart';
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/order.dart';
+import 'package:wang_shop/search.dart';
 
 
 class Home extends StatefulWidget {
@@ -73,7 +74,7 @@ class _HomeState extends State<Home> {
   );*/
 
   int currentIndex = 0;
-  List pages = [ProductProPage(), ProductHotPage(), History()];
+  List pages = [ProductProPage(), ProductHotPage(), SearchPage(), History()];
 
 
   @override
@@ -87,9 +88,22 @@ class _HomeState extends State<Home> {
           });
         },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.assistant_photo), title: Text('โปร')),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_basket), title: Text('ขายดี')),
-          BottomNavigationBarItem(icon: Icon(Icons.access_time), title: Text('ประวัติ')),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assistant_photo, color: Colors.green),
+            title: Text('โปร', style: TextStyle(color: Colors.green))
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_basket, color: Colors.green),
+            title: Text('ขายดี', style: TextStyle(color: Colors.green))
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search, color: Colors.green),
+            title: Text('ค้นหา', style: TextStyle(color: Colors.green))
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.access_time, color: Colors.green),
+            title: Text('ประวัติ', style: TextStyle(color: Colors.green))
+          ),
         ]
     );
 
