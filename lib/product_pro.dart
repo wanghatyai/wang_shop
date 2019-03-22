@@ -98,6 +98,29 @@ class _ProductProPageState extends State<ProductProPage> {
     );
   }
 
+  showOverlay() async{
+
+    var countOrder = await databaseHelper.countOrder();
+    print(countOrder[0]['countOrderAll']);
+
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+        builder: (context) => Positioned(
+          top: 25,
+          right: 5,
+          child: CircleAvatar(
+            radius: 10,
+            backgroundColor: Colors.red,
+            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
+          ),
+        )
+    );
+
+    overlayState.insert(overlayEntry);
+    //await Future.delayed(Duration(seconds: 2));
+    //overlayEntry.remove();
+  }
+
   @override
   Widget build(BuildContext context) {
       return Scaffold(
@@ -118,6 +141,7 @@ class _ProductProPageState extends State<ProductProPage> {
                             icon: Icon(Icons.shopping_basket, color: Colors.teal),
                             onPressed: (){
                               addToOrderFast(productAll[index]);
+                              showOverlay();
                             }
                           ),
                         );
