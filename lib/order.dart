@@ -144,13 +144,36 @@ class _OrderPageState extends State<OrderPage> {
     await databaseHelper.removeOrder(id);
     getOrderAll();
     showToastRemove();
-
+    showOverlay();
   }
 
   void initState(){
     super.initState();
     getOrderAll();
 
+  }
+
+  showOverlay() async{
+
+    var countOrder = await databaseHelper.countOrder();
+    print(countOrder[0]['countOrderAll']);
+
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+        builder: (context) => Positioned(
+          top: 25,
+          right: 5,
+          child: CircleAvatar(
+            radius: 10,
+            backgroundColor: Colors.red,
+            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
+          ),
+        )
+    );
+
+    overlayState.insert(overlayEntry);
+    //await Future.delayed(Duration(seconds: 2));
+    //overlayEntry.remove();
   }
 
   Widget build(BuildContext context) {
