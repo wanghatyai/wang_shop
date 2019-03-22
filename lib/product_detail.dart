@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:wang_shop/database_helper.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
+
 class productDetailPage extends StatefulWidget {
 
 
@@ -50,6 +52,38 @@ class _productDetailPageState extends State<productDetailPage> {
       ));
     }
   }*/
+
+  showToastAddFast(){
+    Fluttertoast.showToast(
+        msg: "เพิ่มรายการแล้ว",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 3
+    );
+  }
+
+  showOverlay() async{
+
+    var countOrder = await databaseHelper.countOrder();
+    print(countOrder[0]['countOrderAll']);
+
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+        builder: (context) => Positioned(
+          top: 25,
+          right: 5,
+          child: CircleAvatar(
+            radius: 10,
+            backgroundColor: Colors.red,
+            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
+          ),
+        )
+    );
+
+    overlayState.insert(overlayEntry);
+    //await Future.delayed(Duration(seconds: 2));
+    //overlayEntry.remove();
+  }
 
 
 
@@ -227,6 +261,8 @@ class _productDetailPageState extends State<productDetailPage> {
     print(order);
     //Navigator.pushReplacementNamed(context, '/Home');
     Navigator.pop(context);
+    showToastAddFast();
+    showOverlay();
   }
 
 /*_defaultDropDownItemSelected(newValueSelected){
