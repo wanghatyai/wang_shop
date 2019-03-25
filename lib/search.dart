@@ -26,21 +26,49 @@ class _SearchPageState extends State<SearchPage> {
       drawer: Drawer(),
     );
   }
+
 }
+
 
 class DataSearch extends SearchDelegate<String> {
 
-  final products = [
-    "test1",
-    "test2",
-    "test3"
-  ];
+  var products = [];
+  var recentProducts = [];
 
-  final recentProducts = [
-    "reTest5",
-    "reTest6",
-    "reTest7"
-  ];
+  searchProduct(searchVal) async{
+
+    //products = [];
+
+    final res = await http.get('http://wangpharma.com/API/product.php?SearchVal=$searchVal&act=Search');
+
+    if(res.statusCode == 200){
+
+      //setState(() {
+
+        var jsonData = json.decode(res.body);
+
+        //products = json.decode(res.body);
+        //recentProducts = json.decode(res.body);
+        jsonData.forEach(([product, i]) {
+          if(product['nproductMain'] != 'null'){
+            products.add(product['nproductMain']);
+          }
+          print(product['nproductMain']);
+        });
+
+        print(products);
+
+        return products;
+
+      //});
+
+    }else{
+      throw Exception('Failed load Json');
+    }
+    //print(searchVal);
+    //print(json.decode(res.body));
+
+  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -78,10 +106,15 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+
+    //print(query);
+    searchProduct(query);
     
     final suggestionList = query.isEmpty
         ? recentProducts
         : products.where((p) => p.startsWith(query)).toList();
+
+    print(products);
     
     return ListView.builder(
         itemBuilder: (context, index) => ListTile(
