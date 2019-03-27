@@ -149,6 +149,14 @@ class DatabaseHelper {
     return await dbClient.rawQuery(sql, [id]);
   }
 
+  Future getOrderCheck(code, unit) async {
+    var dbClient = await getDbOrder();
+    var sql = '''
+      SELECT * FROM orders WHERE code=? AND unit=?
+    ''';
+    return await dbClient.rawQuery(sql, [code, unit]);
+  }
+
   Future saveData(Map member) async {
     var dbClient = await getDb();
 
