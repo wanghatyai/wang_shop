@@ -186,10 +186,32 @@ class _ProductProPageState extends State<ProductProPage> {
       'amount': 1,
     };
 
-    showToastAddFast();
+    var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);
 
-      print(order);
-    await databaseHelper.saveOrder(order);
+    //print(checkOrderUnit.isEmpty);
+
+    if(checkOrderUnit.isEmpty){
+
+      //print(order);
+      await databaseHelper.saveOrder(order);
+
+      showToastAddFast();
+      showOverlay();
+
+    }else{
+
+      var sumAmount = checkOrderUnit[0]['amount'] + 1;
+      Map order = {
+        'id': checkOrderUnit[0]['id'],
+        'unit': checkOrderUnit[0]['unit'],
+        'amount': sumAmount,
+      };
+
+      await databaseHelper.updateOrder(order);
+
+      showToastAddFast();
+
+    }
 
     //Navigator.pushReplacementNamed(context, '/Home');
 
