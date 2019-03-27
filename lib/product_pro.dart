@@ -107,9 +107,9 @@ class _ProductProPageState extends State<ProductProPage> {
     OverlayEntry overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
           top: 25,
-          right: 5,
+          right: 30,
           child: CircleAvatar(
-            radius: 10,
+            radius: 15,
             backgroundColor: Colors.red,
             child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
           ),
