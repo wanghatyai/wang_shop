@@ -141,7 +141,6 @@ class _ProductProPageState extends State<ProductProPage> {
                             icon: Icon(Icons.shopping_basket, color: Colors.teal),
                             onPressed: (){
                               addToOrderFast(productAll[index]);
-                              showOverlay();
                             }
                           ),
                         );
@@ -210,6 +209,7 @@ class _ProductProPageState extends State<ProductProPage> {
       await databaseHelper.updateOrder(order);
 
       showToastAddFast();
+      showOverlay();
 
     }
 
