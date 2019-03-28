@@ -256,13 +256,41 @@ class _productDetailPageState extends State<productDetailPage> {
       'amount': valAmount.text,
     };
 
-    await databaseHelper.saveOrder(order);
+    var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);
 
-    print(order);
+    if(checkOrderUnit.isEmpty){
+
+      //print(order);
+      await databaseHelper.saveOrder(order);
+
+      Navigator.pop(context);
+      showToastAddFast();
+      showOverlay();
+
+    }else{
+
+      var sumAmount = checkOrderUnit[0]['amount'] + int.parse(valAmount.text);
+      Map order = {
+        'id': checkOrderUnit[0]['id'],
+        'unit': checkOrderUnit[0]['unit'],
+        'amount': sumAmount,
+      };
+
+      await databaseHelper.updateOrder(order);
+
+      Navigator.pop(context);
+      showToastAddFast();
+      showOverlay();
+
+    }
+
+    //await databaseHelper.saveOrder(order);
+
+    //print(order);
     //Navigator.pushReplacementNamed(context, '/Home');
-    Navigator.pop(context);
-    showToastAddFast();
-    showOverlay();
+    //Navigator.pop(context);
+    //showToastAddFast();
+    //showOverlay();
   }
 
 /*_defaultDropDownItemSelected(newValueSelected){
