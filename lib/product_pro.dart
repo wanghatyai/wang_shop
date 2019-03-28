@@ -134,7 +134,7 @@ class _ProductProPageState extends State<ProductProPage> {
                                 context,
                                 MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
                           },
-                          leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index]['pic']}',width: 70, height: 70,),
+                          leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index]['pic']}', fit: BoxFit.cover, width: 70, height: 70),
                           title: Text('${productAll[index]['nproductMain']}'),
                           subtitle: Text('${productAll[index]['nproductENG']}'),
                           trailing: IconButton(
