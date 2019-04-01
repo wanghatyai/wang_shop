@@ -117,6 +117,14 @@ class DatabaseHelper {
     return await dbClient.rawQuery(sql);
   }
 
+  Future countMember() async {
+    var dbClient = await getDb();
+    var sql = '''
+      SELECT COUNT(id) AS countMemberAll FROM members
+    ''';
+    return await dbClient.rawQuery(sql);
+  }
+
   Future remove(int id) async {
     var dbClient = await getDb();
     var sql = '''
