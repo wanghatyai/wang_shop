@@ -143,7 +143,7 @@ class LoginPageState extends State<LoginPage>{
                             fillColor: Colors.white,
                             hintText: "Username",
                           ),
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.number,
                           validator: (String val){
                             if(val.isEmpty) return 'กรุณากรอกข้อมูล';
                           },
