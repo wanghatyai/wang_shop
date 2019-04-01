@@ -206,7 +206,7 @@ class _OrderPageState extends State<OrderPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text('${orders[index]['name']}'),
-                  Text('จำนวน ${orders[index]['amount']} : หน่วย ${orders[index]['unit']}',
+                  Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
                     style: TextStyle(fontSize: 18),),
                 ],
               ),
