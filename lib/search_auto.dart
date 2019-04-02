@@ -83,6 +83,7 @@ class _searchAutoPageState extends State<searchAutoPage> {
               hintText: "ค้นหา"
             ),
             itemFilter: (item, query){
+              searchProduct(query);
               return item.nproductMain.toLowerCase.startsWith(query.toLowerCase());
             },
             itemSorter: (a, b){
