@@ -12,6 +12,7 @@ import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/order.dart';
 import 'package:wang_shop/search.dart';
 import 'package:wang_shop/search_auto.dart';
+import 'package:wang_shop/search_auto_out.dart';
 
 
 class Home extends StatefulWidget {
@@ -75,7 +76,7 @@ class _HomeState extends State<Home> {
   );*/
 
   int currentIndex = 0;
-  List pages = [ProductProPage(), ProductHotPage(), searchAutoPage(), History()];
+  List pages = [ProductProPage(), ProductHotPage(), searchAutoOutPage(), History()];
 
 
   @override
