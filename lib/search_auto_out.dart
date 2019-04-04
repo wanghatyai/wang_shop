@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:wang_shop/database_helper.dart';
+
 import 'package:wang_shop/product_model.dart';
 
 class searchAutoOutPage extends StatefulWidget {
@@ -109,14 +111,18 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                itemCount: _product.length,
                itemBuilder: (context, i){
                  final a = _product[i];
-                 return Container(
-                   padding: EdgeInsets.all(10),
-                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: <Widget>[
-                       Text(a.productName),
-                       SizedBox(height: 4),
-                     ],
+                 return ListTile(
+                   onTap: (){
+
+                   },
+                   leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
+                   title: Text('${a.productName}'),
+                   subtitle: Text('${a.productNameENG}'),
+                   trailing: IconButton(
+                       icon: Icon(Icons.shopping_basket, color: Colors.teal),
+                       onPressed: (){
+
+                       }
                    ),
                  );
                },
