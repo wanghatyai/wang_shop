@@ -6,6 +6,11 @@ import 'dart:convert';
 import 'package:wang_shop/database_helper.dart';
 
 import 'package:wang_shop/product_model.dart';
+import 'package:wang_shop/product_pro.dart';
+
+import 'package:wang_shop/product_detail.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
 
 class searchAutoOutPage extends StatefulWidget {
   @override
@@ -13,6 +18,8 @@ class searchAutoOutPage extends StatefulWidget {
 }
 
 class _searchAutoOutPageState extends State<searchAutoOutPage> {
+
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   List<Product> _product = [];
   List<Product> _search = [];
@@ -78,6 +85,38 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
     setState(() {});
   }
 
+  showToastAddFast(){
+    Fluttertoast.showToast(
+        msg: "เพิ่มรายการแล้ว",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 3
+    );
+  }
+
+  showOverlay() async{
+
+    var countOrder = await databaseHelper.countOrder();
+    print(countOrder[0]['countOrderAll']);
+
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+        builder: (context) => Positioned(
+          top: 25,
+          right: 30,
+          child: CircleAvatar(
+            radius: 15,
+            backgroundColor: Colors.red,
+            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
+          ),
+        )
+    );
+
+    overlayState.insert(overlayEntry);
+    //await Future.delayed(Duration(seconds: 2));
+    //overlayEntry.remove();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +160,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                    trailing: IconButton(
                        icon: Icon(Icons.shopping_basket, color: Colors.teal),
                        onPressed: (){
-
+                         addToOrderFast(a);
                        }
                    ),
                  );
@@ -133,4 +172,70 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       ),
     );
   }
+
+  addToOrderFast(productFast) async{
+
+    var unit1;
+    var unit2;
+    var unit3;
+
+    if(productFast.productUnit1.toString() != "null"){
+      unit1 = productFast.productUnit1.toString();
+    }else{
+      unit1 = 'NULL';
+    }
+    if(productFast.productUnit2.toString() != "null"){
+      unit2 = productFast.productUnit2.toString();
+    }else{
+      unit2 = 'NULL';
+    }
+    if(productFast.productUnit3.toString() != "null"){
+      unit3 = productFast.productUnit3.toString();
+    }else{
+      unit3 = 'NULL';
+    }
+
+    Map order = {
+      'code': productFast.productCode.toString(),
+      'name': productFast.productName.toString(),
+      'pic': productFast.productPic.toString(),
+      'unit': productFast.productUnit1.toString(),
+      'unit1': unit1,
+      'unit2': unit2,
+      'unit3': unit3,
+      'amount': 1,
+    };
+
+    var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);
+
+    //print(checkOrderUnit.isEmpty);
+
+    if(checkOrderUnit.isEmpty){
+
+      //print(order);
+      await databaseHelper.saveOrder(order);
+
+      showToastAddFast();
+      showOverlay();
+
+    }else{
+
+      var sumAmount = checkOrderUnit[0]['amount'] + 1;
+      Map order = {
+        'id': checkOrderUnit[0]['id'],
+        'unit': checkOrderUnit[0]['unit'],
+        'amount': sumAmount,
+      };
+
+      await databaseHelper.updateOrder(order);
+
+      showToastAddFast();
+      showOverlay();
+
+    }
+
+    //Navigator.pushReplacementNamed(context, '/Home');
+
+  }
+
 }
