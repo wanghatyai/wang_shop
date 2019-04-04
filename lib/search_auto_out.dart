@@ -84,12 +84,20 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
         child: Column(
          children: <Widget>[
            Container(
-             padding: EdgeInsets.all(10),
-             child: TextField(
-               controller: controller,
-               onChanged: onSearch,
-               decoration: InputDecoration(
+             //padding: EdgeInsets.all(10),
+             child: ListTile(
+               title: TextField(
+                 controller: controller,
+                 onChanged: onSearch,
+                 decoration: InputDecoration(
                    hintText: "ค้นหา",
+                 ),
+               ),
+               trailing: IconButton(
+                   icon: Icon(Icons.cancel),
+                   onPressed: (){
+                     controller.clear();
+                   }
                ),
              ),
            ),
