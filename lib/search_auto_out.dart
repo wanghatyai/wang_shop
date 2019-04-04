@@ -36,7 +36,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
         var jsonData = json.decode(res.body);
 
-        jsonData.forEach((products) => _product.add(products));
+        jsonData.forEach((products) => _product.add(Product.fromJson(products)));
 
         //products = json.decode(res.body);
         //recentProducts = json.decode(res.body);
@@ -66,6 +66,8 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       setState(() {});
       return;
     }
+
+    searchProduct(text);
     
     _product.forEach((f){
       if(f.productName.contains(text)) _search.add(f);
@@ -77,6 +79,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         child: Column(
          children: <Widget>[
@@ -86,25 +89,30 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                controller: controller,
                onChanged: onSearch,
                decoration: InputDecoration(
-                   hintText: "ค้นหา", border: InputBorder.none
+                   hintText: "ค้นหา",
                ),
              ),
            ),
-           loading ? Center(child: CircularProgressIndicator(),) : ListView.builder(
-             itemCount: _product.length,
-             itemBuilder: (context, i){
-               final a = _product[i];
-               return Container(
-                 padding: EdgeInsets.all(10),
-                 child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: <Widget>[
-                     Text(a.productName),
-                     SizedBox(height: 4),
-                   ],
-                 ),
-               );
-             },
+           loading ? Center(
+             child: CircularProgressIndicator(),
+           ) :
+           Expanded(
+             child: ListView.builder(
+               itemCount: _product.length,
+               itemBuilder: (context, i){
+                 final a = _product[i];
+                 return Container(
+                   padding: EdgeInsets.all(10),
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: <Widget>[
+                       Text(a.productName),
+                       SizedBox(height: 4),
+                     ],
+                   ),
+                 );
+               },
+             ),
            ),
          ],
         ),
