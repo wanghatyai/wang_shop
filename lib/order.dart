@@ -138,6 +138,27 @@ class _OrderPageState extends State<OrderPage> {
     //});
   }
 
+  void _confirmDelShowAlert(int id) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ยืนยันลบรายการ'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: (){
+                removeOrder(id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
 
   removeOrder(int id) async{
@@ -213,7 +234,7 @@ class _OrderPageState extends State<OrderPage> {
               trailing: IconButton(
                   icon: Icon(Icons.delete_forever, color: Colors.red),
                   onPressed: (){
-                      removeOrder(orders[index]['id']);
+                    _confirmDelShowAlert(orders[index]['id']);
                   }
               ),
           );
