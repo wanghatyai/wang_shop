@@ -165,6 +165,14 @@ class DatabaseHelper {
     return await dbClient.rawQuery(sql, [code, unit]);
   }
 
+  Future getMemberCheck(code) async {
+    var dbClient = await getDb();
+    var sql = '''
+      SELECT * FROM members WHERE code=? 
+    ''';
+    return await dbClient.rawQuery(sql, [code]);
+  }
+
   Future saveData(Map member) async {
     var dbClient = await getDb();
 
