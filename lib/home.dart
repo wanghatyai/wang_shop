@@ -64,7 +64,31 @@ class _HomeState extends State<Home> {
     //print(username);
     //_readData('name');
     getUser();
+    showOverlay();
 
+  }
+
+  showOverlay() async{
+
+    var countOrder = await databaseHelper.countOrder();
+    print(countOrder[0]['countOrderAll']);
+
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+        builder: (context) => Positioned(
+          top: 25,
+          right: 30,
+          child: CircleAvatar(
+            radius: 15,
+            backgroundColor: Colors.red,
+            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
+          ),
+        )
+    );
+
+    overlayState.insert(overlayEntry);
+    //await Future.delayed(Duration(seconds: 2));
+    //overlayEntry.remove();
   }
 
   /*Widget appBar = AppBar(
