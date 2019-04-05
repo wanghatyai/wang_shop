@@ -149,6 +149,14 @@ class DatabaseHelper {
     return await dbClient.rawQuery(sql);
   }
 
+  Future removeAllMember() async {
+    var dbClient = await getDb();
+    var sql = '''
+      DELETE FROM members
+    ''';
+    return await dbClient.rawQuery(sql);
+  }
+
   Future getDetail(int id) async {
     var dbClient = await getDb();
     var sql = '''
