@@ -98,6 +98,19 @@ class LoginPageState extends State<LoginPage>{
           'name': jsonResponse['name'],
         };
 
+        var checkMember = await databaseHelper.getMemberCheck(user['code']);
+
+        if(checkMember.isEmpty){
+
+          await databaseHelper.removeAll();
+          await databaseHelper.removeAllMember();
+          await databaseHelper.saveData(user);
+          Navigator.pushReplacementNamed(context, '/Home');
+        }else{
+          //await databaseHelper.saveData(user);
+          Navigator.pushReplacementNamed(context, '/Home');
+        }
+
         //var resDB = await databaseHelper.getList();
         //print(resDB);
 
@@ -106,7 +119,7 @@ class LoginPageState extends State<LoginPage>{
         //_saveData('name', jsonResponse['name']);
         //_saveData('code', jsonResponse['ccode']);
 
-        Navigator.pushReplacementNamed(context, '/Home');
+        //Navigator.pushReplacementNamed(context, '/Home');
       }else{
         _showAlert();
       }
