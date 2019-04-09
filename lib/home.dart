@@ -141,7 +141,7 @@ class _HomeState extends State<Home> {
         title: Text("${name}"),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: Icon(Icons.shopping_cart, size: 30,),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
           })
