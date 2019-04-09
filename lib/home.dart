@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
+import 'package:wang_shop/product_new.dart';
 import 'package:wang_shop/history.dart';
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/order.dart';
@@ -100,7 +101,7 @@ class _HomeState extends State<Home> {
   );*/
 
   int currentIndex = 0;
-  List pages = [ProductProPage(), ProductHotPage(), searchAutoOutPage(), History()];
+  List pages = [ProductProPage(), ProductHotPage(), ProductNewPage(), searchAutoOutPage(), History()];
 
 
   @override
@@ -121,6 +122,10 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_basket, color: Colors.green),
             title: Text('ขายดี', style: TextStyle(color: Colors.green))
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.fiber_new, color: Colors.green),
+              title: Text('ใหม่', style: TextStyle(color: Colors.green))
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search, color: Colors.green),
