@@ -8,10 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class productDetailPage extends StatefulWidget {
 
-
   var product;
   productDetailPage({Key key, this.product}) : super(key: key);
-
 
   @override
   _productDetailPageState createState() => _productDetailPageState();
@@ -27,31 +25,6 @@ class _productDetailPageState extends State<productDetailPage> {
   String _currentUnit;
 
   TextEditingController valAmount = TextEditingController();
-
-  /*loadUnits(){
-    units = [];
-    //_currentUnit = widget.product['unit1'].toString();
-
-    if(widget.product['unit1'].toString() != "null"){
-
-      units.add(DropdownMenuItem(
-        child: Text(widget.product['unit1'].toString()),
-        value: widget.product['unit1'].toString(),
-      ));
-    }
-    if(widget.product['unit2'].toString() != "null"){
-      units.add(DropdownMenuItem(
-        child: Text(widget.product['unit2'].toString()),
-        value: widget.product['unit2'].toString(),
-      ));
-    }
-    if(widget.product['unit3'].toString() != "null"){
-      units.add(DropdownMenuItem(
-        child: Text(widget.product['unit3'].toString()),
-        value: widget.product['unit3'].toString(),
-      ));
-    }
-  }*/
 
   showToastAddFast(){
     Fluttertoast.showToast(
@@ -91,19 +64,18 @@ class _productDetailPageState extends State<productDetailPage> {
 
     units = [];
 
-    if(widget.product['unit1'].toString() != "null"){
-      units.add(widget.product['unit1'].toString());
+    if(widget.product.productUnit1.toString() != "null"){
+      units.add(widget.product.productUnit1.toString());
       //setState(() {
       //_currentUnit = widget.product['unit1'].toString();
       //});
     }
-    if(widget.product['unit2'].toString() != "null"){
-      units.add(widget.product['unit2'].toString());
+    if(widget.product.productUnit2.toString() != "null"){
+      units.add(widget.product.productUnit2.toString());
     }
-    if(widget.product['unit3'].toString() != "null"){
-      units.add(widget.product['unit3'].toString());
+    if(widget.product.productUnit3.toString() != "null"){
+      units.add(widget.product.productUnit3.toString());
     }
-
 
     //loadUnits();
     //print(widget.product['unit3'].toString());
@@ -113,7 +85,7 @@ class _productDetailPageState extends State<productDetailPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text(widget.product['nproductMain'].toString()),
+        title: Text(widget.product.productName.toString()),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.shopping_cart),
@@ -131,20 +103,20 @@ class _productDetailPageState extends State<productDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Image.network('http://www.wangpharma.com/cms/product/${widget.product['pic']}',fit: BoxFit.contain, width:double.infinity, height: 250,),
-                  Text("รหัสสินค้า : ${widget.product['pcode']}",
+                  Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
+                  Text("รหัสสินค้า : ${widget.product..productCode}",
                     style: TextStyle(
                         fontSize: 18
                     ),
                   ),
 
-                  Text("ชื่อไทย : ${widget.product['nproductMain']}",
+                  Text("ชื่อไทย : ${widget.product.productName}",
                     style: TextStyle(
                         fontSize: 18
                     ),
                   ),
 
-                  Text("ชื่ออังกฤษ : ${widget.product['nproductENG']}",
+                  Text("ชื่ออังกฤษ : ${widget.product.productNameENG}",
                     style: TextStyle(
                         fontSize: 18
                     ),
@@ -229,26 +201,26 @@ class _productDetailPageState extends State<productDetailPage> {
     var unit2;
     var unit3;
 
-    if(widget.product['unit1'].toString() != "null"){
-      unit1 = widget.product['unit1'].toString();
+    if(widget.product.productUnit1.toString() != "null"){
+      unit1 = widget.product.productUnit1.toString();
     }else{
       unit1 = 'NULL';
     }
-    if(widget.product['unit2'].toString() != "null"){
-      unit2 = widget.product['unit2'].toString();
+    if(widget.product.productUnit2.toString() != "null"){
+      unit2 = widget.product.productUnit2.toString();
     }else{
       unit2 = 'NULL';
     }
-    if(widget.product['unit3'].toString() != "null"){
-      unit3 = widget.product['unit3'].toString();
+    if(widget.product.productUnit3.toString() != "null"){
+      unit3 = widget.product.productUnit3.toString();
     }else{
       unit3 = 'NULL';
     }
 
     Map order = {
-      'code': widget.product['pcode'].toString(),
-      'name': widget.product['nproductMain'].toString(),
-      'pic': widget.product['pic'].toString(),
+      'code': widget.product.productCode.toString(),
+      'name': widget.product.productName.toString(),
+      'pic': widget.product.productPic.toString(),
       'unit': _currentUnit,
       'unit1': unit1,
       'unit2': unit2,
