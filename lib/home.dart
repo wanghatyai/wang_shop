@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
             title: Text('โปร', style: TextStyle(color: Colors.green))
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_basket, color: Colors.green),
+            icon: Icon(Icons.monetization_on, color: Colors.green),
             title: Text('ขายดี', style: TextStyle(color: Colors.green))
           ),
           BottomNavigationBarItem(
