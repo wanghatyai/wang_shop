@@ -210,10 +210,10 @@ class _OrderPageState extends State<OrderPage> {
           )
         ],
       ),
-      body: ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-          color: Colors.black,
-        ),
+      body: ListView.builder(
+        //separatorBuilder: (context, index) => Divider(
+          //color: Colors.black,
+        //),
         itemBuilder: (context, int index){
           return ListTile(
               onTap: (){
@@ -232,7 +232,7 @@ class _OrderPageState extends State<OrderPage> {
                 ],
               ),
               trailing: IconButton(
-                  icon: Icon(Icons.delete_forever, color: Colors.red),
+                  icon: Icon(Icons.delete_forever, color: Colors.red, size: 30,),
                   onPressed: (){
                     _confirmDelShowAlert(orders[index]['id']);
                   }
