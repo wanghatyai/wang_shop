@@ -21,38 +21,25 @@ class _ProductProPageState extends State<ProductProPage> {
   ScrollController _scrollController = new ScrollController();
 
   //Product product;
-  List productAll = [];
+  List <Product>productAll = [];
   bool isLoading = true;
   int perPage = 30;
   String act = "Pro";
 
-  var product;
+  //var product;
 
   getProduct() async{
 
     final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
 
-    //print('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
-
     if(res.statusCode == 200){
-      //var jsonRes = json.decode(res.body);
-      //print(jsonRes);
 
       setState(() {
         isLoading = false;
 
         var jsonData = json.decode(res.body);
 
-        /*for(var u in jsonData){
-          Product product = Product(u['id'], u['nproductMain'], u['pcode'], u['nproductENG'], u['pic']);
-
-          //print(u['nproductMain']);
-
-          productAll.add(product);
-
-        }*/
-
-        jsonData.forEach((products) => productAll.add(products));
+        jsonData.forEach((products) => productAll.add(Product.fromJson(products)));
         perPage = productAll.length;
 
         print(productAll);
@@ -135,17 +122,17 @@ class _ProductProPageState extends State<ProductProPage> {
                                 context,
                                 MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
                           },
-                          leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index]['pic']}', fit: BoxFit.cover, width: 70, height: 70),
-                          title: Text('${productAll[index]['pcode']}'),
+                          leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70),
+                          title: Text('${productAll[index].productCode}'),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('${productAll[index]['nproductMain']}'),
-                              Text('${productAll[index]['nproductENG']}'),
+                              Text('${productAll[index].productName}'),
+                              Text('${productAll[index].productNameENG}'),
                             ],
                           ),
                           trailing: IconButton(
-                            icon: Icon(Icons.shopping_basket, color: Colors.teal),
+                            icon: Icon(Icons.shopping_basket, color: Colors.teal, size: 30,),
                             onPressed: (){
                               addToOrderFast(productAll[index]);
                             }
@@ -165,27 +152,27 @@ class _ProductProPageState extends State<ProductProPage> {
     var unit2;
     var unit3;
 
-    if(productFast['unit1'].toString() != "null"){
-      unit1 = productFast['unit1'].toString();
+    if(productFast.productUnit1.toString() != "null"){
+      unit1 = productFast.productUnit1.toString();
     }else{
       unit1 = 'NULL';
     }
-    if(productFast['unit2'].toString() != "null"){
-      unit2 = productFast['unit2'].toString();
+    if(productFast.productUnit2.toString() != "null"){
+      unit2 = productFast.productUnit2.toString();
     }else{
       unit2 = 'NULL';
     }
-    if(productFast['unit3'].toString() != "null"){
-      unit3 = productFast['unit3'].toString();
+    if(productFast.productUnit3.toString() != "null"){
+      unit3 = productFast.productUnit3.toString();
     }else{
       unit3 = 'NULL';
     }
 
     Map order = {
-      'code': productFast['pcode'].toString(),
-      'name': productFast['nproductMain'].toString(),
-      'pic': productFast['pic'].toString(),
-      'unit': productFast['unit1'].toString(),
+      'code': productFast.productCode.toString(),
+      'name': productFast.productName.toString(),
+      'pic': productFast.productPic.toString(),
+      'unit': productFast.productUnit1.toString(),
       'unit1': unit1,
       'unit2': unit2,
       'unit3': unit3,
