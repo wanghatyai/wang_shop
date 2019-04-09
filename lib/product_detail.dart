@@ -77,6 +77,10 @@ class _productDetailPageState extends State<productDetailPage> {
       units.add(widget.product.productUnit3.toString());
     }
 
+    if(_currentUnit == null){
+      _currentUnit = widget.product.productUnit1.toString();
+    }
+
     //loadUnits();
     //print(widget.product['unit3'].toString());
     //print(_currentUnit);
