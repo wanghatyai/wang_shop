@@ -41,17 +41,8 @@ class _ProductHotPageState extends State<ProductHotPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: isLoading ? CircularProgressIndicator()
-          : ListView.builder(itemBuilder: (context, int index){
-        return ListTile(
-          onTap: (){},
-          leading: Image.network('http://www.wangpharma.com/cms/product/${product[index]['pic']}',width: 70, height: 70,),
-          title: Text('${product[index]['nproduct']}'),
-          subtitle: Text('${product[index]['nproductENG']}'),
-          trailing: Icon(Icons.shopping_basket),
-        );
-      }, itemCount: product != null ? product.length : 0,),
-    );
+
+    return Center(child: Text('Hot'),);
+
   }
 }
