@@ -16,6 +16,9 @@ class _OrderPageState extends State<OrderPage> {
   List units = [];
   String _currentUnit;
 
+  int selectedRadioTileShip;
+  int selectedRadioTilePay;
+
   getOrderAll() async{
     var res = await databaseHelper.getOrder();
     print(res);
@@ -131,6 +134,162 @@ class _OrderPageState extends State<OrderPage> {
     });
   }
 
+  selectShip(){
+    return showDialog(context: context, builder: (context) {
+      return SimpleDialog(
+        title: Text('เลือกวิธีการรับสินค้า'),
+        children: <Widget>[
+          //Text('จำนวน'),
+          RadioListTile(
+            title: Text('คุณลูกค้ามารับสินค้าด้วยตัวเอง'),
+            activeColor: Colors.green,
+            value: 1,
+            groupValue: selectedRadioTileShip,
+            //selected: true,
+            onChanged: (val){
+              setState(() {});
+              setSelectRadioTileShap(val);
+            },
+          ),
+          RadioListTile(
+            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(รถตู้)'),
+            activeColor: Colors.green,
+            value: 3,
+            groupValue: selectedRadioTileShip,
+            //selected: false,
+            onChanged: (val){
+              setState(() {});
+              setSelectRadioTileShap(val);
+            },
+          ),
+          RadioListTile(
+            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(Taxi)'),
+            activeColor: Colors.green,
+            value: 4,
+            groupValue: selectedRadioTileShip,
+            //selected: false,
+            onChanged: (val){
+              setSelectRadioTileShap(val);
+            },
+          ),
+          RadioListTile(
+            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(รถทัวร์)'),
+            activeColor: Colors.green,
+            value: 2,
+            groupValue: selectedRadioTileShip,
+            //selected: false,
+            onChanged: (val){
+              setSelectRadioTileShap(val);
+            },
+          ),
+          RadioListTile(
+            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(ขนส่งอื่นๆ)'),
+            activeColor: Colors.green,
+            value: 5,
+            groupValue: selectedRadioTileShip,
+            //selected: false,
+            onChanged: (val){
+              setSelectRadioTileShap(val);
+            },
+          ),
+          RadioListTile(
+            title: Text('บริการขนส่งของวังเภสัช'),
+            activeColor: Colors.green,
+            value: 6,
+            groupValue: selectedRadioTileShip,
+            //selected: false,
+            onChanged: (val){
+              setSelectRadioTileShap(val);
+            },
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          SimpleDialogOption(
+            onPressed: (){
+              selectPay();
+            },
+            child: Text(
+                'ตกลง',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.bold
+                )
+            ),
+          ),
+        ],
+
+
+      );
+    });
+  }
+
+  selectPay(){
+    return showDialog(context: context, builder: (context) {
+      return SimpleDialog(
+        title: Text('เลือกวิธีชำระเงิน'),
+        children: <Widget>[
+          //Text('จำนวน'),
+          RadioListTile(
+            title: Text('เครดิต(ลูกหนี้)'),
+            activeColor: Colors.green,
+            value: 1,
+            groupValue: selectedRadioTilePay,
+            onChanged: (val){
+              setSelectRadioTilePay(val);
+            },
+          ),
+          RadioListTile(
+            title: Text('เงินสด'),
+            activeColor: Colors.green,
+            value: 2,
+            groupValue: selectedRadioTilePay,
+            onChanged: (val){
+              setSelectRadioTilePay(val);
+            },
+          ),
+          RadioListTile(
+            title: Text('เช็ค'),
+            activeColor: Colors.green,
+            value: 3,
+            groupValue: selectedRadioTilePay,
+            onChanged: (val){
+              setSelectRadioTilePay(val);
+            },
+          ),
+          RadioListTile(
+            title: Text('บัตรเครดิต'),
+            activeColor: Colors.green,
+            value: 4,
+            groupValue: selectedRadioTilePay,
+            onChanged: (val){
+              setSelectRadioTilePay(val);
+            },
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          SimpleDialogOption(
+            onPressed: (){
+
+            },
+            child: Text(
+                'ตกลง',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.bold
+                )
+            ),
+          ),
+        ],
+
+
+      );
+    });
+  }
+
+
+
   _onDropDownItemSelected(newValueSelected){
     //setState(() {
       this._currentUnit = newValueSelected;
@@ -171,7 +330,19 @@ class _OrderPageState extends State<OrderPage> {
   void initState(){
     super.initState();
     getOrderAll();
+    selectedRadioTileShip = 1;
+    selectedRadioTilePay = 1;
+  }
 
+  setSelectRadioTileShap(int val){
+    setState(() {
+      selectedRadioTileShip = val;
+    });
+  }
+  setSelectRadioTilePay(int val){
+    setState(() {
+      selectedRadioTilePay = val;
+    });
   }
 
   showOverlay() async{
@@ -205,6 +376,7 @@ class _OrderPageState extends State<OrderPage> {
           IconButton(
               icon: Icon(Icons.check_box),
               onPressed: (){
+                selectShip();
                 //Navigator.pushReplacementNamed(context, '/Order');
               }
           )
