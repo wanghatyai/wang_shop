@@ -104,7 +104,7 @@ class DatabaseHelper {
   Future getOrder() async {
     var dbClient = await getDbOrder();
     var sql = '''
-      SELECT * FROM orders
+      SELECT * FROM orders ORDER BY code ASC
     ''';
     return await dbClient.rawQuery(sql);
   }
