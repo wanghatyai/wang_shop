@@ -398,19 +398,20 @@ class _OrderPageState extends State<OrderPage> {
         //),
         itemBuilder: (context, int index){
           return ListTile(
+              contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
               onTap: (){
                 //setState(() {
                   editOrderDialog(orders[index]);
                 //});
               },
-              leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',width: 70, height: 70,),
+              leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
               title: Text('${orders[index]['code']}'),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text('${orders[index]['name']}'),
                   Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
-                    style: TextStyle(fontSize: 18),),
+                    style: TextStyle(fontSize: 18, color: Colors.red),),
                 ],
               ),
               trailing: IconButton(
