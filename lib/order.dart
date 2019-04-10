@@ -78,34 +78,44 @@ class _OrderPageState extends State<OrderPage> {
         return SimpleDialog(
           title: Text('แก้ไขรายการ'),
           children: <Widget>[
-            //Text('จำนวน'),
-            TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                hintText: "จำนวน",
-              ),
-              keyboardType: TextInputType.number,
-              controller: editAmount,
+            Padding(
+             padding: EdgeInsets.all(10),
+             child: Text('${order['name']}'),
             ),
-
             Padding(
               padding: EdgeInsets.all(10),
-              child: DropdownButton(
-                hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
-                items: units.map((dropDownStringItem){
-                  return DropdownMenuItem<String>(
-                    value: dropDownStringItem,
-                    child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
-                  );
-                }).toList(),
-                onChanged: (newValueSelected){
-                  _onDropDownItemSelected(newValueSelected);
-                  print(this._currentUnit);
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "จำนวน",
+                      ),
+                      keyboardType: TextInputType.number,
+                      controller: editAmount,
+                    ),
+                  ),
+                  Expanded(
+                    child: DropdownButton(
+                      hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
+                      items: units.map((dropDownStringItem){
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
+                        );
+                      }).toList(),
+                      onChanged: (newValueSelected){
+                        _onDropDownItemSelected(newValueSelected);
+                        print(this._currentUnit);
 
-                },
-                value: _currentUnit,
+                      },
+                      value: _currentUnit,
 
+                    ),
+                  )
+                ],
               ),
             ),
 
@@ -147,7 +157,7 @@ class _OrderPageState extends State<OrderPage> {
             groupValue: selectedRadioTileShip,
             //selected: true,
             onChanged: (val){
-              setState(() {});
+
               setSelectRadioTileShap(val);
             },
           ),
@@ -158,7 +168,7 @@ class _OrderPageState extends State<OrderPage> {
             groupValue: selectedRadioTileShip,
             //selected: false,
             onChanged: (val){
-              setState(() {});
+
               setSelectRadioTileShap(val);
             },
           ),
@@ -291,10 +301,10 @@ class _OrderPageState extends State<OrderPage> {
 
 
   _onDropDownItemSelected(newValueSelected){
-    //setState(() {
+    setState(() {
       this._currentUnit = newValueSelected;
       //print('select--${units}');
-    //});
+    });
   }
 
   void _confirmDelShowAlert(int id) async {
