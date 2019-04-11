@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:wang_shop/database_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:wang_shop/ship_dialog.dart';
+import 'package:wang_shop/pay_dialog.dart';
+
 class OrderPage extends StatefulWidget {
   @override
   _OrderPageState createState() => _OrderPageState();
@@ -149,69 +152,7 @@ class _OrderPageState extends State<OrderPage> {
       return SimpleDialog(
         title: Text('เลือกวิธีการรับสินค้า'),
         children: <Widget>[
-          //Text('จำนวน'),
-          RadioListTile(
-            title: Text('คุณลูกค้ามารับสินค้าด้วยตัวเอง'),
-            activeColor: Colors.green,
-            value: 1,
-            groupValue: selectedRadioTileShip,
-            //selected: true,
-            onChanged: (val){
-
-              setSelectRadioTileShap(val);
-            },
-          ),
-          RadioListTile(
-            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(รถตู้)'),
-            activeColor: Colors.green,
-            value: 3,
-            groupValue: selectedRadioTileShip,
-            //selected: false,
-            onChanged: (val){
-
-              setSelectRadioTileShap(val);
-            },
-          ),
-          RadioListTile(
-            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(Taxi)'),
-            activeColor: Colors.green,
-            value: 4,
-            groupValue: selectedRadioTileShip,
-            //selected: false,
-            onChanged: (val){
-              setSelectRadioTileShap(val);
-            },
-          ),
-          RadioListTile(
-            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(รถทัวร์)'),
-            activeColor: Colors.green,
-            value: 2,
-            groupValue: selectedRadioTileShip,
-            //selected: false,
-            onChanged: (val){
-              setSelectRadioTileShap(val);
-            },
-          ),
-          RadioListTile(
-            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(ขนส่งอื่นๆ)'),
-            activeColor: Colors.green,
-            value: 5,
-            groupValue: selectedRadioTileShip,
-            //selected: false,
-            onChanged: (val){
-              setSelectRadioTileShap(val);
-            },
-          ),
-          RadioListTile(
-            title: Text('บริการขนส่งของวังเภสัช'),
-            activeColor: Colors.green,
-            value: 6,
-            groupValue: selectedRadioTileShip,
-            //selected: false,
-            onChanged: (val){
-              setSelectRadioTileShap(val);
-            },
-          ),
+          ShipDialogPage(),
           Padding(
             padding: EdgeInsets.all(10),
           ),
@@ -228,8 +169,6 @@ class _OrderPageState extends State<OrderPage> {
             ),
           ),
         ],
-
-
       );
     });
   }
@@ -240,42 +179,7 @@ class _OrderPageState extends State<OrderPage> {
         title: Text('เลือกวิธีชำระเงิน'),
         children: <Widget>[
           //Text('จำนวน'),
-          RadioListTile(
-            title: Text('เครดิต(ลูกหนี้)'),
-            activeColor: Colors.green,
-            value: 1,
-            groupValue: selectedRadioTilePay,
-            onChanged: (val){
-              setSelectRadioTilePay(val);
-            },
-          ),
-          RadioListTile(
-            title: Text('เงินสด'),
-            activeColor: Colors.green,
-            value: 2,
-            groupValue: selectedRadioTilePay,
-            onChanged: (val){
-              setSelectRadioTilePay(val);
-            },
-          ),
-          RadioListTile(
-            title: Text('เช็ค'),
-            activeColor: Colors.green,
-            value: 3,
-            groupValue: selectedRadioTilePay,
-            onChanged: (val){
-              setSelectRadioTilePay(val);
-            },
-          ),
-          RadioListTile(
-            title: Text('บัตรเครดิต'),
-            activeColor: Colors.green,
-            value: 4,
-            groupValue: selectedRadioTilePay,
-            onChanged: (val){
-              setSelectRadioTilePay(val);
-            },
-          ),
+          PayDialogPage(),
           Padding(
             padding: EdgeInsets.all(10),
           ),
@@ -344,7 +248,7 @@ class _OrderPageState extends State<OrderPage> {
     selectedRadioTilePay = 1;
   }
 
-  setSelectRadioTileShap(int val){
+  setSelectRadioTileShip(int val){
     setState(() {
       selectedRadioTileShip = val;
     });
