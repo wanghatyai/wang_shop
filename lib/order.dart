@@ -250,11 +250,11 @@ class _OrderPageState extends State<OrderPage> {
   void initState(){
     super.initState();
     getOrderAll();
-    selectedRadioTileShip = 1;
-    selectedRadioTilePay = 1;
+    //selectedRadioTileShip = 1;
+    //selectedRadioTilePay = 1;
   }
 
-  setSelectRadioTileShip(int val){
+  /*setSelectRadioTileShip(int val){
     setState(() {
       selectedRadioTileShip = val;
     });
@@ -263,7 +263,7 @@ class _OrderPageState extends State<OrderPage> {
     setState(() {
       selectedRadioTilePay = val;
     });
-  }
+  }*/
 
   showOverlay() async{
 
