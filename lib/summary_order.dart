@@ -6,8 +6,20 @@ class SummaryOrderPage extends StatefulWidget {
 }
 
 class _SummaryOrderPageState extends State<SummaryOrderPage> {
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        title: Text('สรุปรายการสั่งจอง'),
+        actions: <Widget>[
+        ],
+      ),
+      body: Container(
+        child: Text('รายละเอียดสินค้า'),
+      ),
+    );
   }
 }
