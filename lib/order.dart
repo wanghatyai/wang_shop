@@ -156,6 +156,9 @@ class _OrderPageState extends State<OrderPage> {
           Padding(
             padding: EdgeInsets.all(10),
           ),
+          Divider(
+            color: Colors.black,
+          ),
           SimpleDialogOption(
             onPressed: (){
               selectPay();
@@ -182,6 +185,9 @@ class _OrderPageState extends State<OrderPage> {
           PayDialogPage(),
           Padding(
             padding: EdgeInsets.all(10),
+          ),
+          Divider(
+            color: Colors.black,
           ),
           SimpleDialogOption(
             onPressed: (){
