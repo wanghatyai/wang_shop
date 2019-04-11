@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:wang_shop/ship_dialog.dart';
 import 'package:wang_shop/pay_dialog.dart';
+import 'package:wang_shop/summary_order.dart';
 
 class OrderPage extends StatefulWidget {
   @override
@@ -191,7 +192,13 @@ class _OrderPageState extends State<OrderPage> {
           ),
           SimpleDialogOption(
             onPressed: (){
-
+              /*GestureDetector(
+                onTap: (){
+                  this.showOverlay().overlayEntry.remove();
+                  print('tttt');
+                },
+              );*/
+              //Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryOrderPage()));
             },
             child: Text(
                 'ตกลง',
