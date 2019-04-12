@@ -11,9 +11,9 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
 
   int selectedRadioTileShip;
   //int selectedRadioTilePay;
-  String codeuser;
+  String codeUser;
   List user = [];
-  List StatusShip = [];
+  List statusShip = [];
   int idStatusShip;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
@@ -24,11 +24,11 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
     var getMember = await databaseHelper.getList();
 
     user = getMember;
-    codeuser = user[0]['code'];
+    codeUser = user[0]['code'];
 
     if(checkStatus.isEmpty){
       Map statusShipAndPay = {
-        'codeuser': codeuser,
+        'codeuser': codeUser,
         'ship': 1,
         'pay': 1,
       };
