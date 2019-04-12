@@ -151,14 +151,21 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                itemBuilder: (context, i){
                  final a = _product[i];
                  return ListTile(
+                   contentPadding: EdgeInsets.fromLTRB(10, 7, 10, 7),
                    onTap: (){
 
                    },
                    leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                   title: Text('${a.productName}'),
-                   subtitle: Text('${a.productNameENG}'),
+                   title: Text('${a.productCode}'),
+                   subtitle: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: <Widget>[
+                       Text('${a.productName}'),
+                       Text('${a.productNameENG}'),
+                     ],
+                   ),
                    trailing: IconButton(
-                       icon: Icon(Icons.shopping_basket, color: Colors.teal),
+                       icon: Icon(Icons.shopping_basket, color: Colors.teal, size: 30,),
                        onPressed: (){
                          addToOrderFast(a);
                        }
