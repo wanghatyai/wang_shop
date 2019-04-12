@@ -32,6 +32,14 @@ class DatabaseHelper {
     amount INTEGER)
   ''';
 
+  String sqlCreateShipAndPay = '''
+  create table if not exists shipandpay(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    codeuser TEXT, 
+    ship INTEGER,
+    pay INTEGER)
+  ''';
+
   String sqlDropTableOrder = '''
   DROP TABLE orders
   ''';
@@ -72,6 +80,24 @@ class DatabaseHelper {
     return _db;
   }
 
+  Future<Database> getDbShipAndPay() async {
+    if (_db == null) {
+      io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+      String path = join(documentDirectory.path, 'shipandpay.db');
+
+      print(path);
+
+      await _lock.synchronized(() async {
+        if (_db == null) {
+          _db = await openDatabase(path, version: 1);
+        }
+      });
+    }
+
+    return _db;
+  }
+
   Future initDatabase() async {
     var dbClient = await getDb();
     // Create table
@@ -84,6 +110,13 @@ class DatabaseHelper {
     // Create table
     await dbClient.rawQuery(sqlCreateOrder);
     print('Table Order is created');
+  }
+
+  Future initDatabaseShipAndPay() async {
+    var dbClient = await getDbShipAndPay();
+    // Create table
+    await dbClient.rawQuery(sqlCreateShipAndPay);
+    print('Table ShipAndPay is created');
   }
 
   Future dropTableOrder() async {
@@ -105,6 +138,14 @@ class DatabaseHelper {
     var dbClient = await getDbOrder();
     var sql = '''
       SELECT * FROM orders ORDER BY code ASC
+    ''';
+    return await dbClient.rawQuery(sql);
+  }
+
+  Future getShipAndPay() async {
+    var dbClient = await getDbShipAndPay();
+    var sql = '''
+      SELECT * FROM shipandpay
     ''';
     return await dbClient.rawQuery(sql);
   }
@@ -219,6 +260,23 @@ class DatabaseHelper {
     print('Saved Order!');
   }
 
+  Future saveShipAndPay(Map statusShipAndPay) async {
+    var dbClient = await getDbShipAndPay();
+
+    String sql = '''
+    INSERT INTO shipandpay(codeuser, ship, pay)
+    VALUES(?, ?, ?)
+    ''';
+
+    await dbClient.rawQuery(sql, [
+      statusShipAndPay['codeuser'],
+      statusShipAndPay['ship'],
+      statusShipAndPay['pay'],
+    ]);
+
+    print('Saved ShipAndPay!');
+  }
+
   Future updateData(Map member) async {
     var dbClient = await getDb();
 
@@ -248,6 +306,40 @@ class DatabaseHelper {
       order['unit'],
       order['amount'],
       order['id'],
+    ]);
+
+    print('Updated!');
+  }
+
+  Future updateShip(Map statusShip) async {
+    var dbClient = await getDbShipAndPay();
+
+    String sql = '''
+    UPDATE shipandpay SET codeuser=?, ship=?
+    WHERE id=?
+    ''';
+
+    await dbClient.rawQuery(sql, [
+      statusShip['codeuser'],
+      statusShip['ship'],
+      statusShip['id'],
+    ]);
+
+    print('Updated!');
+  }
+
+  Future updatePay(Map statusPay) async {
+    var dbClient = await getDbShipAndPay();
+
+    String sql = '''
+    UPDATE shipandpay SET codeuser=?, pay=?
+    WHERE id=?
+    ''';
+
+    await dbClient.rawQuery(sql, [
+      statusPay['codeuser'],
+      statusPay['pay'],
+      statusPay['id'],
     ]);
 
     print('Updated!');
