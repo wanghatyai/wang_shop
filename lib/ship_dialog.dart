@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wang_shop/database_helper.dart';
+
 
 class ShipDialogPage extends StatefulWidget {
   @override
@@ -9,16 +11,46 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
 
   int selectedRadioTileShip;
   //int selectedRadioTilePay;
+  String codeuser;
+  List user = [];
+  List StatusShip = [];
+  int idStatusShip;
+
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
+
+  checkStatusShipAndPay() async {
+
+    var checkStatus = await databaseHelper.getShipAndPay();
+    var getMember = await databaseHelper.getList();
+
+    user = getMember;
+    codeuser = user[0]['code'];
+
+    if(checkStatus.isEmpty){
+      Map statusShipAndPay = {
+        'codeuser': codeuser,
+        'ship': 1,
+        'pay': 1,
+      };
+      await databaseHelper.saveShipAndPay(statusShipAndPay);
+      print('add status ship and pay');
+    }//else{
+      //StatusShip = checkStatus;
+      //idStatusShip = StatusShip[0]['id'];
+    //}
+  }
 
   @override
   void initState(){
     super.initState();
     selectedRadioTileShip = 1;
+    //checkStatusShipAndPay();
   }
 
   setSelectRadioTileShip(int val){
     setState(() {
       selectedRadioTileShip = val;
+
     });
   }
 
