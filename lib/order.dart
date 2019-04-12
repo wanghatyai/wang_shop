@@ -198,7 +198,7 @@ class _OrderPageState extends State<OrderPage> {
                   print('tttt');
                 },
               );*/
-              //Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryOrderPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryOrderPage()));
             },
             child: Text(
                 'ตกลง',
