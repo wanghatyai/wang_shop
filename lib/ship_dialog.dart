@@ -15,6 +15,7 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
   List user = [];
   List statusShip = [];
   int idStatusShip;
+  int initalStatusShip;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -34,23 +35,38 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
       };
       await databaseHelper.saveShipAndPay(statusShipAndPay);
       print('add status ship and pay');
-    }//else{
-      //StatusShip = checkStatus;
-      //idStatusShip = StatusShip[0]['id'];
-    //}
+    }else{
+      //initalStatusShip = checkStatus[0]['ship'];
+      idStatusShip = checkStatus[0]['id'];
+
+      //print(initalStatusShip);
+    }
   }
 
   @override
   void initState(){
     super.initState();
+
     selectedRadioTileShip = 1;
-    //checkStatusShipAndPay();
+    checkStatusShipAndPay();
+
+    //print(initalStatusShip);
+  }
+
+  saveShipStatus(id, codeUser, ship) async {
+    Map order = {
+      'id': id,
+      'ship': ship,
+      'codeuser': codeUser,
+    };
+    await databaseHelper.updateShip(order);
+    //getOrderAll();
   }
 
   setSelectRadioTileShip(int val){
     setState(() {
       selectedRadioTileShip = val;
-
+      saveShipStatus(idStatusShip, codeUser, val);
     });
   }
 
@@ -66,7 +82,6 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             groupValue: selectedRadioTileShip,
             //selected: true,
             onChanged: (val){
-
               setSelectRadioTileShip(val);
             },
           ),
