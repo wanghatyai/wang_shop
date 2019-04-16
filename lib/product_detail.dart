@@ -108,7 +108,7 @@ class _productDetailPageState extends State<productDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
-                  Text("รหัสสินค้า : ${widget.product..productCode}",
+                  Text("รหัสสินค้า : ${widget.product.productCode}",
                     style: TextStyle(
                         fontSize: 18
                     ),
@@ -229,6 +229,9 @@ class _productDetailPageState extends State<productDetailPage> {
       'unit1': unit1,
       'unit2': unit2,
       'unit3': unit3,
+      'priceA': widget.product.productPriceA,
+      'priceB': widget.product.productPriceB,
+      'priceC': widget.product.productPriceC,
       'amount': valAmount.text,
     };
 
