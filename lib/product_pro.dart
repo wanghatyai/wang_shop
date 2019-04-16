@@ -168,6 +168,8 @@ class _ProductProPageState extends State<ProductProPage> {
       unit3 = 'NULL';
     }
 
+    //print('99999-${productFast.productPriceA}');
+
     Map order = {
       'code': productFast.productCode.toString(),
       'name': productFast.productName.toString(),
@@ -176,6 +178,9 @@ class _ProductProPageState extends State<ProductProPage> {
       'unit1': unit1,
       'unit2': unit2,
       'unit3': unit3,
+      'priceA': productFast.productPriceA,
+      'priceB': productFast.productPriceB,
+      'priceC': productFast.productPriceC,
       'amount': 1,
     };
 
