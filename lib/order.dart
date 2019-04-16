@@ -224,7 +224,7 @@ class _OrderPageState extends State<OrderPage> {
     });
   }
 
-  void _confirmDelShowAlert(int id) async {
+  void _confirmDelShowAlert(int id, valProduct) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
@@ -233,10 +233,19 @@ class _OrderPageState extends State<OrderPage> {
           title: Text('ยืนยันลบรายการ'),
           actions: <Widget>[
             FlatButton(
-              child: Text('OK'),
+              child: Text('ลบ'),
               onPressed: (){
                 removeOrder(id);
                 Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('แก้ไข'),
+              onPressed: (){
+                setState(() {
+                  editOrderDialog(valProduct);
+                });
+                //Navigator.of(context).pop();
               },
             ),
           ],
@@ -332,9 +341,9 @@ class _OrderPageState extends State<OrderPage> {
                 ],
               ),
               trailing: IconButton(
-                  icon: Icon(Icons.delete_forever, color: Colors.red, size: 30,),
+                  icon: Icon(Icons.list, size: 30,),
                   onPressed: (){
-                    _confirmDelShowAlert(orders[index]['id']);
+                    _confirmDelShowAlert(orders[index]['id'], orders[index]);
                   }
               ),
           );
