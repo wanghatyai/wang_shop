@@ -60,7 +60,6 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
       'codeuser': codeUser,
     };
     await databaseHelper.updateShip(order);
-    //getOrderAll();
   }
 
   setSelectRadioTileShip(int val){
