@@ -39,7 +39,7 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
       //initalStatusShip = checkStatus[0]['ship'];
       idStatusShip = checkStatus[0]['id'];
 
-      //print(initalStatusShip);
+      print(checkStatus);
     }
   }
 
