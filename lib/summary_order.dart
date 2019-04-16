@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wang_shop/database_helper.dart';
+import 'package:intl/intl.dart';
 
 
 class SummaryOrderPage extends StatefulWidget {
@@ -9,13 +10,22 @@ class SummaryOrderPage extends StatefulWidget {
 
 class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
+  final formatter = new NumberFormat("#,##0.00");
+
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   List orders = [];
+  var sumAmount = 0.0;
 
   getOrderAll() async{
     var res = await databaseHelper.getOrder();
     print(res);
+
+    res.forEach((order) =>
+        sumAmount = sumAmount + (order['priceA'] * order['amount'])
+    );
+
+    //print(sumAmount);
 
     setState(() {
       orders = res;
@@ -47,7 +57,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
         child: Column(
           children: <Widget>[
               Center(
-                child: Text('ยอดรวม 9999,99 บาท', style: TextStyle(fontSize: 30), ),
+                child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
               ),
               RaisedButton(
                 onPressed: (){
@@ -81,7 +91,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                             style: TextStyle(fontSize: 18, color: Colors.red),),
                         ],
                       ),
-                      trailing: Text('999 บาท'),
+                      trailing: Text('${orders[index]['priceA']*orders[index]['amount']} บาท'),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,
