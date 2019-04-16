@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wang_shop/database_helper.dart';
 
 class PayDialogPage extends StatefulWidget {
   @override
@@ -8,16 +9,42 @@ class PayDialogPage extends StatefulWidget {
 class _PayDialogPageState extends State<PayDialogPage> {
 
   int selectedRadioTilePay;
+  String codeUser;
+  int idStatusShip;
+
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
+
+  checkStatusShipAndPay() async {
+
+    var checkStatus = await databaseHelper.getShipAndPay();
+    var getMember = await databaseHelper.getList();
+
+    codeUser = getMember[0]['code'];
+    idStatusShip = checkStatus[0]['id'];
+
+  }
 
   @override
   void initState(){
     super.initState();
     selectedRadioTilePay = 1;
+    checkStatusShipAndPay();
+
+  }
+
+  savePayStatus(id, codeUser, pay) async {
+    Map order = {
+      'id': id,
+      'pay': pay,
+      'codeuser': codeUser,
+    };
+    await databaseHelper.updatePay(order);
   }
 
   setSelectRadioTilePay(int val){
     setState(() {
       selectedRadioTilePay = val;
+      savePayStatus(idStatusShip, codeUser, val);
     });
   }
 
