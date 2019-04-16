@@ -26,9 +26,12 @@ class DatabaseHelper {
     name TEXT, 
     pic TEXT, 
     unit TEXT, 
-    unit1 TEXT , 
-    unit2 TEXT NULL , 
-    unit3 TEXT NULL , 
+    unit1 TEXT, 
+    unit2 TEXT NULL, 
+    unit3 TEXT NULL, 
+    priceA FLOAT NULL, 
+    priceB FLOAT NULL, 
+    priceC FLOAT NULL, 
     amount INTEGER)
   ''';
 
@@ -242,8 +245,8 @@ class DatabaseHelper {
     var dbClient = await getDbOrder();
 
     String sql = '''
-    INSERT INTO orders(code, name, pic, unit, unit1, unit2, unit3, amount)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO orders(code, name, pic, unit, unit1, unit2, unit3, priceA, priceB, priceC, amount)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''';
 
     await dbClient.rawQuery(sql, [
@@ -254,6 +257,9 @@ class DatabaseHelper {
       order['unit1'],
       order['unit2'],
       order['unit3'],
+      order['priceA'],
+      order['priceB'],
+      order['priceC'],
       order['amount'],
     ]);
 
