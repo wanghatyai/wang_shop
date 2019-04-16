@@ -25,6 +25,7 @@ dependencies:
   path_provider: ^0.5.0+1
   fluttertoast: ^3.0.3
   autocomplete_textfield: ^1.6.4
+  intl: ^0.15.8
 
 
 dev_dependencies:
