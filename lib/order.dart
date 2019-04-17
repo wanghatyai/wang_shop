@@ -130,6 +130,7 @@ class _OrderPageState extends State<OrderPage> {
                     //print(order['id']);
                     //print(this._currentUnit);
                     //print(editAmount.text);
+                    Navigator.of(context).pop();
                     Navigator.pop(context);
 
               },
