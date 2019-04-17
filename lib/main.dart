@@ -102,6 +102,7 @@ class LoginPageState extends State<LoginPage>{
       if(jsonResponse['error']=='0'){
         
         Map user = {
+          'idUser': jsonResponse['id_user'],
           'code': jsonResponse['ccode'],
           'name': jsonResponse['name'],
         };
