@@ -15,6 +15,7 @@ class DatabaseHelper {
   String sqlCreate = '''
   create table if not exists members(
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    idUser TEXT,
     code TEXT, 
     name TEXT)
   ''';
@@ -229,11 +230,12 @@ class DatabaseHelper {
     var dbClient = await getDb();
 
     String sql = '''
-    INSERT INTO members(code, name)
-    VALUES(?, ?)
+    INSERT INTO members(idUser, code, name)
+    VALUES(?, ?, ?)
     ''';
 
     await dbClient.rawQuery(sql, [
+      member['idUser'],
       member['code'],
       member['name'],
     ]);
@@ -287,11 +289,12 @@ class DatabaseHelper {
     var dbClient = await getDb();
 
     String sql = '''
-    UPDATE members SET code=?, name=?
+    UPDATE members SET idUser=?, code=?, name=?
     WHERE id=?
     ''';
 
     await dbClient.rawQuery(sql, [
+      member['idUser'],
       member['code'],
       member['name'],
       member['id'],
