@@ -171,6 +171,7 @@ class _ProductProPageState extends State<ProductProPage> {
     //print('99999-${productFast.productPriceA}');
 
     Map order = {
+      'productID': productFast.productId.toString(),
       'code': productFast.productCode.toString(),
       'name': productFast.productName.toString(),
       'pic': productFast.productPic.toString(),
