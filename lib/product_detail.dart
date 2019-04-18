@@ -222,6 +222,7 @@ class _productDetailPageState extends State<productDetailPage> {
     }
 
     Map order = {
+      'productID': widget.product.productId.toString(),
       'code': widget.product.productCode.toString(),
       'name': widget.product.productName.toString(),
       'pic': widget.product.productPic.toString(),
