@@ -51,7 +51,7 @@ class _OrderPageState extends State<OrderPage> {
     getOrderAll();
   }
 
-  editOrderDialog(order){
+  editOrderDialog(order, closeDialog){
 
     units = [];
 
@@ -130,8 +130,12 @@ class _OrderPageState extends State<OrderPage> {
                     //print(order['id']);
                     //print(this._currentUnit);
                     //print(editAmount.text);
-                    Navigator.of(context).pop();
-                    Navigator.pop(context);
+                    if(closeDialog == 1){
+                      Navigator.of(context).pop();
+                      Navigator.pop(context);
+                    }else{
+                      Navigator.pop(context);
+                    }
 
               },
               child: Text(
@@ -244,7 +248,7 @@ class _OrderPageState extends State<OrderPage> {
               child: Text('แก้ไข'),
               onPressed: (){
                 setState(() {
-                  editOrderDialog(valProduct);
+                  editOrderDialog(valProduct, 1);
                 });
                 //Navigator.of(context).pop();
               },
@@ -328,7 +332,7 @@ class _OrderPageState extends State<OrderPage> {
               contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
               onTap: (){
                 //setState(() {
-                  editOrderDialog(orders[index]);
+                  editOrderDialog(orders[index], 0);
                 //});
               },
               leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
