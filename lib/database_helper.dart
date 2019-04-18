@@ -23,6 +23,7 @@ class DatabaseHelper {
   String sqlCreateOrder = '''
   create table if not exists orders(
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    productID TEXT,
     code TEXT, 
     name TEXT, 
     pic TEXT, 
@@ -247,11 +248,12 @@ class DatabaseHelper {
     var dbClient = await getDbOrder();
 
     String sql = '''
-    INSERT INTO orders(code, name, pic, unit, unit1, unit2, unit3, priceA, priceB, priceC, amount)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO orders(productID, code, name, pic, unit, unit1, unit2, unit3, priceA, priceB, priceC, amount)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''';
 
     await dbClient.rawQuery(sql, [
+      order['productID'],
       order['code'],
       order['name'],
       order['pic'],
