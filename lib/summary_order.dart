@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wang_shop/database_helper.dart';
 import 'package:intl/intl.dart';
 
+import 'package:wang_shop/get_product_free.dart';
+
 
 class SummaryOrderPage extends StatefulWidget {
   @override
@@ -43,6 +45,35 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     getOrderAll();
   }
 
+  getFreeProductSelect(){
+    return showDialog(context: context, builder: (context) {
+      return SimpleDialog(
+        title: Text('เลือกสินค้าตามจำนวนแต้ม'),
+        children: <Widget>[
+          getProductFreePage(),
+          Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          Divider(
+            color: Colors.black,
+          ),
+          SimpleDialogOption(
+            onPressed: (){
+
+            },
+            child: Text(
+                'ตกลง',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.bold
+                )
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -68,7 +99,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
               ),
               RaisedButton(
                 onPressed: (){
-
+                  getFreeProductSelect();
                 },
                 textColor: Colors.white,
                 color: Colors.purple,
