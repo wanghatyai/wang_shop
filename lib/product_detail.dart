@@ -23,6 +23,7 @@ class _productDetailPageState extends State<productDetailPage> {
   //List<DropdownMenuItem<String>> units = [];
   List units = [];
   String _currentUnit;
+  var unitStatus;
 
   TextEditingController valAmount = TextEditingController();
 
@@ -151,8 +152,10 @@ class _productDetailPageState extends State<productDetailPage> {
                             );
                           }).toList(),
                           onChanged: (newValueSelected){
-                            _onDropDownItemSelected(newValueSelected);
+                            var tempIndex = units.indexOf(newValueSelected)+1;
+                            _onDropDownItemSelected(newValueSelected, tempIndex);
                             print(this._currentUnit);
+                            print(tempIndex);
 
                           },
                           value: _currentUnit,
@@ -192,9 +195,10 @@ class _productDetailPageState extends State<productDetailPage> {
 
   }
 
-  _onDropDownItemSelected(newValueSelected){
+  _onDropDownItemSelected(newValueSelected, newIndexSelected){
     setState(() {
       _currentUnit = newValueSelected;
+      unitStatus = newIndexSelected;
       //print('select--${units}');
     });
   }
@@ -204,6 +208,7 @@ class _productDetailPageState extends State<productDetailPage> {
     var unit1;
     var unit2;
     var unit3;
+    //var unitStatus;
 
     if(widget.product.productUnit1.toString() != "null"){
       unit1 = widget.product.productUnit1.toString();
@@ -221,12 +226,23 @@ class _productDetailPageState extends State<productDetailPage> {
       unit3 = 'NULL';
     }
 
+    /*if(widget.product.productUnit1.toString() == _currentUnit){
+      unitStatus = 1;
+    }
+    if(widget.product.productUnit2.toString() == _currentUnit){
+      unitStatus = 2;
+    }
+    if(widget.product.productUnit3.toString() == _currentUnit){
+      unitStatus = 3;
+    }*/
+
     Map order = {
       'productID': widget.product.productId.toString(),
       'code': widget.product.productCode.toString(),
       'name': widget.product.productName.toString(),
       'pic': widget.product.productPic.toString(),
       'unit': _currentUnit,
+      'unitStatus': unitStatus,
       'unit1': unit1,
       'unit2': unit2,
       'unit3': unit3,
@@ -253,6 +269,7 @@ class _productDetailPageState extends State<productDetailPage> {
       Map order = {
         'id': checkOrderUnit[0]['id'],
         'unit': checkOrderUnit[0]['unit'],
+        'unitStatus': unitStatus,
         'amount': sumAmount,
       };
 
