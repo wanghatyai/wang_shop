@@ -5,6 +5,10 @@ import 'dart:async';
 import 'dart:convert';
 
 class getProductFreePage extends StatefulWidget {
+
+  var score;
+  getProductFreePage({Key key, this.score}) : super (key: key);
+
   @override
   _getProductFreePageState createState() => _getProductFreePageState();
 }
@@ -12,11 +16,10 @@ class getProductFreePage extends StatefulWidget {
 class _getProductFreePageState extends State<getProductFreePage> {
 
   List productFree = [];
-  var score;
 
   getProduct() async{
 
-    final res = await http.get('http://wangpharma.com/API/product.php?Score=$score&act=Free');
+    final res = await http.get('http://wangpharma.com/API/product.php?Score=${widget.score}&act=Free');
 
     if(res.statusCode == 200){
 
@@ -45,7 +48,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getProduct();
+    //getProduct();
   }
 
   @override
