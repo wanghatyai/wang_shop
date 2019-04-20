@@ -42,11 +42,11 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  saveEditOrderDialog(id, unit, unitStatus, amount) async {
+  saveEditOrderDialog(id, unit, unitStatusVal, amount) async {
     Map order = {
       'id': id,
       'unit': unit,
-      'unitStatus': unitStatus,
+      'unitStatus': unitStatusVal,
       'amount': amount,
     };
     await databaseHelper.updateOrder(order);
@@ -59,6 +59,7 @@ class _OrderPageState extends State<OrderPage> {
 
     //if(_currentUnit.isEmpty){
       _currentUnit = order['unit'].toString();
+      unitStatus = order['unitStatus'];
     //}else{
       //_currentUnit = this._currentUnit;
     //}
@@ -130,9 +131,10 @@ class _OrderPageState extends State<OrderPage> {
             SimpleDialogOption(
               onPressed: (){
 
+                    print(this._currentUnit);
+                    print(this.unitStatus);
 
-
-                    saveEditOrderDialog(order['id'], this._currentUnit, unitStatus, editAmount.text);
+                    saveEditOrderDialog(order['id'], this._currentUnit, this.unitStatus, editAmount.text);
                     //print(order['id']);
                     //print(this._currentUnit);
                     //print(editAmount.text);
@@ -231,7 +233,7 @@ class _OrderPageState extends State<OrderPage> {
   _onDropDownItemSelected(newValueSelected, newIndexSelected){
     setState(() {
       this._currentUnit = newValueSelected;
-      unitStatus = newIndexSelected;
+      this.unitStatus = newIndexSelected;
       //print('select--${units}');
     });
   }
