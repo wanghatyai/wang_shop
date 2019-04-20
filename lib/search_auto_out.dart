@@ -203,13 +203,18 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
     }
 
     Map order = {
+      'productID': productFast.productId.toString(),
       'code': productFast.productCode.toString(),
       'name': productFast.productName.toString(),
       'pic': productFast.productPic.toString(),
       'unit': productFast.productUnit1.toString(),
+      'unitStatus': 1,
       'unit1': unit1,
       'unit2': unit2,
       'unit3': unit3,
+      'priceA': productFast.productPriceA,
+      'priceB': productFast.productPriceB,
+      'priceC': productFast.productPriceC,
       'amount': 1,
     };
 
@@ -231,6 +236,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       Map order = {
         'id': checkOrderUnit[0]['id'],
         'unit': checkOrderUnit[0]['unit'],
+        'unitStatus': 1,
         'amount': sumAmount,
       };
 
