@@ -19,6 +19,7 @@ class _OrderPageState extends State<OrderPage> {
 
   List units = [];
   String _currentUnit;
+  var unitStatus;
 
   int selectedRadioTileShip;
   int selectedRadioTilePay;
@@ -41,10 +42,11 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  saveEditOrderDialog(id, unit, amount) async {
+  saveEditOrderDialog(id, unit, unitStatus, amount) async {
     Map order = {
       'id': id,
       'unit': unit,
+      'unitStatus': unitStatus,
       'amount': amount,
     };
     await databaseHelper.updateOrder(order);
@@ -111,8 +113,10 @@ class _OrderPageState extends State<OrderPage> {
                         );
                       }).toList(),
                       onChanged: (newValueSelected){
-                        _onDropDownItemSelected(newValueSelected);
+                        var tempIndex = units.indexOf(newValueSelected)+1;
+                        _onDropDownItemSelected(newValueSelected, tempIndex);
                         print(this._currentUnit);
+                        print(tempIndex);
 
                       },
                       value: _currentUnit,
@@ -126,7 +130,9 @@ class _OrderPageState extends State<OrderPage> {
             SimpleDialogOption(
               onPressed: (){
 
-                    saveEditOrderDialog(order['id'],this._currentUnit,editAmount.text);
+
+
+                    saveEditOrderDialog(order['id'], this._currentUnit, unitStatus, editAmount.text);
                     //print(order['id']);
                     //print(this._currentUnit);
                     //print(editAmount.text);
@@ -222,9 +228,10 @@ class _OrderPageState extends State<OrderPage> {
 
 
 
-  _onDropDownItemSelected(newValueSelected){
+  _onDropDownItemSelected(newValueSelected, newIndexSelected){
     setState(() {
       this._currentUnit = newValueSelected;
+      unitStatus = newIndexSelected;
       //print('select--${units}');
     });
   }
