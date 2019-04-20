@@ -176,6 +176,7 @@ class _ProductProPageState extends State<ProductProPage> {
       'name': productFast.productName.toString(),
       'pic': productFast.productPic.toString(),
       'unit': productFast.productUnit1.toString(),
+      'unitStatus': 1,
       'unit1': unit1,
       'unit2': unit2,
       'unit3': unit3,
@@ -203,6 +204,7 @@ class _ProductProPageState extends State<ProductProPage> {
       Map order = {
         'id': checkOrderUnit[0]['id'],
         'unit': checkOrderUnit[0]['unit'],
+        'unitStatus': 1,
         'amount': sumAmount,
       };
 
