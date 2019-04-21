@@ -48,11 +48,37 @@ class _getProductFreePageState extends State<getProductFreePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //getProduct();
+    getProduct();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text('getFreeProduct');
+    return Expanded(
+              child:ListView.builder(
+                //separatorBuilder: (context, index) => Divider(
+                //color: Colors.black,
+                //),
+                itemBuilder: (context, int index){
+                  return ListTile(
+                    onTap: (){
+
+                    },
+                    contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                    leading: Image.network('http://www.wangpharma.com/cms/product/${productFree[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                    title: Text('${productFree[index]['pcode']}'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('${productFree[index]['nproduct']}'),
+                        Text('${productFree[index]['freePrice']} แต้ม : ${productFree[index]['unit1']}',
+                          style: TextStyle(fontSize: 18, color: Colors.red),),
+                      ],
+                    ),
+                    trailing: Text('${index}'),
+                  );
+                },
+                itemCount: productFree != null ? productFree.length : 0,
+              )
+         );
   }
 }
