@@ -3,6 +3,7 @@ import 'package:wang_shop/database_helper.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class getProductFreePage extends StatefulWidget {
 
@@ -16,6 +17,7 @@ class getProductFreePage extends StatefulWidget {
 class _getProductFreePageState extends State<getProductFreePage> {
 
   List productFree = [];
+  var limitScore = 0;
 
   getProduct() async{
 
@@ -44,6 +46,50 @@ class _getProductFreePageState extends State<getProductFreePage> {
     }
   }
 
+  showDialogLimit() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("ข้ออภัย"),
+          content: new Text("คุณเลือกสินค้าเกินจำนวนแต้ม"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("ปิด"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  showToastAddFast(){
+    Fluttertoast.showToast(
+        msg: "เพิ่มรายการแล้ว",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 3
+    );
+  }
+
+  addProductFree(score){
+    print(limitScore);
+    if(limitScore > widget.score){
+      showDialogLimit();
+      print('NO');
+    }else{
+      limitScore = limitScore+score;
+      showToastAddFast();
+      print('add score');
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -61,7 +107,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
                 itemBuilder: (context, int index){
                   return ListTile(
                     onTap: (){
-
+                      addProductFree(int.parse(productFree[index]['freePrice']));
                     },
                     contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
                     leading: Image.network('http://www.wangpharma.com/cms/product/${productFree[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
@@ -74,7 +120,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
                           style: TextStyle(fontSize: 18, color: Colors.red),),
                       ],
                     ),
-                    trailing: Text('${index}'),
+                    trailing: Icon(Icons.add, color: Colors.teal, size: 30),
                   );
                 },
                 itemCount: productFree != null ? productFree.length : 0,
