@@ -49,7 +49,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     return showDialog(context: context, builder: (context) {
       return SimpleDialog(
         contentPadding: EdgeInsets.fromLTRB(1, 1, 1, 1),
-        title: Text('เลือกสินค้าตามจำนวนแต้ม', style: TextStyle(fontSize: 17),),
+        title: Text('เลือกสินค้าแถมตามจำนวนแต้ม\n คุณมี ${freeLimit.toInt()}แต้ม', style: TextStyle(fontSize: 17),),
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width * 0.9,
