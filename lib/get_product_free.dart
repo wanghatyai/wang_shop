@@ -80,7 +80,8 @@ class _getProductFreePageState extends State<getProductFreePage> {
 
   addProductFree(score){
     print(limitScore);
-    if(limitScore > widget.score){
+
+    if((limitScore+score) > widget.score ){
       showDialogLimit();
       print('NO');
     }else{
@@ -107,7 +108,9 @@ class _getProductFreePageState extends State<getProductFreePage> {
                 itemBuilder: (context, int index){
                   return ListTile(
                     onTap: (){
-                      addProductFree(int.parse(productFree[index]['freePrice']));
+                      setState(() {
+                        addProductFree(int.parse(productFree[index]['freePrice']));
+                      });
                     },
                     contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
                     leading: Image.network('http://www.wangpharma.com/cms/product/${productFree[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
