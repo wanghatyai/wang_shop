@@ -38,6 +38,19 @@ class DatabaseHelper {
     amount INTEGER)
   ''';
 
+  String sqlCreateOrderFree = '''
+  create table if not exists orders_free(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    productID TEXT,
+    code TEXT, 
+    name TEXT, 
+    pic TEXT, 
+    unitStatus INTEGER, 
+    unit1 TEXT, 
+    freePrice INTEGER, 
+    amount INTEGER)
+  ''';
+
   String sqlCreateShipAndPay = '''
   create table if not exists shipandpay(
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -86,6 +99,24 @@ class DatabaseHelper {
     return _db;
   }
 
+  Future<Database> getDbOrderFree() async {
+    if (_db == null) {
+      io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+      String path = join(documentDirectory.path, 'orders_free.db');
+
+      print(path);
+
+      await _lock.synchronized(() async {
+        if (_db == null) {
+          _db = await openDatabase(path, version: 1);
+        }
+      });
+    }
+
+    return _db;
+  }
+
   Future<Database> getDbShipAndPay() async {
     if (_db == null) {
       io.Directory documentDirectory = await getApplicationDocumentsDirectory();
@@ -118,6 +149,13 @@ class DatabaseHelper {
     print('Table Order is created');
   }
 
+  Future initDatabaseOrderFree() async {
+    var dbClient = await getDbOrderFree();
+    // Create table
+    await dbClient.rawQuery(sqlCreateOrder);
+    print('Table OrderFree is created');
+  }
+
   Future initDatabaseShipAndPay() async {
     var dbClient = await getDbShipAndPay();
     // Create table
@@ -144,6 +182,14 @@ class DatabaseHelper {
     var dbClient = await getDbOrder();
     var sql = '''
       SELECT * FROM orders ORDER BY code ASC
+    ''';
+    return await dbClient.rawQuery(sql);
+  }
+
+  Future getOrderFree() async {
+    var dbClient = await getDbOrderFree();
+    var sql = '''
+      SELECT * FROM orders_free ORDER BY code ASC
     ''';
     return await dbClient.rawQuery(sql);
   }
@@ -188,10 +234,26 @@ class DatabaseHelper {
     return await dbClient.rawQuery(sql, [id]);
   }
 
+  Future removeOrderFree(int id) async {
+    var dbClient = await getDbOrderFree();
+    var sql = '''
+      DELETE FROM orders_free WHERE id=?
+    ''';
+    return await dbClient.rawQuery(sql, [id]);
+  }
+
   Future removeAll() async {
     var dbClient = await getDbOrder();
     var sql = '''
       DELETE FROM orders
+    ''';
+    return await dbClient.rawQuery(sql);
+  }
+
+  Future removeAllOrderFree() async {
+    var dbClient = await getDbOrderFree();
+    var sql = '''
+      DELETE FROM orders_free
     ''';
     return await dbClient.rawQuery(sql);
   }
@@ -218,6 +280,14 @@ class DatabaseHelper {
       SELECT * FROM orders WHERE code=? AND unit=?
     ''';
     return await dbClient.rawQuery(sql, [code, unit]);
+  }
+
+  Future getOrderFreeCheck(code) async {
+    var dbClient = await getDbOrderFree();
+    var sql = '''
+      SELECT * FROM orders_free WHERE code=?
+    ''';
+    return await dbClient.rawQuery(sql, [code]);
   }
 
   Future getMemberCheck(code) async {
@@ -272,6 +342,28 @@ class DatabaseHelper {
     print('Saved Order!');
   }
 
+  Future saveOrderFree(Map order) async {
+    var dbClient = await getDbOrderFree();
+
+    String sql = '''
+    INSERT INTO order_free(productID, code, name, pic, unitStatus, unit1, freePrice, amount)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+    ''';
+
+    await dbClient.rawQuery(sql, [
+      order['productID'],
+      order['code'],
+      order['name'],
+      order['pic'],
+      order['unitStatus'],
+      order['unit1'],
+      order['freePrice'],
+      order['amount'],
+    ]);
+
+    print('Saved OrderFree!');
+  }
+
   Future saveShipAndPay(Map statusShipAndPay) async {
     var dbClient = await getDbShipAndPay();
 
@@ -318,6 +410,22 @@ class DatabaseHelper {
     await dbClient.rawQuery(sql, [
       order['unit'],
       order['unitStatus'],
+      order['amount'],
+      order['id'],
+    ]);
+
+    print('Updated!');
+  }
+
+  Future updateOrderFree(Map order) async {
+    var dbClient = await getDbOrderFree();
+
+    String sql = '''
+    UPDATE orders_free SET amount=?
+    WHERE id=?
+    ''';
+
+    await dbClient.rawQuery(sql, [
       order['amount'],
       order['id'],
     ]);
