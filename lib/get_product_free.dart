@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wang_shop/product_model.dart';
 
+import 'package:wang_shop/database_helper.dart';
+
 class getProductFreePage extends StatefulWidget {
 
   var score;
@@ -16,6 +18,8 @@ class getProductFreePage extends StatefulWidget {
 }
 
 class _getProductFreePageState extends State<getProductFreePage> {
+
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   List <Product>productFree = [];
   var limitScore = 0;
@@ -79,13 +83,53 @@ class _getProductFreePageState extends State<getProductFreePage> {
     );
   }
 
-  addProductFree(score){
+  addProductFree(productFree) async{
     print(limitScore);
+
+    var score = int.parse(productFree.productFreePrice);
+
+
+    Map orderFree = {
+      'productID': productFree.productId.toString(),
+      'code': productFree.productCode.toString(),
+      'name': productFree.productName.toString(),
+      'pic': productFree.productPic.toString(),
+      'unitStatus': 1,
+      'unit1': productFree.productUnit1.toString(),
+      'freePrice': productFree.productFreePrice,
+      'freePriceSum': productFree.productFreePrice,
+      'amount': 1,
+    };
+
+    var checkOrderFree = await databaseHelper.getOrderFreeCheck(orderFree['code']);
+
+    var getOrderFreeSum = await databaseHelper.getSumOrderFree();
+
+    if(getOrderFreeSum.isEmpty){
+      limitScore = getOrderFreeSum[0]['freePriceSumAll'];
+    }
 
     if((limitScore+score) > widget.score ){
       showDialogLimit();
       print('NO');
     }else{
+
+      if(checkOrderFree.isEmpty){
+        await databaseHelper.saveOrderFree(orderFree);
+
+      }else{
+
+        var sumAmount = checkOrderFree[0]['amount'] + 1;
+        var freePriceSumAll = checkOrderFree[0]['freePriceSum'] * checkOrderFree[0]['amount'];
+        Map orderFree = {
+          'id': checkOrderFree[0]['id'],
+          'freePriceSum': freePriceSumAll,
+          'amount': sumAmount,
+        };
+
+        await databaseHelper.updateOrderFree(orderFree);
+      }
+
       limitScore = limitScore+score;
       showToastAddFast();
       print('add score');
@@ -110,7 +154,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
                   return ListTile(
                     onTap: (){
                       setState(() {
-                        addProductFree(int.parse(productFree[index].productFreePrice));
+                        addProductFree(productFree[index]);
                       });
                     },
                     contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
