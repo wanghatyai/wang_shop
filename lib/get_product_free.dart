@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:wang_shop/product_model.dart';
 
 class getProductFreePage extends StatefulWidget {
 
@@ -16,7 +17,7 @@ class getProductFreePage extends StatefulWidget {
 
 class _getProductFreePageState extends State<getProductFreePage> {
 
-  List productFree = [];
+  List <Product>productFree = [];
   var limitScore = 0;
 
   getProduct() async{
@@ -30,7 +31,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
 
         var jsonData = json.decode(res.body);
 
-        jsonData.forEach((products) => productFree.add(products));
+        jsonData.forEach((products) => productFree.add(Product.fromJson(products)));
         //perPage = productFree.length;
 
         print(productFree);
@@ -109,17 +110,17 @@ class _getProductFreePageState extends State<getProductFreePage> {
                   return ListTile(
                     onTap: (){
                       setState(() {
-                        addProductFree(int.parse(productFree[index]['freePrice']));
+                        addProductFree(int.parse(productFree[index].productFreePrice));
                       });
                     },
                     contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                    leading: Image.network('http://www.wangpharma.com/cms/product/${productFree[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                    title: Text('${productFree[index]['pcode']}'),
+                    leading: Image.network('http://www.wangpharma.com/cms/product/${productFree[index].productPic}',fit: BoxFit.cover, width: 70, height: 70,),
+                    title: Text('${productFree[index].productCode}'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('${productFree[index]['nproduct']}'),
-                        Text('${productFree[index]['freePrice']} แต้ม : ${productFree[index]['unit1']}',
+                        Text('${productFree[index].productName}'),
+                        Text('${productFree[index].productFreePrice} แต้ม : ${productFree[index].productUnit1}',
                           style: TextStyle(fontSize: 18, color: Colors.red),),
                       ],
                     ),
