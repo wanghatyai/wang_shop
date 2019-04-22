@@ -39,7 +39,7 @@ class DatabaseHelper {
   ''';
 
   String sqlCreateOrderFree = '''
-  create table if not exists orders_free(
+  create table if not exists ordersfree(
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     productID TEXT,
     code TEXT, 
@@ -48,6 +48,7 @@ class DatabaseHelper {
     unitStatus INTEGER, 
     unit1 TEXT, 
     freePrice INTEGER, 
+    freePriceSum INTEGER, 
     amount INTEGER)
   ''';
 
@@ -103,7 +104,7 @@ class DatabaseHelper {
     if (_db == null) {
       io.Directory documentDirectory = await getApplicationDocumentsDirectory();
 
-      String path = join(documentDirectory.path, 'orders_free.db');
+      String path = join(documentDirectory.path, 'ordersfree.db');
 
       print(path);
 
@@ -152,7 +153,7 @@ class DatabaseHelper {
   Future initDatabaseOrderFree() async {
     var dbClient = await getDbOrderFree();
     // Create table
-    await dbClient.rawQuery(sqlCreateOrder);
+    await dbClient.rawQuery(sqlCreateOrderFree);
     print('Table OrderFree is created');
   }
 
@@ -189,7 +190,15 @@ class DatabaseHelper {
   Future getOrderFree() async {
     var dbClient = await getDbOrderFree();
     var sql = '''
-      SELECT * FROM orders_free ORDER BY code ASC
+      SELECT * FROM ordersfree ORDER BY code ASC
+    ''';
+    return await dbClient.rawQuery(sql);
+  }
+
+  Future getSumOrderFree() async {
+    var dbClient = await getDbOrderFree();
+    var sql = '''
+      SELECT SUM(freePriceSum) AS freePriceSumAll FROM ordersfree 
     ''';
     return await dbClient.rawQuery(sql);
   }
@@ -237,7 +246,7 @@ class DatabaseHelper {
   Future removeOrderFree(int id) async {
     var dbClient = await getDbOrderFree();
     var sql = '''
-      DELETE FROM orders_free WHERE id=?
+      DELETE FROM ordersfree WHERE id=?
     ''';
     return await dbClient.rawQuery(sql, [id]);
   }
@@ -253,7 +262,7 @@ class DatabaseHelper {
   Future removeAllOrderFree() async {
     var dbClient = await getDbOrderFree();
     var sql = '''
-      DELETE FROM orders_free
+      DELETE FROM ordersfree
     ''';
     return await dbClient.rawQuery(sql);
   }
@@ -285,7 +294,7 @@ class DatabaseHelper {
   Future getOrderFreeCheck(code) async {
     var dbClient = await getDbOrderFree();
     var sql = '''
-      SELECT * FROM orders_free WHERE code=?
+      SELECT * FROM ordersfree WHERE code=?
     ''';
     return await dbClient.rawQuery(sql, [code]);
   }
@@ -346,8 +355,8 @@ class DatabaseHelper {
     var dbClient = await getDbOrderFree();
 
     String sql = '''
-    INSERT INTO order_free(productID, code, name, pic, unitStatus, unit1, freePrice, amount)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO ordersfree(productID, code, name, pic, unitStatus, unit1, freePrice, freePriceSum, amount)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''';
 
     await dbClient.rawQuery(sql, [
@@ -358,6 +367,7 @@ class DatabaseHelper {
       order['unitStatus'],
       order['unit1'],
       order['freePrice'],
+      order['freePriceSum'],
       order['amount'],
     ]);
 
@@ -421,11 +431,12 @@ class DatabaseHelper {
     var dbClient = await getDbOrderFree();
 
     String sql = '''
-    UPDATE orders_free SET amount=?
+    UPDATE ordersfree SET freePriceSum=?, amount=?
     WHERE id=?
     ''';
 
     await dbClient.rawQuery(sql, [
+      order['freePriceSum'],
       order['amount'],
       order['id'],
     ]);
