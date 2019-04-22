@@ -103,12 +103,6 @@ class _getProductFreePageState extends State<getProductFreePage> {
 
     var checkOrderFree = await databaseHelper.getOrderFreeCheck(orderFree['code']);
 
-    var getOrderFreeSum = await databaseHelper.getSumOrderFree();
-
-    if(getOrderFreeSum.isEmpty){
-      limitScore = getOrderFreeSum[0]['freePriceSumAll'];
-    }
-
     if((limitScore+score) > widget.score ){
       showDialogLimit();
       print('NO');
@@ -136,11 +130,22 @@ class _getProductFreePageState extends State<getProductFreePage> {
     }
   }
 
+  initLimitScore() async{
+    var getOrderFreeSum = await databaseHelper.getSumOrderFree();
+
+    if(!getOrderFreeSum.isEmpty){
+      limitScore = getOrderFreeSum[0]['freePriceSumAll'];
+    }
+    print(limitScore);
+
+  }
+
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
     getProduct();
+    initLimitScore();
   }
 
   @override
