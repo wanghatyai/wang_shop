@@ -131,10 +131,18 @@ class _getProductFreePageState extends State<getProductFreePage> {
   }
 
   initLimitScore() async{
+
     var getOrderFreeSum = await databaseHelper.getSumOrderFree();
 
-    if(!getOrderFreeSum.isEmpty){
-      limitScore = getOrderFreeSum[0]['freePriceSumAll'];
+    if(getOrderFreeSum.isEmpty){
+      limitScore = 0;
+    }else{
+      if(getOrderFreeSum[0]['freePriceSumAll'] != null){
+        limitScore = getOrderFreeSum[0]['freePriceSumAll'];
+      }else{
+        limitScore = 0;
+      }
+
     }
     print(limitScore);
 
