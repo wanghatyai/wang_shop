@@ -16,12 +16,17 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
+  List ordersFree = [];
   List orders = [];
   var sumAmount = 0.0;
   var freeLimit = 0.0;
 
   getOrderAll() async{
+
+    var resFree = await databaseHelper.getOrderFree();
     var res = await databaseHelper.getOrder();
+
+    print(resFree);
     print(res);
 
     res.forEach((order) =>
@@ -36,6 +41,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     //print(sumAmount);
 
     setState(() {
+      ordersFree = resFree;
       orders = res;
     });
   }
@@ -82,6 +88,11 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     });
   }
 
+  removeOrder(int id) async{
+    await databaseHelper.removeOrderFree(id);
+    getOrderAll();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -121,6 +132,35 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
               ),
               Divider(
                 color: Colors.black,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  //separatorBuilder: (context, index) => Divider(
+                  //color: Colors.black,
+                  //),
+                  itemBuilder: (context, int index){
+                    return ListTile(
+                      //contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                      leading: Image.network('http://www.wangpharma.com/cms/product/${ordersFree[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                      title: Text('${ordersFree[index]['code']}'),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('${ordersFree[index]['name']}'),
+                          Text('จำนวน ${ordersFree[index]['amount']} : ${ordersFree[index]['unit1']}',
+                            style: TextStyle(fontSize: 18, color: Colors.red),),
+                        ],
+                      ),
+                      trailing: IconButton(
+                          icon: Icon(Icons.maximize, color: Colors.red),
+                          onPressed: (){
+                            removeOrder(ordersFree[index]['id']);
+                          }
+                      ),
+                    );
+                  },
+                  itemCount: ordersFree != null ? ordersFree.length : 0,
+                ),
               ),
               Expanded(
                 child: ListView.builder(
