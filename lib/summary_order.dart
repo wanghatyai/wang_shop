@@ -48,25 +48,33 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
   getFreeProductSelect(){
     return showDialog(context: context, builder: (context) {
       return SimpleDialog(
-        title: Text('เลือกสินค้าตามจำนวนแต้ม'),
+        contentPadding: EdgeInsets.fromLTRB(1, 1, 1, 1),
+        title: Text('เลือกสินค้าแถมตามจำนวนแต้ม\n คุณมี ${freeLimit.toInt()}แต้ม', style: TextStyle(fontSize: 17),),
         children: <Widget>[
-          getProductFreePage(),
-          Padding(
-            padding: EdgeInsets.all(10),
-          ),
-          Divider(
-            color: Colors.black,
-          ),
-          SimpleDialogOption(
-            onPressed: (){
+          Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.9,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SimpleDialogOption(
+                  child: RaisedButton(
+                    onPressed: (){
 
-            },
-            child: Text(
-                'ตกลง',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold
-                )
+                    },
+                    textColor: Colors.white,
+                    color: Colors.purple,
+                    //padding: const EdgeInsets.all(8.0),
+                    child: new Text(
+                      "ตกลง",
+                    ),
+                  ),
+                ),
+                getProductFreePage(score: freeLimit.toInt()),
+                Padding(
+                  padding: EdgeInsets.all(40),
+                ),
+              ],
             ),
           ),
         ],
