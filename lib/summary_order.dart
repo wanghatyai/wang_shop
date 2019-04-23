@@ -3,6 +3,7 @@ import 'package:wang_shop/database_helper.dart';
 import 'package:intl/intl.dart';
 
 import 'package:wang_shop/get_product_free.dart';
+import 'package:wang_shop/view_product_free.dart';
 
 
 class SummaryOrderPage extends StatefulWidget {
@@ -63,19 +64,6 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SimpleDialogOption(
-                  child: RaisedButton(
-                    onPressed: (){
-
-                    },
-                    textColor: Colors.white,
-                    color: Colors.purple,
-                    //padding: const EdgeInsets.all(8.0),
-                    child: new Text(
-                      "ตกลง",
-                    ),
-                  ),
-                ),
                 getProductFreePage(score: freeLimit.toInt()),
                 Padding(
                   padding: EdgeInsets.all(40),
@@ -88,9 +76,28 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     });
   }
 
-  removeOrder(int id) async{
-    await databaseHelper.removeOrderFree(id);
-    getOrderAll();
+  viewFreeProductSelect(){
+    return showDialog(context: context, builder: (context) {
+      return SimpleDialog(
+        contentPadding: EdgeInsets.fromLTRB(1, 1, 1, 1),
+        title: Text('สินค้าแถมที่คุณเลือก', style: TextStyle(fontSize: 17),),
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.9,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                viewProductFreePage(),
+                Padding(
+                  padding: EdgeInsets.all(40),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   @override
@@ -116,51 +123,56 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
               Center(
                 child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
               ),
-              RaisedButton(
-                onPressed: (){
-                  getFreeProductSelect();
-                },
-                textColor: Colors.white,
-                color: Colors.purple,
-                padding: const EdgeInsets.all(8.0),
-                child: new Text(
-                  "เลือกรายการสมนาคุณ",
-                ),
+              Row(
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    onPressed: (){
+                      getFreeProductSelect();
+                    },
+                    textColor: Colors.white,
+                    color: Colors.purple,
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Text(
+                      "เลือกรายการแถม",
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                  ),
+                  RaisedButton(
+                    onPressed: (){
+                      viewFreeProductSelect();
+                    },
+                    textColor: Colors.white,
+                    color: Colors.deepOrange,
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Text(
+                      "ดูรายการแถม",
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                  ),
+                  RaisedButton(
+                    onPressed: (){
+
+                    },
+                    textColor: Colors.white,
+                    color: Colors.green,
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Text(
+                      "ยืนยันการสั่งจอง",
+                    ),
+                  ),
+                ],
               ),
               Center(
-                child: Text('แต้มสมนาคุณ ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 18, color: Colors.purple), ),
+                child: Text('คุณมี แต้มสมนาคุณ ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 18, color: Colors.purple), ),
               ),
               Divider(
                 color: Colors.black,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  //separatorBuilder: (context, index) => Divider(
-                  //color: Colors.black,
-                  //),
-                  itemBuilder: (context, int index){
-                    return ListTile(
-                      //contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                      leading: Image.network('http://www.wangpharma.com/cms/product/${ordersFree[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                      title: Text('${ordersFree[index]['code']}'),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('${ordersFree[index]['name']}'),
-                          Text('จำนวน ${ordersFree[index]['amount']} : ${ordersFree[index]['unit1']}',
-                            style: TextStyle(fontSize: 18, color: Colors.red),),
-                        ],
-                      ),
-                      trailing: IconButton(
-                          icon: Icon(Icons.maximize, color: Colors.red),
-                          onPressed: (){
-                            removeOrder(ordersFree[index]['id']);
-                          }
-                      ),
-                    );
-                  },
-                  itemCount: ordersFree != null ? ordersFree.length : 0,
-                ),
               ),
               Expanded(
                 child: ListView.builder(
