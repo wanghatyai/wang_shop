@@ -203,7 +203,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     print(body);
     //print(data);
     print("${response.statusCode}");
-    print("${response.body}");
+    //print("${response.body}");
   }
 
   @override
@@ -330,7 +330,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
               ),
               RaisedButton(
                 onPressed: (){
-
+                  confirmOrder();
                 },
                 textColor: Colors.white,
                 color: Colors.green,
