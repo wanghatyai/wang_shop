@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:wang_shop/database_helper.dart';
 import 'package:intl/intl.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:wang_shop/get_product_free.dart';
 import 'package:wang_shop/view_product_free.dart';
+
+import 'package:wang_shop/home.dart';
 
 
 class SummaryOrderPage extends StatefulWidget {
@@ -100,6 +106,106 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     });
   }
 
+  showDialogConfirm() {
+    // flutter defined function
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("ยืนยันการทำรายการ"),
+          content: Text("รายการสั่งจองของท่านได้ส่งถึงทางร้านแล้ว\nขอบคุณที่ไว้วางใจจากเรา \nบริษัท วังเภสัชฟาร์มาซูติคอล ขอบคุณค่ะ"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              color: Colors.green,
+              child: Text("ตกลง",style: TextStyle(color: Colors.white, fontSize: 18),),
+              onPressed: () {
+                //Navigator.pop(context);
+                Navigator.popUntil(context, ModalRoute.withName('/Home'));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  confirmOrder() async{
+
+    List pID = [];
+    List qty = [];
+    List ptype = [];
+
+    List fID = [];
+    List fQty = [];
+
+    var pick;
+    var pay;
+
+    var userID;
+
+    var resFree = await databaseHelper.getOrderFree();
+    var res = await databaseHelper.getOrder();
+    var resShipAndPay = await databaseHelper.getShipAndPay();
+    var resUser = await databaseHelper.getList();
+
+    res.forEach((order) {
+      pID.add(order['productID']);
+      qty.add(order['amount']);
+      ptype.add(order['unitStatus']);
+    });
+
+    resFree.forEach((orderFree) {
+      fID.add(orderFree['productID']);
+      fQty.add(orderFree['amount']);
+    });
+
+    pick = resShipAndPay[0]['ship'];
+    pay = resShipAndPay[0]['pay'];
+
+    userID = resUser[0]['idUser'];
+
+    var url = 'http://wangpharma.com/API/confirm.php';
+
+    Map<String, dynamic> data = {
+      'pIDc': pID,
+      'qtyc': qty,
+      'ptype': ptype,
+      'pick': pick,
+      'pay': pay,
+      'fID': fID,
+      'fQty': fQty,
+      'userID': userID,
+    };
+
+    var body = json.encode(data);
+
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: body);
+
+    if(response.statusCode == 200){
+
+      await databaseHelper.removeAll();
+      await databaseHelper.removeAllOrderFree();
+      showDialogConfirm();
+    }
+
+    //showDialogConfirm();
+
+    //print('${pID}-${qty}-${ptype}\n');
+    //print('${fID}-${fQty}\n');
+    //print('${pick}-${pay}\n');
+    //print('${userID}\n');
+
+    print(body);
+    //print(data);
+    print("${response.statusCode}");
+    print("${response.body}");
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -157,7 +263,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   ),
                   RaisedButton(
                     onPressed: (){
-
+                      confirmOrder();
                     },
                     textColor: Colors.white,
                     color: Colors.green,
