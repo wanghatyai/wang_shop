@@ -113,6 +113,7 @@ class LoginPageState extends State<LoginPage>{
         if(checkMember.isEmpty){
 
           await databaseHelper.removeAll();
+          await databaseHelper.removeAllOrderFree();
           await databaseHelper.removeAllMember();
           await databaseHelper.saveData(user);
           Navigator.pushReplacementNamed(context, '/Home');
