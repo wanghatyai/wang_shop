@@ -78,7 +78,8 @@ class LoginPageState extends State<LoginPage>{
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'),
+          title: Text('แจ้งเตือน'),
+          content: Text('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'),
         );
       },
     );
