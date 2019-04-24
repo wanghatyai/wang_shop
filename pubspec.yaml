@@ -26,11 +26,17 @@ dependencies:
   fluttertoast: ^3.0.3
   autocomplete_textfield: ^1.6.4
   intl: ^0.15.8
+  flutter_launcher_icons: ^0.7.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
 
 
 # For information on the generic Dart part of this file, see the
