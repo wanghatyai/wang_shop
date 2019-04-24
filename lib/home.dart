@@ -101,7 +101,7 @@ class _HomeState extends State<Home> {
   );*/
 
   int currentIndex = 0;
-  List pages = [ProductProPage(), ProductHotPage(), ProductNewPage(), searchAutoOutPage(), History()];
+  List pages = [ProductProPage(), ProductHotPage(), ProductNewPage(), searchAutoOutPage()];
 
 
   @override
@@ -130,10 +130,6 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.search, color: Colors.green),
             title: Text('ค้นหา', style: TextStyle(color: Colors.green))
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.access_time, color: Colors.green),
-            title: Text('ประวัติ', style: TextStyle(color: Colors.green))
           ),
         ]
     );
