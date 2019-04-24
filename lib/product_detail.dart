@@ -111,19 +111,24 @@ class _productDetailPageState extends State<productDetailPage> {
                   Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
                   Text("รหัสสินค้า : ${widget.product.productCode}",
                     style: TextStyle(
-                        fontSize: 18
+                        fontSize: 20
+                    ),
+                  ),
+                  Text("barcode : ${widget.product.productBarcode}",
+                    style: TextStyle(
+                        fontSize: 17
                     ),
                   ),
 
                   Text("ชื่อไทย : ${widget.product.productName}",
                     style: TextStyle(
-                        fontSize: 18
+                        fontSize: 17
                     ),
                   ),
 
                   Text("ชื่ออังกฤษ : ${widget.product.productNameENG}",
                     style: TextStyle(
-                        fontSize: 18
+                        fontSize: 17
                     ),
                   ),
                   Row(
