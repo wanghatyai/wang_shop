@@ -247,14 +247,16 @@ class _OrderPageState extends State<OrderPage> {
           title: Text('ยืนยันลบรายการ'),
           actions: <Widget>[
             FlatButton(
-              child: Text('ลบ'),
+              color: Colors.red,
+              child: Text('ลบ', style: TextStyle(fontSize: 18, color: Colors.white),),
               onPressed: (){
-                removeOrder(id);
-                Navigator.of(context).pop();
+                showDialogDelConfirm(id);
+                //Navigator.of(context).pop();
               },
             ),
             FlatButton(
-              child: Text('แก้ไข'),
+              color: Colors.green,
+              child: Text('แก้ไข', style: TextStyle(fontSize: 18, color: Colors.white)),
               onPressed: (){
                 setState(() {
                   editOrderDialog(valProduct, 1);
@@ -268,7 +270,31 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-
+  showDialogDelConfirm(id) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("แจ้งเตือน"),
+          content: Text("ยืนยันลบรายการสินค้า"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              color: Colors.green,
+              child: Text("ตกลง",style: TextStyle(color: Colors.white, fontSize: 18),),
+              onPressed: () {
+                removeOrder(id);
+                Navigator.of(context).pop();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   removeOrder(int id) async{
     await databaseHelper.removeOrder(id);
