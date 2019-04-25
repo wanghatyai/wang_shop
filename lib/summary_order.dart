@@ -28,16 +28,48 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
   var sumAmount = 0.0;
   var freeLimit = 0.0;
 
+  var priceNowAll = [];
+
   getOrderAll() async{
 
     var resFree = await databaseHelper.getOrderFree();
     var res = await databaseHelper.getOrder();
 
+    var priceNow;
+
     print(resFree);
     print(res);
 
-    res.forEach((order) =>
-        sumAmount = sumAmount + (order['priceA'] * order['amount'])
+    res.forEach((order) {
+
+        if(order['unitStatus'] == 1){
+
+          sumAmount = sumAmount + ((order['priceA'] * order['unitQty3']) * order['amount']);
+          priceNow = order['priceA']*order['unitQty3'];
+          priceNowAll.add(priceNow);
+          print('----${priceNow}');
+
+        }
+
+        if(order['unitStatus'] == 2){
+
+          sumAmount = sumAmount + ((order['priceA'] * order['unitQty2']) * order['amount']);
+          priceNow = order['priceA']*order['unitQty2'];
+          priceNowAll.add(priceNow);
+          print('----${priceNow}');
+
+        }
+
+        if(order['unitStatus'] == 3){
+
+          sumAmount = sumAmount + ((order['priceA'] * order['unitQty1']) * order['amount']);
+          priceNow = order['priceA']*order['unitQty1'];
+          priceNowAll.add(priceNow);
+          print('----${priceNow}');
+
+        }
+
+      }
     );
 
     freeLimit = sumAmount*0.01;
@@ -45,13 +77,14 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
       print('แต้ม-${freeLimit.toInt()}');
     }
 
-    //print(sumAmount);
+    print(priceNowAll);
 
     setState(() {
       ordersFree = resFree;
       orders = res;
     });
   }
+
 
   void initState(){
     super.initState();
@@ -298,7 +331,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                             style: TextStyle(fontSize: 18, color: Colors.red),),
                         ],
                       ),
-                      trailing: Text('${formatter.format(orders[index]['priceA']*orders[index]['amount'])} บาท'),
+                      trailing: Text('${formatter.format(priceNowAll[index]*orders[index]['amount'])} บาท'),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,
@@ -360,7 +393,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                             style: TextStyle(fontSize: 18, color: Colors.red),),
                         ],
                       ),
-                      trailing: Text('${formatter.format(orders[index]['priceA']*orders[index]['amount'])} บาท'),
+                      trailing: Text('${formatter.format(priceNowAll[index]*orders[index]['amount'])} บาท'),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,
