@@ -4,6 +4,7 @@ class Product{
   final String productId;
   final String productName;
   final String productCode;
+  final String productBarcode;
   final String productNameENG;
   final String productPic;
   final String productUnit1;
@@ -19,6 +20,7 @@ class Product{
     this.productId,
     this.productName,
     this.productCode,
+    this.productBarcode,
     this.productNameENG,
     this.productPic,
     this.productUnit1,
@@ -35,6 +37,7 @@ class Product{
       productId: json['pID'],
       productName: json['nproductMain'],
       productCode: json['pcode'],
+      productBarcode: json['bcode'],
       productNameENG: json['nproductENG'],
       productPic: json['pic'],
       productUnit1: json['unit1'],
