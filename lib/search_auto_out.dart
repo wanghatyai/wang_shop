@@ -11,6 +11,8 @@ import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_detail.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter/services.dart';
 
 class searchAutoOutPage extends StatefulWidget {
   @override
@@ -25,6 +27,27 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
   List<Product> _search = [];
 
   var loading = false;
+  String barcode;
+
+  scanBarcode() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState((){
+        this.barcode = barcode;
+        searchProduct(this.barcode);
+      });
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        print('Camera permission was denied');
+      } else {
+        print('Unknow Error $e');
+      }
+    } on FormatException {
+      print('User returned using the "back"-button before scanning anything.');
+    } catch (e) {
+      print('Unknown error.');
+    }
+  }
 
   searchProduct(searchVal) async{
 
@@ -127,6 +150,12 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
            Container(
              //padding: EdgeInsets.all(10),
              child: ListTile(
+               leading: IconButton(
+                   icon: Icon(Icons.center_focus_strong, color: Colors.red, size: 30,),
+                   onPressed: (){
+                     scanBarcode();
+                   }
+               ),
                title: TextField(
                  controller: controller,
                  onChanged: onSearch,
