@@ -231,6 +231,14 @@ class _productDetailPageState extends State<productDetailPage> {
       unit3 = 'NULL';
     }
 
+    if(unitStatus == null){
+      unitStatus = 1;
+    }
+
+    if(valAmount.text == ''){
+      valAmount.text = '1';
+    }
+
     /*if(widget.product.productUnit1.toString() == _currentUnit){
       unitStatus = 1;
     }
