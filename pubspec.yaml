@@ -27,6 +27,7 @@ dependencies:
   autocomplete_textfield: ^1.6.4
   intl: ^0.15.8
   flutter_launcher_icons: ^0.7.0
+  barcode_scan: ^1.0.0
 
 
 dev_dependencies:
