@@ -161,7 +161,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             leading: Icon(Icons.star, color: Colors.amberAccent,),
-            title: Text("สินค้าสั่งประจำ", style: TextStyle(fontSize: 17)),
+            title: Text("สินค้าที่เคยสั่ง", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
               Navigator.push(
