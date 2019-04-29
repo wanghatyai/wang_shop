@@ -185,7 +185,7 @@ class LoginPageState extends State<LoginPage>{
                 'Wangpharmacy\nกรุณาเข้าสู่ระบบ Login',
                 style: TextStyle (
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+                  color: Colors.green,
                   fontSize: 30.0,
                 ),
               ),
@@ -246,7 +246,7 @@ class LoginPageState extends State<LoginPage>{
                       _ShowPass ? 'Hide' : 'Show',
                       style: TextStyle (
                         fontSize: 16,
-                        color: Colors.blue,
+                        color: Colors.green,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -260,7 +260,7 @@ class LoginPageState extends State<LoginPage>{
                 width: double.infinity,
                 height: 56,
                 child: RaisedButton (
-                  color: Colors.blue,
+                  color: Colors.green,
                   shape: RoundedRectangleBorder (
                     borderRadius: BorderRadius.all (
                       Radius.circular ( 10 ),
