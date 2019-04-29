@@ -107,6 +107,7 @@ class LoginPageState extends State<LoginPage>{
           'idUser': jsonResponse['iduser'],
           'code': jsonResponse['ccode'],
           'name': jsonResponse['name'],
+          'credit': jsonResponse['credit'],
         };
 
         var checkMember = await databaseHelper.getMemberCheck(user['code']);
@@ -119,6 +120,12 @@ class LoginPageState extends State<LoginPage>{
           await databaseHelper.saveData(user);
           Navigator.pushReplacementNamed(context, '/Home');
         }else{
+          Map userCredit = {
+            'idUser': jsonResponse['iduser'],
+            'credit': jsonResponse['credit'],
+          };
+
+          await databaseHelper.updateDataCredit(userCredit);
           //await databaseHelper.saveData(user);
           Navigator.pushReplacementNamed(context, '/Home');
         }
