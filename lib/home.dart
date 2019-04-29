@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
 import 'package:wang_shop/product_new.dart';
+import 'package:wang_shop/product_wish.dart';
 import 'package:wang_shop/history.dart';
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/order.dart';
@@ -162,7 +163,10 @@ class _HomeState extends State<Home> {
             title: Text("สินค้าสั่งประจำ", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
-
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProductWishPage()),
+              );
             },
           ),
           ListTile(
