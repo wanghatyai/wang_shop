@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'WangShop',
+      title: 'WangPharma',
       routes: <String,WidgetBuilder>{
         '/Home': (BuildContext context) => Home(),
         '/Order': (BuildContext context) => OrderPage(),
