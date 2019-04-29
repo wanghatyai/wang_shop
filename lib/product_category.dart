@@ -50,6 +50,7 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
         jsonDataCat.forEach((category) {
           categoryAll.add(category);
           categoryNameAll.add(category['name']);
+
           categoryCodeAll.add(category['code']);
         });
 
@@ -196,9 +197,9 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
                   var tempIndex = categoryNameAll.indexOf(newValueSelected);
                   //_onDropDownItemSelected(newValueSelected, tempIndex);
                   //print(this._currentCategory);
-                  setState(() {
-                    _currentCategory = categoryCodeAll[tempIndex];
-                  });
+                  //setState(() {
+                    //_currentCategory = categoryCodeAll[tempIndex];
+                  //});
                   //print(categoryCodeAll[tempIndex]);
                   onSearch(categoryCodeAll[tempIndex]);
                   //print(tempIndex);
