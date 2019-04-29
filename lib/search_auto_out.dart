@@ -38,6 +38,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
+        _showAlertBarcode();
         print('Camera permission was denied');
       } else {
         print('Unknow Error $e');
@@ -47,6 +48,19 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
     } catch (e) {
       print('Unknown error.');
     }
+  }
+
+  void _showAlertBarcode() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('แจ้งเตือน'),
+          content: Text('คุณไม่เปิดอนุญาตใช้กล้อง'),
+        );
+      },
+    );
   }
 
   searchProduct(searchVal) async{
