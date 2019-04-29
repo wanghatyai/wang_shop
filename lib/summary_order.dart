@@ -34,18 +34,35 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
     var resFree = await databaseHelper.getOrderFree();
     var res = await databaseHelper.getOrder();
+    var resUser = await databaseHelper.getList();
 
+    var userCredit;
+
+    userCredit = resUser[0]['credit'];
+
+    var priceCredit;
     var priceNow;
+
 
     print(resFree);
     print(res);
+    print('User${userCredit}');
 
     res.forEach((order) {
 
+          if(userCredit == 'A'){
+            priceCredit = order['priceA'];
+          }else if(userCredit == 'B'){
+            priceCredit = order['priceB'];
+          }else{
+            priceCredit = order['priceC'];
+          }
+
+
         if(order['unitStatus'] == 1){
 
-          sumAmount = sumAmount + ((order['priceA'] * order['unitQty3']) * order['amount']);
-          priceNow = order['priceA']*order['unitQty3'];
+          sumAmount = sumAmount + ((priceCredit * order['unitQty3']) * order['amount']);
+          priceNow = priceCredit*order['unitQty3'];
           priceNowAll.add(priceNow);
           print('----${priceNow}');
 
@@ -53,8 +70,8 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
         if(order['unitStatus'] == 2){
 
-          sumAmount = sumAmount + ((order['priceA'] * order['unitQty2']) * order['amount']);
-          priceNow = order['priceA']*order['unitQty2'];
+          sumAmount = sumAmount + ((priceCredit * order['unitQty2']) * order['amount']);
+          priceNow = priceCredit*order['unitQty2'];
           priceNowAll.add(priceNow);
           print('----${priceNow}');
 
@@ -62,8 +79,8 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
         if(order['unitStatus'] == 3){
 
-          sumAmount = sumAmount + ((order['priceA'] * order['unitQty1']) * order['amount']);
-          priceNow = order['priceA']*order['unitQty1'];
+          sumAmount = sumAmount + ((priceCredit * order['unitQty1']) * order['amount']);
+          priceNow = priceCredit*order['unitQty1'];
           priceNowAll.add(priceNow);
           print('----${priceNow}');
 
