@@ -136,6 +136,55 @@ class _HomeState extends State<Home> {
 
     //username = _readData('name');
 
+    Widget drawer = Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            accountName: Text("${name}",
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  shadows: [
+                    Shadow(color: Colors.black, offset: Offset(1, 2), blurRadius: 2)
+                  ]
+              )
+            ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/bannerDrawer.jpg')
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.star, color: Colors.amberAccent,),
+            title: Text("สินค้าสั่งประจำ", style: TextStyle(fontSize: 17)),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: (){
+
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.view_list, color: Colors.lightGreen),
+            title: Text("หมวดสินค้า", style: TextStyle(fontSize: 17)),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: (){
+
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.help, color: Colors.blue,),
+            title: Text("คู่มือการใช้งาน", style: TextStyle(fontSize: 17)),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: (){
+
+            },
+          )
+        ],
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
@@ -148,6 +197,7 @@ class _HomeState extends State<Home> {
           })
         ],
       ),
+      drawer: drawer,
       body: pages[currentIndex],
       bottomNavigationBar: bottomNavBar,
     );
