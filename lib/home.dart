@@ -9,6 +9,7 @@ import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
 import 'package:wang_shop/product_new.dart';
 import 'package:wang_shop/product_wish.dart';
+import 'package:wang_shop/product_category.dart';
 import 'package:wang_shop/history.dart';
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/order.dart';
@@ -174,6 +175,10 @@ class _HomeState extends State<Home> {
             title: Text("หมวดสินค้า", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProductCategoryPage()),
+              );
 
             },
           ),
