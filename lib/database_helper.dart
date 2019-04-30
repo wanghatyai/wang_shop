@@ -68,6 +68,18 @@ class DatabaseHelper {
   DROP TABLE orders
   ''';
 
+  String sqlDropTableMembers = '''
+  DROP TABLE members
+  ''';
+
+  String sqlDropTableOrderFree = '''
+  DROP TABLE ordersfree
+  ''';
+
+  String sqlDropTableShipAndPay = '''
+  DROP TABLE shipandpay
+  ''';
+
   Future<Database> getDb() async {
     if (_db == null) {
       io.Directory documentDirectory = await getApplicationDocumentsDirectory();
@@ -173,6 +185,27 @@ class DatabaseHelper {
     // Create table
     await dbClient.rawQuery(sqlDropTableOrder);
     print('dropTableOrder');
+  }
+
+  Future dropTableOrderFree() async {
+    var dbClient = await getDbOrderFree();
+    // Create table
+    await dbClient.rawQuery(sqlDropTableOrderFree);
+    print('dropTableOrderFree');
+  }
+
+  Future dropTableMembers() async {
+    var dbClient = await getDb();
+    // Create table
+    await dbClient.rawQuery(sqlDropTableMembers);
+    print('dropTableMembers');
+  }
+
+  Future dropTableShipAndPay() async {
+    var dbClient = await getDbShipAndPay();
+    // Create table
+    await dbClient.rawQuery(sqlDropTableShipAndPay);
+    print('dropTableShipAndPay');
   }
 
   Future getList() async {
