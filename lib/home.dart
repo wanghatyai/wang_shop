@@ -110,6 +110,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
     Widget bottomNavBar = BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: (int index){
           setState(() {
@@ -118,20 +119,20 @@ class _HomeState extends State<Home> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.assistant_photo, color: Colors.green),
-            title: Text('โปร', style: TextStyle(color: Colors.green))
+            icon: Icon(Icons.assistant_photo),
+            title: Text('โปร')
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.monetization_on, color: Colors.green),
-            title: Text('ขายดี', style: TextStyle(color: Colors.green))
+            icon: Icon(Icons.monetization_on),
+            title: Text('ขายดี')
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.fiber_new, color: Colors.green),
-              title: Text('ใหม่', style: TextStyle(color: Colors.green))
+              icon: Icon(Icons.fiber_new),
+              title: Text('ใหม่')
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: Colors.green),
-            title: Text('ค้นหา', style: TextStyle(color: Colors.green))
+            icon: Icon(Icons.search),
+            title: Text('ค้นหา')
           ),
         ]
     );
