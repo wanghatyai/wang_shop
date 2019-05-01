@@ -290,18 +290,25 @@ class LoginPageState extends State<LoginPage>{
             SizedBox (
               height: 70,
             ),
-            FlatButton(
-              onPressed: () {
+            Row(
+              children: <Widget>[
+                Icon(
+                  Icons.settings
+                ),
+                FlatButton(
+                  onPressed: () {
 
-                databaseHelper.dropTableOrder();
-                databaseHelper.dropTableOrderFree();
-                databaseHelper.dropTableMembers();
-                databaseHelper.dropTableShipAndPay();
+                    databaseHelper.dropTableOrder();
+                    databaseHelper.dropTableOrderFree();
+                    databaseHelper.dropTableMembers();
+                    databaseHelper.dropTableShipAndPay();
 
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-              },
-              child: new Text("แก้ไขปัญหา"),
-            )
+                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                  },
+                  child: Text("แก้ไขปัญหา"),
+                )
+              ],
+            ),
           ],
         ),
       ),
