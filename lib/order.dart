@@ -85,12 +85,15 @@ class _OrderPageState extends State<OrderPage> {
         return SimpleDialog(
           title: Text('แก้ไขรายการ'),
           children: <Widget>[
+            Divider(
+              color: Colors.green,
+            ),
             Padding(
-             padding: EdgeInsets.all(10),
+             padding: EdgeInsets.all(5),
              child: Text('${order['name']}'),
             ),
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(5),
               child: Row(
                 children: <Widget>[
                   Expanded(
