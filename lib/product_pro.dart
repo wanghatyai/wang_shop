@@ -6,15 +6,22 @@ import 'dart:convert';
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/product_detail.dart';
+import 'package:wang_shop/home.dart' as home;
 
 import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductProPage extends StatefulWidget {
+
+  //final Home home;
+  //ProductProPage(this.home);
+
   @override
   _ProductProPageState createState() => _ProductProPageState();
 }
 
 class _ProductProPageState extends State<ProductProPage> {
+
+  //StreamController<int> _controller = StreamController<int>();
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -128,7 +135,7 @@ class _ProductProPageState extends State<ProductProPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text('${productAll[index].productName}'),
-                              Text('${productAll[index].productNameENG}'),
+                              Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue),),
                             ],
                           ),
                           trailing: IconButton(
@@ -200,6 +207,7 @@ class _ProductProPageState extends State<ProductProPage> {
 
       showToastAddFast();
       showOverlay();
+      //home.Home().countOrderProduct(99);
 
     }else{
 
@@ -215,6 +223,10 @@ class _ProductProPageState extends State<ProductProPage> {
 
       showToastAddFast();
       showOverlay();
+        //home.Home().countOrderProduct(99);
+
+
+
 
     }
 
