@@ -20,12 +20,20 @@ import 'package:wang_shop/search_auto_out.dart';
 
 class Home extends StatefulWidget {
 
+  //final Stream<int> stream;
+  //Home({this.stream});
+
   //String username;
+  //var count;
 
   //Home({Key key, this.username}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
+
+  //void countOrder() {
+    //_HomeState().countOrderProduct(count);
+  //}
 }
 
 class _HomeState extends State<Home> {
@@ -33,6 +41,8 @@ class _HomeState extends State<Home> {
   List user = [];
   String name;
   String value;
+
+  var countOrderAll;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -68,8 +78,25 @@ class _HomeState extends State<Home> {
     //_readData('name');
     getUser();
     showOverlay();
+    //countOrder();
+
+    /*widget.stream.listen((countVal) {
+      countOrderProduct(countVal);
+    });*/
 
   }
+
+  /*void countOrderProduct(int val){
+      setState(() {
+        countOrderAll = val;
+      });
+  }*/
+
+  /*countOrder() async{
+      var resCountOrder = await databaseHelper.countOrder();
+        countOrderAll = resCountOrder[0]['countOrderAll'];
+        print('countOrder');
+  }*/
 
   showOverlay() async{
 
@@ -201,10 +228,15 @@ class _HomeState extends State<Home> {
         title: Text("${name}"),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.shopping_cart, size: 30,),
-              onPressed: (){
+            icon: Icon(Icons.shopping_cart, size: 30,),
+            onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
-          })
+              /*setState(() {
+                countOrder();
+              });*/
+
+            }
+          )
         ],
       ),
       drawer: drawer,
