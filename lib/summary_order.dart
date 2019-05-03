@@ -11,6 +11,9 @@ import 'package:wang_shop/view_product_free.dart';
 
 import 'package:wang_shop/home.dart';
 
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
+
 
 class SummaryOrderPage extends StatefulWidget {
   @override
@@ -18,6 +21,8 @@ class SummaryOrderPage extends StatefulWidget {
 }
 
 class _SummaryOrderPageState extends State<SummaryOrderPage> {
+
+  BlocCountOrder blocCountOrder;
 
   final formatter = new NumberFormat("#,##0.00");
 
@@ -254,10 +259,14 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     //print(data);
     print("${response.statusCode}");
     //print("${response.body}");
+
+    blocCountOrder.clearOrderCount();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
 
     if(freeLimit.toInt() >= 30){
       return Scaffold(
@@ -265,12 +274,12 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
         appBar: AppBar(
           title: Text('สรุปรายการสั่งจอง'),
           actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.list,size: 30,),
+            /*IconButton(
+                icon: Icon(Icons.list,size: 40,),
                 onPressed: (){
 
                 }
-            )
+            )*/
           ],
         ),
         body: Container(
@@ -364,12 +373,12 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
         appBar: AppBar(
           title: Text('สรุปรายการสั่งจอง'),
           actions: <Widget>[
-            IconButton(
+            /*IconButton(
                 icon: Icon(Icons.list,size: 30,),
                 onPressed: (){
 
                 }
-            )
+            )*/
           ],
         ),
         body: Container(
