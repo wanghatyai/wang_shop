@@ -7,12 +7,14 @@ import 'package:wang_shop/database_helper.dart';
 
 import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/product_pro.dart';
-
 import 'package:wang_shop/product_detail.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
+
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
 
 class searchAutoOutPage extends StatefulWidget {
   @override
@@ -20,6 +22,8 @@ class searchAutoOutPage extends StatefulWidget {
 }
 
 class _searchAutoOutPageState extends State<searchAutoOutPage> {
+
+  BlocCountOrder blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -131,31 +135,11 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
     );
   }
 
-  showOverlay() async{
-
-    var countOrder = await databaseHelper.countOrder();
-    print(countOrder[0]['countOrderAll']);
-
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: 25,
-          right: 30,
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.red,
-            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
-          ),
-        )
-    );
-
-    overlayState.insert(overlayEntry);
-    //await Future.delayed(Duration(seconds: 2));
-    //overlayEntry.remove();
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
@@ -204,7 +188,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: <Widget>[
                        Text('${a.productName}'),
-                       Text('${a.productNameENG}'),
+                       Text('${a.productNameENG}', style: TextStyle(color: Colors.blue),),
                      ],
                    ),
                    trailing: IconButton(
@@ -274,7 +258,10 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       await databaseHelper.saveOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }else{
 
@@ -289,7 +276,10 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       await databaseHelper.updateOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }
 
