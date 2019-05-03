@@ -8,10 +8,12 @@ import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/order.dart';
-
 import 'package:wang_shop/product_detail.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
 
 class ProductCategoryPage extends StatefulWidget {
   @override
@@ -19,6 +21,8 @@ class ProductCategoryPage extends StatefulWidget {
 }
 
 class _ProductCategoryPageState extends State<ProductCategoryPage> {
+
+  BlocCountOrder blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -141,38 +145,49 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
     );
   }
 
-  showOverlay() async{
-
-    var countOrder = await databaseHelper.countOrder();
-    print(countOrder[0]['countOrderAll']);
-
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: 25,
-          right: 30,
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.red,
-            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
-          ),
-        )
-    );
-
-    overlayState.insert(overlayEntry);
-    //await Future.delayed(Duration(seconds: 2));
-    //overlayEntry.remove();
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text("${userName}"),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.shopping_cart, size: 30,),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              icon: Stack(
+                children: <Widget>[
+                  Icon(Icons.shopping_cart, size: 40,),
+                  Positioned(
+                    right: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 20,
+                        minHeight: 20,
+                      ),
+                      child: StreamBuilder(
+                        initialData: blocCountOrder.countOrder,
+                        stream: blocCountOrder.counterStream,
+                        builder: (BuildContext context, snapshot) => Text(
+                          '${snapshot.data}',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
               })
@@ -228,7 +243,7 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text('${a.productName}'),
-                        Text('${a.productNameENG}'),
+                        Text('${a.productNameENG}', style: TextStyle(color: Colors.blue),),
                       ],
                     ),
                     trailing: IconButton(
@@ -298,7 +313,9 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
       await databaseHelper.saveOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }else{
 
@@ -313,7 +330,9 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
       await databaseHelper.updateOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }
 
