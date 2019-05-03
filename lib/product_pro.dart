@@ -6,14 +6,13 @@ import 'dart:convert';
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/product_detail.dart';
-import 'package:wang_shop/home.dart' as home;
 
 import 'package:fluttertoast/fluttertoast.dart';
 
-class ProductProPage extends StatefulWidget {
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
 
-  //final Home home;
-  //ProductProPage(this.home);
+class ProductProPage extends StatefulWidget {
 
   @override
   _ProductProPageState createState() => _ProductProPageState();
@@ -21,7 +20,7 @@ class ProductProPage extends StatefulWidget {
 
 class _ProductProPageState extends State<ProductProPage> {
 
-  //StreamController<int> _controller = StreamController<int>();
+  BlocCountOrder blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -92,31 +91,11 @@ class _ProductProPageState extends State<ProductProPage> {
     );
   }
 
-  showOverlay() async{
-
-    var countOrder = await databaseHelper.countOrder();
-    print(countOrder[0]['countOrderAll']);
-
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: 25,
-          right: 30,
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.red,
-            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
-          ),
-        )
-    );
-
-    overlayState.insert(overlayEntry);
-    //await Future.delayed(Duration(seconds: 2));
-    //overlayEntry.remove();
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
+
       return Scaffold(
         body: isLoading ? CircularProgressIndicator()
             :ListView.builder(
@@ -148,7 +127,6 @@ class _ProductProPageState extends State<ProductProPage> {
                       },
                       itemCount: productAll != null ? productAll.length : 0,
             ),
-
 
     );
   }
@@ -206,8 +184,9 @@ class _ProductProPageState extends State<ProductProPage> {
       await databaseHelper.saveOrder(order);
 
       showToastAddFast();
-      showOverlay();
-      //home.Home().countOrderProduct(99);
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }else{
 
@@ -222,11 +201,9 @@ class _ProductProPageState extends State<ProductProPage> {
       await databaseHelper.updateOrder(order);
 
       showToastAddFast();
-      showOverlay();
-        //home.Home().countOrderProduct(99);
 
-
-
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }
 
