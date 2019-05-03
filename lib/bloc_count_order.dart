@@ -5,27 +5,48 @@ import 'package:wang_shop/database_helper.dart';
 class BlocCountOrder implements BlocBase{
 
   //int counter;
+  var countOrder;
   var countOrderAll;
-  StreamController counterStreamController = StreamController();
+
+  StreamController streamCounterController = StreamController.broadcast();
+
+  Sink get counterSink => streamCounterController.sink;
+
+  Stream get counterStream => streamCounterController.stream;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
-  BlocCountOrder() {
-    //counter = 0;
-    countOrderAll = 0;
+
+  BlocCountOrder(){
+    countOrder = '';
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    counterStreamController.close();
+    streamCounterController.close();
   }
+
 
   getOrderCount() async{
     var resCountOrder = await databaseHelper.countOrder();
-    countOrderAll = resCountOrder[0]['countOrderAll'];
-    //counter = counter + value;
-    counterStreamController.sink.add(countOrderAll);
+    countOrder = resCountOrder[0]['countOrderAll'];
+    //print(addOrderCount());
+    //countOrderVal = addOrderCount();
+    print(countOrder);
+    counterSink.add(countOrder);
   }
+
+  clearOrderCount(){
+    countOrder = '';
+    counterSink.add(countOrder);
+  }
+
+  /*addOrderCount() async{
+    var resCountOrder = await databaseHelper.countOrder();
+    countOrder = resCountOrder[0]['countOrderAll'];
+    print(countOrder);
+    //return countOrder;
+  }*/
 
 }
