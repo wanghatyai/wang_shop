@@ -17,26 +17,21 @@ import 'package:wang_shop/search.dart';
 import 'package:wang_shop/search_auto.dart';
 import 'package:wang_shop/search_auto_out.dart';
 
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
+
 
 class Home extends StatefulWidget {
 
-  //final Stream<int> stream;
-  //Home({this.stream});
-
-  //String username;
-  //var count;
-
-  //Home({Key key, this.username}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
 
-  //void countOrder() {
-    //_HomeState().countOrderProduct(count);
-  //}
 }
 
 class _HomeState extends State<Home> {
+
+  BlocCountOrder blocCountOrder;
 
   List user = [];
   String name;
@@ -57,77 +52,11 @@ class _HomeState extends State<Home> {
 
   }
 
-  /*_readData(key,val) async {
-    SharedPreferences prefer = await SharedPreferences.getInstance();
-    val = prefer.getString(key);
-    //print(val);
-  }*/
-
-  /*_readData(key,val) async {
-    SharedPreferences prefer = await SharedPreferences.getInstance();
-    val = prefer.getString(key);
-    print(val);
-  }*/
-
   @override
   void initState(){
     super.initState();
-    //_readData('name',username);
-    //print(_readData('name',username));
-    //print(username);
-    //_readData('name');
     getUser();
-    showOverlay();
-    //countOrder();
-
-    /*widget.stream.listen((countVal) {
-      countOrderProduct(countVal);
-    });*/
-
   }
-
-  /*void countOrderProduct(int val){
-      setState(() {
-        countOrderAll = val;
-      });
-  }*/
-
-  /*countOrder() async{
-      var resCountOrder = await databaseHelper.countOrder();
-        countOrderAll = resCountOrder[0]['countOrderAll'];
-        print('countOrder');
-  }*/
-
-  showOverlay() async{
-
-    var countOrder = await databaseHelper.countOrder();
-    print(countOrder[0]['countOrderAll']);
-
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: 25,
-          right: 30,
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.red,
-            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
-          ),
-        )
-    );
-
-    overlayState.insert(overlayEntry);
-    //await Future.delayed(Duration(seconds: 2));
-    //overlayEntry.remove();
-  }
-
-  /*Widget appBar = AppBar(
-    backgroundColor: Colors.green,
-    title: Text("Home-$username"),
-    actions: <Widget>[
-      IconButton(icon: Icon(Icons.account_circle), onPressed: (){})
-    ],
-  );*/
 
   int currentIndex = 0;
   List pages = [ProductProPage(), ProductHotPage(), ProductNewPage(), searchAutoOutPage()];
@@ -135,6 +64,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
 
     Widget bottomNavBar = BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -228,13 +159,40 @@ class _HomeState extends State<Home> {
         title: Text("${name}"),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.shopping_cart, size: 30,),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            icon: Stack(
+              children: <Widget>[
+                Icon(Icons.shopping_cart, size: 40,),
+                Positioned(
+                  right: 0,
+                  child: Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 20,
+                        minHeight: 20,
+                      ),
+                      child: StreamBuilder(
+                        initialData: blocCountOrder.countOrder,
+                        stream: blocCountOrder.counterStream,
+                        builder: (BuildContext context, snapshot) => Text(
+                        '${snapshot.data}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
-              /*setState(() {
-                countOrder();
-              });*/
-
             }
           )
         ],
