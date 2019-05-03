@@ -9,6 +9,9 @@ import 'package:wang_shop/product_detail.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
+
 class ProductHotPage extends StatefulWidget {
   @override
   _ProductHotPageState createState() => _ProductHotPageState();
@@ -16,6 +19,7 @@ class ProductHotPage extends StatefulWidget {
 
 class _ProductHotPageState extends State<ProductHotPage> {
 
+  BlocCountOrder blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -86,31 +90,12 @@ class _ProductHotPageState extends State<ProductHotPage> {
     );
   }
 
-  showOverlay() async{
-
-    var countOrder = await databaseHelper.countOrder();
-    print(countOrder[0]['countOrderAll']);
-
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: 25,
-          right: 30,
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.red,
-            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
-          ),
-        )
-    );
-
-    overlayState.insert(overlayEntry);
-    //await Future.delayed(Duration(seconds: 2));
-    //overlayEntry.remove();
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
+
     return Scaffold(
       body: isLoading ? CircularProgressIndicator()
           :ListView.builder(
@@ -129,7 +114,7 @@ class _ProductHotPageState extends State<ProductHotPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text('${productAll[index].productName}'),
-                Text('${productAll[index].productNameENG}'),
+                Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue),),
               ],
             ),
             trailing: IconButton(
@@ -200,7 +185,9 @@ class _ProductHotPageState extends State<ProductHotPage> {
       await databaseHelper.saveOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }else{
 
@@ -215,7 +202,9 @@ class _ProductHotPageState extends State<ProductHotPage> {
       await databaseHelper.updateOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }
 
