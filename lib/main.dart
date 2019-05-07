@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:wang_shop/home.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wang_shop/database_helper.dart';
 
 import 'package:wang_shop/order.dart';
+
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
+import 'package:wang_shop/bloc_count_order_all.dart';
 
 
 void main() {
@@ -26,27 +32,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'WangShop',
-      routes: <String,WidgetBuilder>{
-        '/Home': (BuildContext context) => Home(),
-        '/Order': (BuildContext context) => OrderPage(),
-      },
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.green,
-      ),
-      home: LoginPage(),
-    );
+    return BlocProvider(
+        bloc: BlocCountOrder(),
+        child:  MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'WangPharma',
+          routes: <String,WidgetBuilder>{
+            '/Home': (BuildContext context) => Home(),
+            '/Order': (BuildContext context) => OrderPage(),
+          },
+          theme: ThemeData(
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            primarySwatch: Colors.green,
+          ),
+          home: LoginPage(),
+        ),
+     );
   }
 }
 
@@ -107,6 +116,7 @@ class LoginPageState extends State<LoginPage>{
           'idUser': jsonResponse['iduser'],
           'code': jsonResponse['ccode'],
           'name': jsonResponse['name'],
+          'credit': jsonResponse['credit'],
         };
 
         var checkMember = await databaseHelper.getMemberCheck(user['code']);
@@ -119,6 +129,12 @@ class LoginPageState extends State<LoginPage>{
           await databaseHelper.saveData(user);
           Navigator.pushReplacementNamed(context, '/Home');
         }else{
+          Map userCredit = {
+            'idUser': jsonResponse['iduser'],
+            'credit': jsonResponse['credit'],
+          };
+
+          await databaseHelper.updateDataCredit(userCredit);
           //await databaseHelper.saveData(user);
           Navigator.pushReplacementNamed(context, '/Home');
         }
@@ -185,7 +201,7 @@ class LoginPageState extends State<LoginPage>{
                 'Wangpharmacy\nกรุณาเข้าสู่ระบบ Login',
                 style: TextStyle (
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+                  color: Colors.green,
                   fontSize: 30.0,
                 ),
               ),
@@ -246,7 +262,7 @@ class LoginPageState extends State<LoginPage>{
                       _ShowPass ? 'Hide' : 'Show',
                       style: TextStyle (
                         fontSize: 16,
-                        color: Colors.blue,
+                        color: Colors.green,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -260,7 +276,7 @@ class LoginPageState extends State<LoginPage>{
                 width: double.infinity,
                 height: 56,
                 child: RaisedButton (
-                  color: Colors.blue,
+                  color: Colors.green,
                   shape: RoundedRectangleBorder (
                     borderRadius: BorderRadius.all (
                       Radius.circular ( 10 ),
@@ -279,7 +295,26 @@ class LoginPageState extends State<LoginPage>{
               ),
             ),
             SizedBox (
-              height: 100.0,
+              height: 70,
+            ),
+            Row(
+              children: <Widget>[
+                Icon(
+                  Icons.settings
+                ),
+                FlatButton(
+                  onPressed: () {
+
+                    databaseHelper.dropTableOrder();
+                    databaseHelper.dropTableOrderFree();
+                    databaseHelper.dropTableMembers();
+                    databaseHelper.dropTableShipAndPay();
+
+                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                  },
+                  child: Text("แก้ไขปัญหา"),
+                )
+              ],
             ),
           ],
         ),

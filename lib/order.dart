@@ -6,12 +6,18 @@ import 'package:wang_shop/ship_dialog.dart';
 import 'package:wang_shop/pay_dialog.dart';
 import 'package:wang_shop/summary_order.dart';
 
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
+
 class OrderPage extends StatefulWidget {
   @override
   _OrderPageState createState() => _OrderPageState();
 }
 
 class _OrderPageState extends State<OrderPage> {
+
+  BlocCountOrder blocCountOrder;
+
   @override
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -85,12 +91,15 @@ class _OrderPageState extends State<OrderPage> {
         return SimpleDialog(
           title: Text('แก้ไขรายการ'),
           children: <Widget>[
+            Divider(
+              color: Colors.green,
+            ),
             Padding(
-             padding: EdgeInsets.all(10),
+             padding: EdgeInsets.all(5),
              child: Text('${order['name']}'),
             ),
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(5),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -205,12 +214,7 @@ class _OrderPageState extends State<OrderPage> {
           ),
           SimpleDialogOption(
             onPressed: (){
-              /*GestureDetector(
-                onTap: (){
-                  this.showOverlay().overlayEntry.remove();
-                  print('tttt');
-                },
-              );*/
+
               Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryOrderPage()));
             },
             child: Text(
@@ -300,57 +304,60 @@ class _OrderPageState extends State<OrderPage> {
     await databaseHelper.removeOrder(id);
     getOrderAll();
     showToastRemove();
-    showOverlay();
+
+    //add notify order
+    blocCountOrder.getOrderCount();
+
   }
 
   void initState(){
     super.initState();
     getOrderAll();
-    //selectedRadioTileShip = 1;
-    //selectedRadioTilePay = 1;
-  }
 
-  /*setSelectRadioTileShip(int val){
-    setState(() {
-      selectedRadioTileShip = val;
-    });
-  }
-  setSelectRadioTilePay(int val){
-    setState(() {
-      selectedRadioTilePay = val;
-    });
-  }*/
-
-  showOverlay() async{
-
-    var countOrder = await databaseHelper.countOrder();
-    print(countOrder[0]['countOrderAll']);
-
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: 25,
-          right: 30,
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.red,
-            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
-          ),
-        )
-    );
-
-    overlayState.insert(overlayEntry);
-    //await Future.delayed(Duration(seconds: 2));
-    //overlayEntry.remove();
   }
 
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
+
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: Text('รายการสินค้า'),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.check_box),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              icon: Stack(
+                children: <Widget>[
+                  Icon(Icons.check_box, size: 40,),
+                  Positioned(
+                    right: 0,
+                    child: Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 20,
+                          minHeight: 20,
+                        ),
+                        child: StreamBuilder(
+                          initialData: blocCountOrder.countOrder,
+                          stream: blocCountOrder.counterStream,
+                          builder: (BuildContext context, snapshot) => Text(
+                          '${snapshot.data}',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               onPressed: (){
                 selectShip();
                 //Navigator.pushReplacementNamed(context, '/Order');
@@ -364,7 +371,7 @@ class _OrderPageState extends State<OrderPage> {
         //),
         itemBuilder: (context, int index){
           return ListTile(
-              contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+              //contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
               onTap: (){
                 //setState(() {
                   editOrderDialog(orders[index], 0);

@@ -11,6 +11,9 @@ import 'package:wang_shop/view_product_free.dart';
 
 import 'package:wang_shop/home.dart';
 
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
+
 
 class SummaryOrderPage extends StatefulWidget {
   @override
@@ -18,6 +21,8 @@ class SummaryOrderPage extends StatefulWidget {
 }
 
 class _SummaryOrderPageState extends State<SummaryOrderPage> {
+
+  BlocCountOrder blocCountOrder;
 
   final formatter = new NumberFormat("#,##0.00");
 
@@ -34,18 +39,35 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
     var resFree = await databaseHelper.getOrderFree();
     var res = await databaseHelper.getOrder();
+    var resUser = await databaseHelper.getList();
 
+    var userCredit;
+
+    userCredit = resUser[0]['credit'];
+
+    var priceCredit;
     var priceNow;
+
 
     print(resFree);
     print(res);
+    print('User${userCredit}');
 
     res.forEach((order) {
 
+          if(userCredit == 'A'){
+            priceCredit = order['priceA'];
+          }else if(userCredit == 'B'){
+            priceCredit = order['priceB'];
+          }else{
+            priceCredit = order['priceC'];
+          }
+
+
         if(order['unitStatus'] == 1){
 
-          sumAmount = sumAmount + ((order['priceA'] * order['unitQty3']) * order['amount']);
-          priceNow = order['priceA']*order['unitQty3'];
+          sumAmount = sumAmount + ((priceCredit * order['unitQty3']) * order['amount']);
+          priceNow = priceCredit*order['unitQty3'];
           priceNowAll.add(priceNow);
           print('----${priceNow}');
 
@@ -53,8 +75,8 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
         if(order['unitStatus'] == 2){
 
-          sumAmount = sumAmount + ((order['priceA'] * order['unitQty2']) * order['amount']);
-          priceNow = order['priceA']*order['unitQty2'];
+          sumAmount = sumAmount + ((priceCredit * order['unitQty2']) * order['amount']);
+          priceNow = priceCredit*order['unitQty2'];
           priceNowAll.add(priceNow);
           print('----${priceNow}');
 
@@ -62,8 +84,8 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
         if(order['unitStatus'] == 3){
 
-          sumAmount = sumAmount + ((order['priceA'] * order['unitQty1']) * order['amount']);
-          priceNow = order['priceA']*order['unitQty1'];
+          sumAmount = sumAmount + ((priceCredit * order['unitQty1']) * order['amount']);
+          priceNow = priceCredit*order['unitQty1'];
           priceNowAll.add(priceNow);
           print('----${priceNow}');
 
@@ -237,10 +259,14 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     //print(data);
     print("${response.statusCode}");
     //print("${response.body}");
+
+    blocCountOrder.clearOrderCount();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
 
     if(freeLimit.toInt() >= 30){
       return Scaffold(
@@ -248,12 +274,12 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
         appBar: AppBar(
           title: Text('สรุปรายการสั่งจอง'),
           actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.list,size: 30,),
+            /*IconButton(
+                icon: Icon(Icons.list,size: 40,),
                 onPressed: (){
 
                 }
-            )
+            )*/
           ],
         ),
         body: Container(
@@ -347,12 +373,12 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
         appBar: AppBar(
           title: Text('สรุปรายการสั่งจอง'),
           actions: <Widget>[
-            IconButton(
+            /*IconButton(
                 icon: Icon(Icons.list,size: 30,),
                 onPressed: (){
 
                 }
-            )
+            )*/
           ],
         ),
         body: Container(

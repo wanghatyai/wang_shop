@@ -17,22 +17,27 @@ import 'package:wang_shop/search.dart';
 import 'package:wang_shop/search_auto.dart';
 import 'package:wang_shop/search_auto_out.dart';
 
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
+
 
 class Home extends StatefulWidget {
 
-  //String username;
-
-  //Home({Key key, this.username}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
+
 }
 
 class _HomeState extends State<Home> {
 
+  BlocCountOrder blocCountOrder;
+
   List user = [];
   String name;
   String value;
+
+  var countOrderAll;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -47,60 +52,11 @@ class _HomeState extends State<Home> {
 
   }
 
-  /*_readData(key,val) async {
-    SharedPreferences prefer = await SharedPreferences.getInstance();
-    val = prefer.getString(key);
-    //print(val);
-  }*/
-
-  /*_readData(key,val) async {
-    SharedPreferences prefer = await SharedPreferences.getInstance();
-    val = prefer.getString(key);
-    print(val);
-  }*/
-
   @override
   void initState(){
     super.initState();
-    //_readData('name',username);
-    //print(_readData('name',username));
-    //print(username);
-    //_readData('name');
     getUser();
-    showOverlay();
-
   }
-
-  showOverlay() async{
-
-    var countOrder = await databaseHelper.countOrder();
-    print(countOrder[0]['countOrderAll']);
-
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: 25,
-          right: 30,
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.red,
-            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
-          ),
-        )
-    );
-
-    overlayState.insert(overlayEntry);
-    //await Future.delayed(Duration(seconds: 2));
-    //overlayEntry.remove();
-  }
-
-  /*Widget appBar = AppBar(
-    backgroundColor: Colors.green,
-    title: Text("Home-$username"),
-    actions: <Widget>[
-      IconButton(icon: Icon(Icons.account_circle), onPressed: (){})
-    ],
-  );*/
 
   int currentIndex = 0;
   List pages = [ProductProPage(), ProductHotPage(), ProductNewPage(), searchAutoOutPage()];
@@ -109,7 +65,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
+    blocCountOrder = BlocProvider.of(context);
+
     Widget bottomNavBar = BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: (int index){
           setState(() {
@@ -118,20 +77,20 @@ class _HomeState extends State<Home> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.assistant_photo, color: Colors.green),
-            title: Text('โปร', style: TextStyle(color: Colors.green))
+            icon: Icon(Icons.assistant_photo),
+            title: Text('โปร')
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.monetization_on, color: Colors.green),
-            title: Text('ขายดี', style: TextStyle(color: Colors.green))
+            icon: Icon(Icons.monetization_on),
+            title: Text('ขายดี')
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.fiber_new, color: Colors.green),
-              title: Text('ใหม่', style: TextStyle(color: Colors.green))
+              icon: Icon(Icons.fiber_new),
+              title: Text('ใหม่')
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: Colors.green),
-            title: Text('ค้นหา', style: TextStyle(color: Colors.green))
+            icon: Icon(Icons.search),
+            title: Text('ค้นหา')
           ),
         ]
     );
@@ -161,7 +120,7 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             leading: Icon(Icons.star, color: Colors.amberAccent,),
-            title: Text("สินค้าสั่งประจำ", style: TextStyle(fontSize: 17)),
+            title: Text("สินค้าที่เคยสั่ง", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
               Navigator.push(
@@ -200,10 +159,42 @@ class _HomeState extends State<Home> {
         title: Text("${name}"),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.shopping_cart, size: 30,),
-              onPressed: (){
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            icon: Stack(
+              children: <Widget>[
+                Icon(Icons.shopping_cart, size: 40,),
+                Positioned(
+                  right: 0,
+                  child: Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 20,
+                        minHeight: 20,
+                      ),
+                      child: StreamBuilder(
+                        initialData: blocCountOrder.countOrder,
+                        stream: blocCountOrder.counterStream,
+                        builder: (BuildContext context, snapshot) => Text(
+                        '${snapshot.data}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
-          })
+            }
+          )
         ],
       ),
       drawer: drawer,

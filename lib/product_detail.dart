@@ -6,6 +6,9 @@ import 'package:wang_shop/database_helper.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
+
 class productDetailPage extends StatefulWidget {
 
   var product;
@@ -16,6 +19,9 @@ class productDetailPage extends StatefulWidget {
 }
 
 class _productDetailPageState extends State<productDetailPage> {
+
+  BlocCountOrder blocCountOrder;
+
   @override
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
@@ -63,6 +69,8 @@ class _productDetailPageState extends State<productDetailPage> {
 
   Widget build(BuildContext context) {
 
+    blocCountOrder = BlocProvider.of(context);
+
     units = [];
 
     if(widget.product.productUnit1.toString() != "null"){
@@ -92,12 +100,12 @@ class _productDetailPageState extends State<productDetailPage> {
       appBar: AppBar(
         title: Text(widget.product.productName.toString()),
         actions: <Widget>[
-          IconButton(
+          /*IconButton(
               icon: Icon(Icons.shopping_cart),
               onPressed: (){
                 //Navigator.pushReplacementNamed(context, '/Order');
               }
-          )
+          )*/
         ],
       ),
       body: Container(
@@ -277,7 +285,8 @@ class _productDetailPageState extends State<productDetailPage> {
 
       Navigator.pop(context);
       showToastAddFast();
-      showOverlay();
+      blocCountOrder.getOrderCount();
+      //showOverlay();
 
     }else{
 
@@ -293,7 +302,8 @@ class _productDetailPageState extends State<productDetailPage> {
 
       Navigator.pop(context);
       showToastAddFast();
-      showOverlay();
+      blocCountOrder.getOrderCount();
+      //showOverlay();
 
     }
 

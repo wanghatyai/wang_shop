@@ -17,7 +17,8 @@ class DatabaseHelper {
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
     idUser TEXT,
     code TEXT, 
-    name TEXT)
+    name TEXT,
+    credit TEXT NULL)
   ''';
 
   String sqlCreateOrder = '''
@@ -65,6 +66,18 @@ class DatabaseHelper {
 
   String sqlDropTableOrder = '''
   DROP TABLE orders
+  ''';
+
+  String sqlDropTableMembers = '''
+  DROP TABLE members
+  ''';
+
+  String sqlDropTableOrderFree = '''
+  DROP TABLE ordersfree
+  ''';
+
+  String sqlDropTableShipAndPay = '''
+  DROP TABLE shipandpay
   ''';
 
   Future<Database> getDb() async {
@@ -172,6 +185,27 @@ class DatabaseHelper {
     // Create table
     await dbClient.rawQuery(sqlDropTableOrder);
     print('dropTableOrder');
+  }
+
+  Future dropTableOrderFree() async {
+    var dbClient = await getDbOrderFree();
+    // Create table
+    await dbClient.rawQuery(sqlDropTableOrderFree);
+    print('dropTableOrderFree');
+  }
+
+  Future dropTableMembers() async {
+    var dbClient = await getDb();
+    // Create table
+    await dbClient.rawQuery(sqlDropTableMembers);
+    print('dropTableMembers');
+  }
+
+  Future dropTableShipAndPay() async {
+    var dbClient = await getDbShipAndPay();
+    // Create table
+    await dbClient.rawQuery(sqlDropTableShipAndPay);
+    print('dropTableShipAndPay');
   }
 
   Future getList() async {
@@ -314,14 +348,15 @@ class DatabaseHelper {
     var dbClient = await getDb();
 
     String sql = '''
-    INSERT INTO members(idUser, code, name)
-    VALUES(?, ?, ?)
+    INSERT INTO members(idUser, code, name, credit)
+    VALUES(?, ?, ?, ?)
     ''';
 
     await dbClient.rawQuery(sql, [
       member['idUser'],
       member['code'],
       member['name'],
+      member['credit'],
     ]);
 
     print('Saved!');
@@ -413,6 +448,22 @@ class DatabaseHelper {
     ]);
 
     print('Updated!');
+  }
+
+  Future updateDataCredit(Map member) async {
+    var dbClient = await getDb();
+
+    String sql = '''
+    UPDATE members SET credit=?
+    WHERE idUser=?
+    ''';
+
+    await dbClient.rawQuery(sql, [
+      member['credit'],
+      member['idUser'],
+    ]);
+
+    print('Updated! Credit');
   }
 
   Future updateOrder(Map order) async {

@@ -9,12 +9,18 @@ import 'package:wang_shop/product_detail.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
+
 class ProductProPage extends StatefulWidget {
+
   @override
   _ProductProPageState createState() => _ProductProPageState();
 }
 
 class _ProductProPageState extends State<ProductProPage> {
+
+  BlocCountOrder blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -85,31 +91,11 @@ class _ProductProPageState extends State<ProductProPage> {
     );
   }
 
-  showOverlay() async{
-
-    var countOrder = await databaseHelper.countOrder();
-    print(countOrder[0]['countOrderAll']);
-
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: 25,
-          right: 30,
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.red,
-            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
-          ),
-        )
-    );
-
-    overlayState.insert(overlayEntry);
-    //await Future.delayed(Duration(seconds: 2));
-    //overlayEntry.remove();
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
+
       return Scaffold(
         body: isLoading ? CircularProgressIndicator()
             :ListView.builder(
@@ -128,7 +114,7 @@ class _ProductProPageState extends State<ProductProPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text('${productAll[index].productName}'),
-                              Text('${productAll[index].productNameENG}'),
+                              Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue),),
                             ],
                           ),
                           trailing: IconButton(
@@ -141,7 +127,6 @@ class _ProductProPageState extends State<ProductProPage> {
                       },
                       itemCount: productAll != null ? productAll.length : 0,
             ),
-
 
     );
   }
@@ -199,7 +184,9 @@ class _ProductProPageState extends State<ProductProPage> {
       await databaseHelper.saveOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }else{
 
@@ -214,7 +201,9 @@ class _ProductProPageState extends State<ProductProPage> {
       await databaseHelper.updateOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }
 

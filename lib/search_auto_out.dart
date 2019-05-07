@@ -7,10 +7,14 @@ import 'package:wang_shop/database_helper.dart';
 
 import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/product_pro.dart';
-
 import 'package:wang_shop/product_detail.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter/services.dart';
+
+import 'package:wang_shop/bloc_provider.dart';
+import 'package:wang_shop/bloc_count_order.dart';
 
 class searchAutoOutPage extends StatefulWidget {
   @override
@@ -19,12 +23,49 @@ class searchAutoOutPage extends StatefulWidget {
 
 class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
+  BlocCountOrder blocCountOrder;
+
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   List<Product> _product = [];
   List<Product> _search = [];
 
   var loading = false;
+  String barcode;
+
+  scanBarcode() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState((){
+        this.barcode = barcode;
+        searchProduct(this.barcode);
+      });
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        _showAlertBarcode();
+        print('Camera permission was denied');
+      } else {
+        print('Unknow Error $e');
+      }
+    } on FormatException {
+      print('User returned using the "back"-button before scanning anything.');
+    } catch (e) {
+      print('Unknown error.');
+    }
+  }
+
+  void _showAlertBarcode() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('แจ้งเตือน'),
+          content: Text('คุณไม่เปิดอนุญาตใช้กล้อง'),
+        );
+      },
+    );
+  }
 
   searchProduct(searchVal) async{
 
@@ -94,31 +135,11 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
     );
   }
 
-  showOverlay() async{
-
-    var countOrder = await databaseHelper.countOrder();
-    print(countOrder[0]['countOrderAll']);
-
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-          top: 25,
-          right: 30,
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.red,
-            child: Text("${countOrder[0]['countOrderAll']}",style: TextStyle(color: Colors.white)),
-          ),
-        )
-    );
-
-    overlayState.insert(overlayEntry);
-    //await Future.delayed(Duration(seconds: 2));
-    //overlayEntry.remove();
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
@@ -127,6 +148,12 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
            Container(
              //padding: EdgeInsets.all(10),
              child: ListTile(
+               leading: IconButton(
+                   icon: Icon(Icons.center_focus_strong, color: Colors.red, size: 30,),
+                   onPressed: (){
+                     scanBarcode();
+                   }
+               ),
                title: TextField(
                  controller: controller,
                  onChanged: onSearch,
@@ -161,7 +188,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: <Widget>[
                        Text('${a.productName}'),
-                       Text('${a.productNameENG}'),
+                       Text('${a.productNameENG}', style: TextStyle(color: Colors.blue),),
                      ],
                    ),
                    trailing: IconButton(
@@ -231,7 +258,10 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       await databaseHelper.saveOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }else{
 
@@ -246,7 +276,10 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       await databaseHelper.updateOrder(order);
 
       showToastAddFast();
-      showOverlay();
+
+
+      //add notify order
+      blocCountOrder.getOrderCount();
 
     }
 
