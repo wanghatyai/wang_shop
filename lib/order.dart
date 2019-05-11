@@ -329,7 +329,7 @@ class _OrderPageState extends State<OrderPage> {
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               icon: Stack(
                 children: <Widget>[
-                  Icon(Icons.check_box, size: 40,),
+                  Icon(Icons.shopping_basket, size: 40,),
                   Positioned(
                     right: 0,
                     child: Container(
@@ -371,14 +371,14 @@ class _OrderPageState extends State<OrderPage> {
         //),
         itemBuilder: (context, int index){
           return ListTile(
-              //contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+              contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
               onTap: (){
                 //setState(() {
                   editOrderDialog(orders[index], 0);
                 //});
               },
               leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-              title: Text('${orders[index]['code']}'),
+              title: Text('${orders[index]['code']}', style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
