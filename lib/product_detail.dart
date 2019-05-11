@@ -9,6 +9,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
+
 class productDetailPage extends StatefulWidget {
 
   var product;
@@ -21,7 +24,6 @@ class productDetailPage extends StatefulWidget {
 class _productDetailPageState extends State<productDetailPage> {
 
   BlocCountOrder blocCountOrder;
-
   @override
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
@@ -31,7 +33,49 @@ class _productDetailPageState extends State<productDetailPage> {
   String _currentUnit;
   var unitStatus;
 
+  var imgList = [];
+
   TextEditingController valAmount = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getProductImg();
+  }
+
+  getProductImg()async{
+
+    final res = await http.get('http://wangpharma.com/API/getImgAll.php?proCodeImg=${widget.product.productCode}');
+
+    //var defaultImg = {'src': 'http://www.wangpharma.com/cms/product/${widget.product.productPic}'};
+
+    //imgList.add(defaultImg);
+
+    print(imgList);
+    print(res.body);
+    print(imgList.length);
+
+    if(res.statusCode == 200){
+
+      setState(() {
+        //isLoading = false;
+
+        var jsonData = json.decode(res.body);
+
+        jsonData.forEach((products) => imgList.add(products));
+
+        print(imgList);
+
+        return imgList;
+
+      });
+
+
+    }else{
+      //throw Exception('Failed load Json');
+    }
+  }
 
   showToastAddFast(){
     Fluttertoast.showToast(
@@ -66,8 +110,13 @@ class _productDetailPageState extends State<productDetailPage> {
   }
 
 
-
   Widget build(BuildContext context) {
+
+    /*imgList = [
+      'http://www.wangpharma.com/cms/product/${widget.product.productPic}',
+      'http://www.wangpharma.com/cms/product/${widget.product.productPic}',
+      'http://www.wangpharma.com/cms/product/${widget.product.productPic}',
+    ];*/
 
     blocCountOrder = BlocProvider.of(context);
 
@@ -116,7 +165,29 @@ class _productDetailPageState extends State<productDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
+                  Expanded(
+                    child: PhotoViewGallery.builder(
+                      itemCount: imgList.length,
+                      builder: (context, index){
+                        return PhotoViewGalleryPageOptions(
+                          imageProvider: NetworkImage(imgList[index]['src']),
+                          minScale: PhotoViewComputedScale.contained * 0.8,
+                          maxScale: PhotoViewComputedScale.covered * 2,
+                        );
+                      },
+                      scrollPhysics: BouncingScrollPhysics(),
+
+                      backgroundDecoration: BoxDecoration(
+                        color: Theme.of(context).canvasColor,
+                      ),
+                      loadingChild: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      //imageProvider: NetworkImage('http://www.wangpharma.com/cms/product/${widget.product.productPic}'),
+
+                    ),
+                  ),
+                  //Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
                   Text("รหัสสินค้า : ${widget.product.productCode}",
                     style: TextStyle(
                         fontSize: 20
