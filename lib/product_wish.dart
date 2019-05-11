@@ -155,7 +155,7 @@ class _ProductWishPageState extends State<ProductWishPage> {
                   MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
             },
             leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70),
-            title: Text('${productAll[index].productCode}'),
+            title: Text('${productAll[index].productCode}', style: TextStyle(fontWeight: FontWeight.bold)),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
