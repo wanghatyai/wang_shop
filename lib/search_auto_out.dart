@@ -183,7 +183,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
                    },
                    leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                   title: Text('${a.productCode}'),
+                   title: Text('${a.productCode}', style: TextStyle(fontWeight: FontWeight.bold)),
                    subtitle: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: <Widget>[

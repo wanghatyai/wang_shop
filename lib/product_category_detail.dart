@@ -4,79 +4,87 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:wang_shop/database_helper.dart';
+
 import 'package:wang_shop/product_model.dart';
-import 'package:wang_shop/product_detail.dart';
+import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/order.dart';
+import 'package:wang_shop/product_detail.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
-class ProductWishPage extends StatefulWidget {
+class ProductCategoryDetailPage extends StatefulWidget {
+
+  final String catValue;
+
+  ProductCategoryDetailPage({Key key, this.catValue}) : super (key: key);
+
   @override
-  _ProductWishPageState createState() => _ProductWishPageState();
+  _ProductCategoryDetailPageState createState() => _ProductCategoryDetailPageState();
 }
 
-class _ProductWishPageState extends State<ProductWishPage> {
+class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
 
   BlocCountOrder blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
+  List<Product> _product = [];
+
   ScrollController _scrollController = new ScrollController();
 
-  //Product product;
-  List <Product>productAll = [];
-  bool isLoading = true;
   int perPage = 30;
-  String act = "Wish";
+
+  var loading = true;
+
   var userName;
 
-  //var product;
-
-  getProduct() async{
+  getCategoryDetail() async{
 
     var resUser = await databaseHelper.getList();
-    var userID = resUser[0]['idUser'];
     userName = resUser[0]['name'];
 
-    final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act&userID=$userID');
+    //_product.clear();
+
+    final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&SearchVal=${widget.catValue}&act=SearchCat');
 
     if(res.statusCode == 200){
 
       setState(() {
-        isLoading = false;
+
+        loading = false;
 
         var jsonData = json.decode(res.body);
 
-        jsonData.forEach((products) => productAll.add(Product.fromJson(products)));
-        perPage = productAll.length;
+        jsonData.forEach((products) => _product.add(Product.fromJson(products)));
+        perPage = _product.length;
 
-        print(productAll);
-        print(productAll.length);
-
-        return productAll;
+        print(_product);
+        return _product;
 
       });
 
     }else{
       throw Exception('Failed load Json');
     }
+
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getProduct();
+    getCategoryDetail();
 
     _scrollController.addListener((){
       //print(_scrollController.position.pixels);
       if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
-        getProduct();
+        getCategoryDetail();
       }
     });
+
   }
 
   @override
@@ -85,6 +93,7 @@ class _ProductWishPageState extends State<ProductWishPage> {
     _scrollController.dispose();
     super.dispose();
   }
+
 
   showToastAddFast(){
     Fluttertoast.showToast(
@@ -143,38 +152,47 @@ class _ProductWishPageState extends State<ProductWishPage> {
               })
         ],
       ),
-      body: isLoading ? CircularProgressIndicator()
-          :ListView.builder(
-        controller: _scrollController,
-        itemBuilder: (context, int index){
-          return ListTile(
-            contentPadding: EdgeInsets.fromLTRB(10, 7, 10, 7),
-            onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
-            },
-            leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70),
-            title: Text('${productAll[index].productCode}', style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('${productAll[index].productName}'),
-                Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue),),
-              ],
+      resizeToAvoidBottomPadding: false,
+      body: Container(
+        child: Column(
+          children: <Widget>[
+
+            loading ? Center(
+              child: CircularProgressIndicator(),
+            ) :
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _product.length,
+                itemBuilder: (context, i){
+                  final a = _product[i];
+                  return ListTile(
+                    contentPadding: EdgeInsets.fromLTRB(10, 7, 10, 7),
+                    onTap: (){
+
+                    },
+                    leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
+                    title: Text('${a.productCode}', style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('${a.productName}'),
+                        Text('${a.productNameENG}', style: TextStyle(color: Colors.blue),),
+                      ],
+                    ),
+                    trailing: IconButton(
+                        icon: Icon(Icons.shopping_basket, color: Colors.teal, size: 30,),
+                        onPressed: (){
+                          addToOrderFast(a);
+                        }
+                    ),
+                  );
+                },
+              ),
             ),
-            trailing: IconButton(
-                icon: Icon(Icons.shopping_basket, color: Colors.teal, size: 30,),
-                onPressed: (){
-                  addToOrderFast(productAll[index]);
-                }
-            ),
-          );
-        },
-        itemCount: productAll != null ? productAll.length : 0,
+          ],
+        ),
       ),
-
-
     );
   }
 
@@ -199,8 +217,6 @@ class _ProductWishPageState extends State<ProductWishPage> {
     }else{
       unit3 = 'NULL';
     }
-
-    //print('99999-${productFast.productPriceA}');
 
     Map order = {
       'productID': productFast.productId.toString(),

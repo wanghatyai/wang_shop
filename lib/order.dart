@@ -30,9 +30,52 @@ class _OrderPageState extends State<OrderPage> {
   int selectedRadioTileShip;
   int selectedRadioTilePay;
 
+  var sumAmount = 0.0;
+  var freeLimit = 0.0;
+
   getOrderAll() async{
+
+    sumAmount = 0.0;
+
     var res = await databaseHelper.getOrder();
+    var resUser = await databaseHelper.getList();
     print(res);
+
+    var userCredit;
+
+    userCredit = resUser[0]['credit'];
+
+    var priceCredit;
+
+    res.forEach((order) {
+
+        if(userCredit == 'A'){
+          priceCredit = order['priceA'];
+        }else if(userCredit == 'B'){
+          priceCredit = order['priceB'];
+        }else{
+          priceCredit = order['priceC'];
+        }
+
+
+        if(order['unitStatus'] == 1){
+          sumAmount = sumAmount + ((priceCredit * order['unitQty3']) * order['amount']);
+        }
+
+        if(order['unitStatus'] == 2){
+          sumAmount = sumAmount + ((priceCredit * order['unitQty2']) * order['amount']);
+
+        }
+
+        if(order['unitStatus'] == 3){
+          sumAmount = sumAmount + ((priceCredit * order['unitQty1']) * order['amount']);
+        }
+
+    });
+
+    freeLimit = sumAmount*0.01;
+
+    print(freeLimit);
 
     setState(() {
       orders = res;
@@ -329,7 +372,7 @@ class _OrderPageState extends State<OrderPage> {
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               icon: Stack(
                 children: <Widget>[
-                  Icon(Icons.check_box, size: 40,),
+                  Icon(Icons.shopping_basket, size: 40,),
                   Positioned(
                     right: 0,
                     child: Container(
@@ -365,38 +408,52 @@ class _OrderPageState extends State<OrderPage> {
           )
         ],
       ),
-      body: ListView.builder(
-        //separatorBuilder: (context, index) => Divider(
-          //color: Colors.black,
-        //),
-        itemBuilder: (context, int index){
-          return ListTile(
-              //contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-              onTap: (){
-                //setState(() {
-                  editOrderDialog(orders[index], 0);
-                //});
-              },
-              leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-              title: Text('${orders[index]['code']}'),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('${orders[index]['name']}'),
-                  Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
-                    style: TextStyle(fontSize: 18, color: Colors.red),),
-                ],
+      body: Container(
+        child: Column(
+          children: <Widget>[
+              Center(
+                child: Text('คุณมี แต้มสมนาคุณ ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 18, color: Colors.purple), ),
               ),
-              trailing: IconButton(
-                  icon: Icon(Icons.list, size: 30,),
-                  onPressed: (){
-                    _confirmDelShowAlert(orders[index]['id'], orders[index]);
-                  }
+              Divider(
+                color: Colors.black,
               ),
-          );
-        },
-        itemCount: orders != null ? orders.length : 0,
-      ),
+              Expanded(
+                child:ListView.builder(
+                      //separatorBuilder: (context, index) => Divider(
+                        //color: Colors.black,
+                      //),
+                      itemBuilder: (context, int index){
+                      return ListTile(
+                          contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                          onTap: (){
+                            //setState(() {
+                              editOrderDialog(orders[index], 0);
+                            //});
+                          },
+                          leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                          title: Text('${orders[index]['code']}', style: TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('${orders[index]['name']}'),
+                              Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
+                                style: TextStyle(fontSize: 18, color: Colors.red),),
+                            ],
+                          ),
+                          trailing: IconButton(
+                              icon: Icon(Icons.list, size: 30,),
+                              onPressed: (){
+                                _confirmDelShowAlert(orders[index]['id'], orders[index]);
+                              }
+                          ),
+                      );
+                    },
+                    itemCount: orders != null ? orders.length : 0,
+                  ),
+              )
+          ]
+        )
+      )
     );
   }
 }

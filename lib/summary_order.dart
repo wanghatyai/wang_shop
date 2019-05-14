@@ -348,7 +348,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
                       leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                      title: Text('${orders[index]['code']}'),
+                      title: Text('${orders[index]['code']}', style: TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -410,7 +410,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
                       leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                      title: Text('${orders[index]['code']}'),
+                      title: Text('${orders[index]['code']}', style: TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
