@@ -108,11 +108,11 @@ class _ProductNewPageState extends State<ProductNewPage> {
                   MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
             },
             leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70),
-            title: Text('${productAll[index].productCode}', style: TextStyle(fontWeight: FontWeight.bold)),
+            title: Text('${productAll[index].productName}', style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('${productAll[index].productName}'),
+                Text('${productAll[index].productCode}'),
                 Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue),),
               ],
             ),

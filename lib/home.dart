@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
@@ -50,6 +51,15 @@ class _HomeState extends State<Home> {
       name = user[0]['name'];
     });
 
+  }
+
+  _launchURL() async {
+    const urlHelp = "https://www.youtube.com/watch?v=SuEOliHwG3M";
+    if (await canLaunch(urlHelp)) {
+      await launch(urlHelp);
+    } else {
+      throw 'Could not launch $urlHelp';
+    }
   }
 
   @override
@@ -146,7 +156,7 @@ class _HomeState extends State<Home> {
             title: Text("คู่มือการใช้งาน", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
-
+              _launchURL();
             },
           )
         ],
