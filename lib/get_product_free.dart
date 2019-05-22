@@ -58,7 +58,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("ข้ออภัย"),
+          title: new Text("ขออภัย"),
           content: new Text("คุณเลือกสินค้าเกินจำนวนแต้ม"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
