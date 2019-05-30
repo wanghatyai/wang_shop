@@ -80,6 +80,20 @@ class _OrderPageState extends State<OrderPage> {
     setState(() {
       orders = res;
     });
+
+  }
+
+  void _showAlertCheckOrder() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('แจ้งเตือน'),
+          content: Text('กรุณาเลือกรายการสินค้าอย่างน้อย 1 รายการ'),
+        );
+      },
+    );
   }
 
   showToastRemove(){
@@ -402,7 +416,12 @@ class _OrderPageState extends State<OrderPage> {
                 ],
               ),
               onPressed: (){
-                selectShip();
+                if(orders.length == 0){
+                  _showAlertCheckOrder();
+                }else{
+                  selectShip();
+                }
+
                 //Navigator.pushReplacementNamed(context, '/Order');
               }
           )
