@@ -314,7 +314,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     color: Colors.deepOrange,
                     padding: const EdgeInsets.all(8.0),
                     child: new Text(
-                      "ดูรายการแถม",
+                      "ดูรายการแถมที่เลือก",
                     ),
                   ),
                   Padding(
