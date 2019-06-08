@@ -172,6 +172,7 @@ class _ProductNewPageState extends State<ProductNewPage> {
       'priceB': productFast.productPriceB,
       'priceC': productFast.productPriceC,
       'amount': 1,
+      'proStatus': productFast.productProStatus,
     };
 
     var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);

@@ -219,6 +219,7 @@ class _ProductWishPageState extends State<ProductWishPage> {
       'priceB': productFast.productPriceB,
       'priceC': productFast.productPriceC,
       'amount': 1,
+      'proStatus': productFast.productProStatus,
     };
 
     var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);

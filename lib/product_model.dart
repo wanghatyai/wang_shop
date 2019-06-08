@@ -17,6 +17,7 @@ class Product{
   final String productPriceB;
   final String productPriceC;
   final String productFreePrice;
+  final String productProStatus;
 
 
   Product({
@@ -35,7 +36,8 @@ class Product{
     this.productPriceA,
     this.productPriceB,
     this.productPriceC,
-    this.productFreePrice
+    this.productFreePrice,
+    this.productProStatus
   });
 
   factory Product.fromJson(Map<String, dynamic> json){
@@ -56,6 +58,7 @@ class Product{
       productPriceB: json['priceB'],
       productPriceC: json['priceC'],
       productFreePrice: json['freePrice'],
+      productProStatus: json['stype'],
     );
   }
 

@@ -345,6 +345,7 @@ class _productDetailPageState extends State<productDetailPage> {
       'priceB': widget.product.productPriceB,
       'priceC': widget.product.productPriceC,
       'amount': valAmount.text,
+      'proStatus': widget.product.productProStatus,
     };
 
     var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);

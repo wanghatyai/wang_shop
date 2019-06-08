@@ -39,7 +39,8 @@ class DatabaseHelper {
     priceA FLOAT NULL, 
     priceB FLOAT NULL, 
     priceC FLOAT NULL, 
-    amount INTEGER)
+    amount INTEGER, 
+    proStatus INTEGER)
   ''';
 
   String sqlCreateOrderFree = '''
@@ -366,8 +367,8 @@ class DatabaseHelper {
     var dbClient = await getDbOrder();
 
     String sql = '''
-    INSERT INTO orders(productID, code, name, pic, unit, unitStatus, unit1, unitQty1, unit2, unitQty2, unit3, unitQty3, priceA, priceB, priceC, amount)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO orders(productID, code, name, pic, unit, unitStatus, unit1, unitQty1, unit2, unitQty2, unit3, unitQty3, priceA, priceB, priceC, amount, proStatus)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''';
 
     await dbClient.rawQuery(sql, [
@@ -387,6 +388,7 @@ class DatabaseHelper {
       order['priceB'],
       order['priceC'],
       order['amount'],
+      order['proStatus'],
     ]);
 
     print('Saved Order!');
