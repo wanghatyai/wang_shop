@@ -55,13 +55,19 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
     res.forEach((order) {
 
-          if(userCredit == 'A'){
-            priceCredit = order['priceA'];
-          }else if(userCredit == 'B'){
-            priceCredit = order['priceB'];
+          if(order['proStatus'] == 2){
+              priceCredit = order['priceA'];
           }else{
-            priceCredit = order['priceC'];
+            if(userCredit == 'A'){
+              priceCredit = order['priceA'];
+            }else if(userCredit == 'B'){
+              priceCredit = order['priceB'];
+            }else{
+              priceCredit = order['priceC'];
+            }
           }
+
+
 
 
         if(order['unitStatus'] == 1){
