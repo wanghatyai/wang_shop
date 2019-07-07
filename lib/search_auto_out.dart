@@ -148,6 +148,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
            Container(
              //padding: EdgeInsets.all(10),
              child: ListTile(
+               contentPadding: EdgeInsets.all(1),
                leading: IconButton(
                    icon: Icon(Icons.center_focus_strong, color: Colors.red, size: 30,),
                    onPressed: (){
@@ -162,7 +163,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                  ),
                ),
                trailing: IconButton(
-                   icon: Icon(Icons.cancel),
+                   icon: Icon(Icons.cancel, color: Colors.red, size: 30,),
                    onPressed: (){
                      controller.clear();
                    }
@@ -183,16 +184,16 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
                    },
                    leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                   title: Text('${a.productName}', style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                   title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                    subtitle: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: <Widget>[
                        Text('${a.productCode}'),
-                       Text('${a.productNameENG}', style: TextStyle(color: Colors.blue),),
+                       Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
                      ],
                    ),
                    trailing: IconButton(
-                       icon: Icon(Icons.shopping_basket, color: Colors.teal, size: 30,),
+                       icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
                        onPressed: (){
                          addToOrderFast(a);
                        }

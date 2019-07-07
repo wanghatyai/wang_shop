@@ -142,9 +142,9 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCategoryDetailPage(catValue: a['code'],)));
                     },
                     //leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                    title: Text('${a['name']}'),
+                    title: Text('${a['name']}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                     trailing: IconButton(
-                        icon: Icon(Icons.arrow_forward_ios, color: Colors.teal, size: 30,),
+                        icon: Icon(Icons.view_list, color: Colors.teal, size: 40,),
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCategoryDetailPage(catValue: a['code'],)));
                         }

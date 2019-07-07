@@ -152,8 +152,8 @@ class _OrderPageState extends State<OrderPage> {
               color: Colors.green,
             ),
             Padding(
-             padding: EdgeInsets.all(5),
-             child: Text('${order['name']}'),
+             padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+             child: Text('${order['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
             ),
             Padding(
               padding: EdgeInsets.all(5),
@@ -161,6 +161,8 @@ class _OrderPageState extends State<OrderPage> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -212,12 +214,24 @@ class _OrderPageState extends State<OrderPage> {
                     }
 
               },
-              child: Text(
-                  'ตกลง',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold
-                  )
+              child: Container(
+                padding: EdgeInsets.all(10),
+                color: Colors.green,
+                alignment: Alignment.center,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                          'ตกลง',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18, fontWeight: FontWeight.bold
+                          )
+                      ),
+                    ),
+                  ],
+                )
               ),
             ),
           ],
@@ -232,22 +246,34 @@ class _OrderPageState extends State<OrderPage> {
       return SimpleDialog(
         title: Text('เลือกวิธีการรับสินค้า'),
         children: <Widget>[
+          Divider(
+            color: Colors.black,
+          ),
           ShipDialogPage(),
           Padding(
             padding: EdgeInsets.all(10),
-          ),
-          Divider(
-            color: Colors.black,
           ),
           SimpleDialogOption(
             onPressed: (){
               selectPay();
             },
-            child: Text(
-                'ตกลง',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold
+            child: Container(
+                padding: EdgeInsets.all(10),
+                color: Colors.green,
+                alignment: Alignment.center,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                          'ตกลง',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18, fontWeight: FontWeight.bold
+                          )
+                      ),
+                    ),
+                  ],
                 )
             ),
           ),
@@ -262,23 +288,35 @@ class _OrderPageState extends State<OrderPage> {
         title: Text('เลือกวิธีชำระเงิน'),
         children: <Widget>[
           //Text('จำนวน'),
+          Divider(
+            color: Colors.black,
+          ),
           PayDialogPage(),
           Padding(
             padding: EdgeInsets.all(10),
-          ),
-          Divider(
-            color: Colors.black,
           ),
           SimpleDialogOption(
             onPressed: (){
 
               Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryOrderPage()));
             },
-            child: Text(
-                'ตกลง',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold
+            child: Container(
+                padding: EdgeInsets.all(10),
+                color: Colors.green,
+                alignment: Alignment.center,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                          'ตกลง',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18, fontWeight: FontWeight.bold
+                          )
+                      ),
+                    ),
+                  ],
                 )
             ),
           ),
@@ -450,17 +488,17 @@ class _OrderPageState extends State<OrderPage> {
                             //});
                           },
                           leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                          title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                          title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text('${orders[index]['code']}'),
                               Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
-                                style: TextStyle(fontSize: 18, color: Colors.red),),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.teal),),
                             ],
                           ),
                           trailing: IconButton(
-                              icon: Icon(Icons.list, size: 30,),
+                              icon: Icon(Icons.list, size: 40,),
                               onPressed: (){
                                 _confirmDelShowAlert(orders[index]['id'], orders[index]);
                               }

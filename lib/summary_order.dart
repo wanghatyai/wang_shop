@@ -123,7 +123,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     return showDialog(context: context, builder: (context) {
       return SimpleDialog(
         contentPadding: EdgeInsets.fromLTRB(1, 1, 1, 1),
-        title: Text('เลือกสินค้าแถมตามจำนวนแต้ม\n คุณมี ${freeLimit.toInt()}แต้ม', style: TextStyle(fontSize: 17),),
+        title: Text('เลือกสินค้าแถมตามจำนวนแต้ม\n คุณมี ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 17),),
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width * 0.9,
@@ -304,23 +304,25 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     },
                     textColor: Colors.white,
                     color: Colors.purple,
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: new Text(
-                      "เลือกรายการแถม",
+                      "เลือกสินค้าแถม",
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(3),
                   ),
                   RaisedButton(
                     onPressed: (){
                       viewFreeProductSelect();
                     },
                     textColor: Colors.white,
-                    color: Colors.deepOrange,
-                    padding: const EdgeInsets.all(8.0),
+                    color: Colors.blue,
+                    padding: const EdgeInsets.all(5.0),
                     child: new Text(
-                      "ดูรายการแถมที่เลือก",
+                      "ดูสินค้าแถมที่เลือก",
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
                     ),
                   ),
                   Padding(
@@ -332,9 +334,10 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     },
                     textColor: Colors.white,
                     color: Colors.green,
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: new Text(
                       "ยืนยันการสั่งจอง",
+                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
                     ),
                   ),
                 ],
@@ -354,16 +357,16 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
                       leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                      title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                      title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('${orders[index]['code']}'),
                           Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
-                            style: TextStyle(fontSize: 18, color: Colors.red),),
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.teal),),
                         ],
                       ),
-                      trailing: Text('${formatter.format(priceNowAll[index]*orders[index]['amount'])} บาท'),
+                      trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,
@@ -402,6 +405,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: new Text(
                   "ยืนยันการสั่งจอง",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
                 ),
               ),
               Divider(
@@ -416,16 +420,16 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
                       leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                      title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                      title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('${orders[index]['code']}'),
                           Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
-                            style: TextStyle(fontSize: 18, color: Colors.red),),
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.teal),),
                         ],
                       ),
-                      trailing: Text('${formatter.format(priceNowAll[index]*orders[index]['amount'])} บาท'),
+                      trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,

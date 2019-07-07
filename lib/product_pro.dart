@@ -109,7 +109,7 @@ class _ProductProPageState extends State<ProductProPage> {
                                 MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
                           },
                           leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
-                          title: Text('${productAll[index].productName}', style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                          title: Text('${productAll[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[

@@ -78,6 +78,9 @@ class _HomeState extends State<Home> {
     blocCountOrder = BlocProvider.of(context);
 
     Widget bottomNavBar = BottomNavigationBar(
+        backgroundColor: Colors.blueGrey,
+        fixedColor: Colors.yellow,
+        unselectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: (int index){
@@ -88,19 +91,19 @@ class _HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.assistant_photo),
-            title: Text('โปร')
+            title: Text('โปร', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.monetization_on),
-            title: Text('ขายดี')
+            title: Text('ขายดี', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.fiber_new),
-              title: Text('ใหม่')
+            icon: Icon(Icons.fiber_new),
+            title: Text('ใหม่', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('ค้นหา')
+            title: Text('ค้นหา', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
         ]
     );
@@ -129,7 +132,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.star, color: Colors.amberAccent,),
+            leading: Icon(Icons.star, color: Colors.amberAccent, size: 30,),
             title: Text("สินค้าที่เคยสั่ง", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
@@ -140,7 +143,7 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.view_list, color: Colors.lightGreen),
+            leading: Icon(Icons.view_list, color: Colors.lightGreen, size: 30,),
             title: Text("หมวดสินค้า", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
@@ -152,7 +155,7 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.help, color: Colors.blue,),
+            leading: Icon(Icons.help, color: Colors.blue, size: 30,),
             title: Text("คู่มือการใช้งาน", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){

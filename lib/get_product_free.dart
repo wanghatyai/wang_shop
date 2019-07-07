@@ -172,16 +172,16 @@ class _getProductFreePageState extends State<getProductFreePage> {
                     },
                     contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
                     leading: Image.network('http://www.wangpharma.com/cms/product/${productFree[index].productPic}',fit: BoxFit.cover, width: 70, height: 70,),
-                    title: Text('${productFree[index].productCode}'),
+                    title: Text('${productFree[index].productName}', style: TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('${productFree[index].productName}'),
+                        Text('${productFree[index].productCode}'),
                         Text('${productFree[index].productFreePrice} แต้ม : ${productFree[index].productUnit1}',
-                          style: TextStyle(fontSize: 18, color: Colors.red),),
+                          style: TextStyle(fontSize: 17, color: Colors.red, fontWeight: FontWeight.bold),),
                       ],
                     ),
-                    trailing: Icon(Icons.add, color: Colors.teal, size: 30),
+                    trailing: Icon(Icons.add_circle, color: Colors.teal, size: 30),
                   );
                 },
                 itemCount: productFree != null ? productFree.length : 0,
