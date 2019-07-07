@@ -153,7 +153,7 @@ class _OrderPageState extends State<OrderPage> {
             ),
             Padding(
              padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-             child: Text('${order['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+             child: Text('${order['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
             Padding(
               padding: EdgeInsets.all(5),
