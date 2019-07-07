@@ -312,7 +312,7 @@ class LoginPageState extends State<LoginPage>{
 
                     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                   },
-                  child: Text("แก้ไขปัญหา"),
+                  child: Text("แก้ไขปัญหา", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 )
               ],
             ),

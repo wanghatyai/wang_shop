@@ -131,6 +131,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Divider(color: Colors.black),
                 getProductFreePage(score: freeLimit.toInt()),
                 Padding(
                   padding: EdgeInsets.all(40),
@@ -155,6 +156,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Divider(color: Colors.black),
                 viewProductFreePage(),
                 Padding(
                   padding: EdgeInsets.all(40),
