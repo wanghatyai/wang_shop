@@ -219,6 +219,8 @@ class _productDetailPageState extends State<productDetailPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextFormField(
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18),
                           controller: valAmount,
                           decoration: InputDecoration(
                             filled: true,
