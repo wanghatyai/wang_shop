@@ -102,7 +102,7 @@ class _ProductProPageState extends State<ProductProPage> {
                       controller: _scrollController,
                       itemBuilder: (context, int index){
                         return ListTile(
-                          contentPadding: EdgeInsets.fromLTRB(10, 7, 10, 7),
+                          contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
                           onTap: (){
                             Navigator.push(
                                 context,
@@ -115,6 +115,8 @@ class _ProductProPageState extends State<ProductProPage> {
                             children: <Widget>[
                               Text('${productAll[index].productCode}'),
                               Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                              productAll[index].productProLimit != "" ?
+                                Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
                             ],
                           ),
                           trailing: IconButton(
@@ -137,6 +139,8 @@ class _ProductProPageState extends State<ProductProPage> {
     var unit2;
     var unit3;
 
+    int amount;
+
     if(productFast.productUnit1.toString() != "null"){
       unit1 = productFast.productUnit1.toString();
     }else{
@@ -151,6 +155,16 @@ class _ProductProPageState extends State<ProductProPage> {
       unit3 = productFast.productUnit3.toString();
     }else{
       unit3 = 'NULL';
+    }
+
+    if(productFast.productProLimit != ""){
+
+      if(int.parse(productFast.productProLimit) > 1){
+        amount = int.parse(productFast.productProLimit);
+      }
+
+    }else{
+      amount = 1;
     }
 
     //print('99999-${productFast.productPriceA}');
@@ -171,7 +185,7 @@ class _ProductProPageState extends State<ProductProPage> {
       'priceA': productFast.productPriceA,
       'priceB': productFast.productPriceB,
       'priceC': productFast.productPriceC,
-      'amount': 1,
+      'amount': amount,
       'proStatus': productFast.productProStatus,
     };
 
@@ -191,7 +205,7 @@ class _ProductProPageState extends State<ProductProPage> {
 
     }else{
 
-      var sumAmount = checkOrderUnit[0]['amount'] + 1;
+      var sumAmount = checkOrderUnit[0]['amount'] + amount;
       Map order = {
         'id': checkOrderUnit[0]['id'],
         'unit': checkOrderUnit[0]['unit'],
@@ -207,7 +221,6 @@ class _ProductProPageState extends State<ProductProPage> {
       blocCountOrder.getOrderCount();
 
     }
-
     //Navigator.pushReplacementNamed(context, '/Home');
 
   }

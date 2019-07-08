@@ -18,6 +18,7 @@ class Product{
   final String productPriceC;
   final String productFreePrice;
   final String productProStatus;
+  final String productProLimit;
 
 
   Product({
@@ -37,7 +38,8 @@ class Product{
     this.productPriceB,
     this.productPriceC,
     this.productFreePrice,
-    this.productProStatus
+    this.productProStatus,
+    this.productProLimit
   });
 
   factory Product.fromJson(Map<String, dynamic> json){
@@ -59,6 +61,7 @@ class Product{
       productPriceC: json['priceC'],
       productFreePrice: json['freePrice'],
       productProStatus: json['stype'],
+      productProLimit: json['limit1'],
     );
   }
 
