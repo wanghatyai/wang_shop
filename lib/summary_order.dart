@@ -195,6 +195,40 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     );
   }
 
+  _confirmCheckFreeShowAlert() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ตรวจสอบก่อนยืนยัน'),
+          content: Text('คุณลูกค้า\n *กรุณาเลือกสินค้าแถมถ้ายังไม่ได้เลือก\n\n -แต่ถ้าเลือกสินค้าแถมเรียบร้อยแล้ว\n โปรดกดปุ่ม [ยืนยันส่งรายการ]'),
+          actions: <Widget>[
+            FlatButton(
+              color: Colors.purple,
+              child: Text('เลือกสินค้าแถม', style: TextStyle(fontSize: 18, color: Colors.white),),
+              onPressed: (){
+                getFreeProductSelect();
+                //Navigator.of(context).pop();
+              },
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+            ),
+            FlatButton(
+              color: Colors.green,
+              child: Text('ยืนยันส่งรายการ', style: TextStyle(fontSize: 18, color: Colors.white),),
+              onPressed: (){
+                confirmOrder();
+                //Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   confirmOrder() async{
 
     List pID = [];
@@ -332,7 +366,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   ),
                   RaisedButton(
                     onPressed: (){
-                      confirmOrder();
+                        _confirmCheckFreeShowAlert();
                     },
                     textColor: Colors.white,
                     color: Colors.green,
@@ -345,7 +379,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                 ],
               ),
               Center(
-                child: Text('คุณมี แต้มสมนาคุณ ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 18, color: Colors.purple), ),
+                child: Text('คุณมี แต้มสมนาคุณ ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 18, color: Colors.purple)),
               ),
               Divider(
                 color: Colors.black,
