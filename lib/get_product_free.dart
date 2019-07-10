@@ -178,7 +178,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
                       children: <Widget>[
                         Text('${productFree[index].productCode}'),
                         Text('${productFree[index].productFreePrice} แต้ม : ${productFree[index].productUnit1}',
-                          style: TextStyle(fontSize: 17, color: Colors.red, fontWeight: FontWeight.bold),),
+                          style: TextStyle(fontSize: 15, color: Colors.red, fontWeight: FontWeight.bold),),
                       ],
                     ),
                     trailing: Icon(Icons.add_circle, color: Colors.teal, size: 30),

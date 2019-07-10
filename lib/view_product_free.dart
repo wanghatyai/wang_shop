@@ -55,7 +55,7 @@ class _viewProductFreePageState extends State<viewProductFreePage> {
               children: <Widget>[
                 Text('${ordersFree[index]['code']}'),
                 Text('${ordersFree[index]['freePrice']} แต้ม ${ordersFree[index]['amount']} : ${ordersFree[index]['unit1']}',
-                  style: TextStyle(fontSize: 17, color: Colors.red, fontWeight: FontWeight.bold),),
+                  style: TextStyle(fontSize: 15, color: Colors.red, fontWeight: FontWeight.bold),),
               ],
             ),
             trailing: IconButton(
