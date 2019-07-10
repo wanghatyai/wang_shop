@@ -399,10 +399,10 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                         children: <Widget>[
                           Text('${orders[index]['code']}'),
                           Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.teal),),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
                         ],
                       ),
-                      trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                      trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,
@@ -462,10 +462,10 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                         children: <Widget>[
                           Text('${orders[index]['code']}'),
                           Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.teal),),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
                         ],
                       ),
-                      trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                      trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,
