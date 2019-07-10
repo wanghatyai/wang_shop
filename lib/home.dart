@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
 import 'package:wang_shop/product_new.dart';
+import 'package:wang_shop/product_recom.dart';
 import 'package:wang_shop/product_wish.dart';
 import 'package:wang_shop/product_category.dart';
 import 'package:wang_shop/history.dart';
@@ -69,7 +70,7 @@ class _HomeState extends State<Home> {
   }
 
   int currentIndex = 0;
-  List pages = [ProductProPage(), ProductHotPage(), ProductNewPage(), searchAutoOutPage()];
+  List pages = [ProductProPage(), ProductHotPage(), searchAutoOutPage(), ProductNewPage(), ProductRecomPage()];
 
 
   @override
@@ -78,9 +79,9 @@ class _HomeState extends State<Home> {
     blocCountOrder = BlocProvider.of(context);
 
     Widget bottomNavBar = BottomNavigationBar(
-        backgroundColor: Colors.blueGrey,
-        fixedColor: Colors.yellow,
-        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.white,
+        fixedColor: Colors.green,
+        unselectedItemColor: Colors.black,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: (int index){
@@ -98,12 +99,16 @@ class _HomeState extends State<Home> {
             title: Text('ขายดี', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              title: Text('ค้นหา', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.fiber_new),
             title: Text('ใหม่', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('ค้นหา', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+            icon: Icon(Icons.thumb_up),
+            title: Text('แนะนำ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
         ]
     );
