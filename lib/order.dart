@@ -146,7 +146,21 @@ class _OrderPageState extends State<OrderPage> {
 
     return showDialog(context: context, builder: (context) {
         return SimpleDialog(
-          title: Text('แก้ไขรายการ'),
+          titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 1),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text('แก้ไขรายการ'),
+              FlatButton(
+                color: Colors.red,
+                child: Text('ลบ', style: TextStyle(fontSize: 18, color: Colors.white),),
+                onPressed: (){
+                  showDialogDelConfirm(order['id']);
+                  //Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
           children: <Widget>[
             Divider(
               color: Colors.green,
@@ -215,7 +229,7 @@ class _OrderPageState extends State<OrderPage> {
 
               },
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.fromLTRB(1, 10, 1, 10),
                 color: Colors.green,
                 alignment: Alignment.center,
                 child: Row(
@@ -337,7 +351,7 @@ class _OrderPageState extends State<OrderPage> {
     });
   }
 
-  void _confirmDelShowAlert(int id, valProduct) async {
+  /*void _confirmDelShowAlert(int id, valProduct) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
@@ -367,7 +381,7 @@ class _OrderPageState extends State<OrderPage> {
         );
       },
     );
-  }
+  }*/
 
   showDialogDelConfirm(id) {
     // flutter defined function
@@ -418,13 +432,13 @@ class _OrderPageState extends State<OrderPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text('รายการสินค้า'),
+        title: Text('สินค้าในรถเข็น'),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               icon: Stack(
                 children: <Widget>[
-                  Icon(Icons.shopping_basket, size: 40,),
+                  Icon(Icons.shopping_cart, size: 40,),
                   Positioned(
                     right: 0,
                     child: Container(
@@ -494,13 +508,14 @@ class _OrderPageState extends State<OrderPage> {
                             children: <Widget>[
                               Text('${orders[index]['code']}'),
                               Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.teal),),
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
                             ],
                           ),
                           trailing: IconButton(
                               icon: Icon(Icons.list, size: 40,),
                               onPressed: (){
-                                _confirmDelShowAlert(orders[index]['id'], orders[index]);
+                                //_confirmDelShowAlert(orders[index]['id'], orders[index]);
+                                editOrderDialog(orders[index], 0);
                               }
                           ),
                       );
