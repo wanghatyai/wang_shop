@@ -147,7 +147,8 @@ class _productDetailPageState extends State<productDetailPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text(widget.product.productName.toString()),
+        //title: Text(widget.product.productName.toString()),
+        title: Text("รายละเอียดสินค้า"),
         actions: <Widget>[
           /*IconButton(
               icon: Icon(Icons.shopping_cart),
