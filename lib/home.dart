@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
     Widget bottomNavBar = BottomNavigationBar(
         backgroundColor: Colors.white,
         fixedColor: Colors.green,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.blueGrey,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: (int index){
