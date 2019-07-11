@@ -68,8 +68,6 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
           }
 
 
-
-
         if(order['unitStatus'] == 1){
 
           sumAmount = sumAmount + ((priceCredit * order['unitQty3']) * order['amount']);
