@@ -61,12 +61,16 @@ class _OrderPageState extends State<OrderPage> {
 
     res.forEach((order) {
 
-      if(userCredit == 'A'){
+      if(order['proStatus'] == 2){
         priceCredit = order['priceA'];
-      }else if(userCredit == 'B'){
-        priceCredit = order['priceB'];
-      }else{
-        priceCredit = order['priceC'];
+      }else {
+        if (userCredit == 'A') {
+          priceCredit = order['priceA'];
+        } else if (userCredit == 'B') {
+          priceCredit = order['priceB'];
+        } else {
+          priceCredit = order['priceC'];
+        }
       }
 
 
