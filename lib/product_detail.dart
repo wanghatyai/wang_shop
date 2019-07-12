@@ -147,7 +147,8 @@ class _productDetailPageState extends State<productDetailPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text(widget.product.productName.toString()),
+        //title: Text(widget.product.productName.toString()),
+        title: Text("รายละเอียดสินค้า"),
         actions: <Widget>[
           /*IconButton(
               icon: Icon(Icons.shopping_cart),
@@ -190,30 +191,37 @@ class _productDetailPageState extends State<productDetailPage> {
                   //Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
                   Text("รหัสสินค้า : ${widget.product.productCode}",
                     style: TextStyle(
-                        fontSize: 20
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
-                  Text("barcode : ${widget.product.productBarcode}",
+                  Text("ชื่อไทย : ${widget.product.productName}",
                     style: TextStyle(
-                        fontSize: 17
+                        fontSize: 18,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
 
-                  Text("ชื่อไทย : ${widget.product.productName}",
+                  Text("Barcode : ${widget.product.productBarcode}",
                     style: TextStyle(
-                        fontSize: 17
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
 
                   Text("ชื่ออังกฤษ : ${widget.product.productNameENG}",
                     style: TextStyle(
-                        fontSize: 17
+                        fontSize: 17,
+                        color: Colors.blue
                     ),
                   ),
                   Row(
                     children: <Widget>[
                       Expanded(
                         child: TextFormField(
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18),
                           controller: valAmount,
                           decoration: InputDecoration(
                             filled: true,
@@ -345,6 +353,7 @@ class _productDetailPageState extends State<productDetailPage> {
       'priceB': widget.product.productPriceB,
       'priceC': widget.product.productPriceC,
       'amount': valAmount.text,
+      'proStatus': widget.product.productProStatus,
     };
 
     var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);

@@ -47,19 +47,19 @@ class _viewProductFreePageState extends State<viewProductFreePage> {
         //),
         itemBuilder: (context, int index){
           return ListTile(
-            //contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+            contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
             leading: Image.network('http://www.wangpharma.com/cms/product/${ordersFree[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-            title: Text('${ordersFree[index]['code']}'),
+            title: Text('${ordersFree[index]['name']}', style: TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('${ordersFree[index]['name']}'),
+                Text('${ordersFree[index]['code']}'),
                 Text('${ordersFree[index]['freePrice']} แต้ม ${ordersFree[index]['amount']} : ${ordersFree[index]['unit1']}',
-                  style: TextStyle(fontSize: 18, color: Colors.red),),
+                  style: TextStyle(fontSize: 15, color: Colors.red, fontWeight: FontWeight.bold),),
               ],
             ),
             trailing: IconButton(
-                icon: Icon(Icons.maximize, color: Colors.red),
+                icon: Icon(Icons.remove_circle, color: Colors.red, size: 30),
                 onPressed: (){
                   removeOrderFree(ordersFree[index]['id']);
                 }

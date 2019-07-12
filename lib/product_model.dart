@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class Product{
   final String productId;
   final String productName;
@@ -17,6 +18,8 @@ class Product{
   final String productPriceB;
   final String productPriceC;
   final String productFreePrice;
+  final String productProStatus;
+  final String productProLimit;//add comment limit order
 
 
   Product({
@@ -35,7 +38,9 @@ class Product{
     this.productPriceA,
     this.productPriceB,
     this.productPriceC,
-    this.productFreePrice
+    this.productFreePrice,
+    this.productProStatus,
+    this.productProLimit
   });
 
   factory Product.fromJson(Map<String, dynamic> json){
@@ -56,6 +61,8 @@ class Product{
       productPriceB: json['priceB'],
       productPriceC: json['priceC'],
       productFreePrice: json['freePrice'],
+      productProStatus: json['stype'],
+      productProLimit: json['limit1'],
     );
   }
 

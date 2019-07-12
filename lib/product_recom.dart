@@ -12,12 +12,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
-class ProductNewPage extends StatefulWidget {
+class ProductRecomPage extends StatefulWidget {
   @override
-  _ProductNewPageState createState() => _ProductNewPageState();
+  _ProductRecomPageState createState() => _ProductRecomPageState();
 }
 
-class _ProductNewPageState extends State<ProductNewPage> {
+class _ProductRecomPageState extends State<ProductRecomPage> {
 
   BlocCountOrder blocCountOrder;
 
@@ -29,7 +29,7 @@ class _ProductNewPageState extends State<ProductNewPage> {
   List <Product>productAll = [];
   bool isLoading = true;
   int perPage = 30;
-  String act = "New";
+  String act = "RM";
 
   //var product;
 
@@ -53,7 +53,6 @@ class _ProductNewPageState extends State<ProductNewPage> {
         return productAll;
 
       });
-
 
     }else{
       throw Exception('Failed load Json');
@@ -115,7 +114,7 @@ class _ProductNewPageState extends State<ProductNewPage> {
                 Text('${productAll[index].productCode}'),
                 Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
                 productAll[index].productProLimit != "" ?
-                  Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
+                Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
               ],
             ),
             trailing: IconButton(
@@ -216,7 +215,6 @@ class _ProductNewPageState extends State<ProductNewPage> {
       await databaseHelper.updateOrder(order);
 
       showToastAddFast();
-
 
       //add notify order
       blocCountOrder.getOrderCount();

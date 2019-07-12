@@ -148,6 +148,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
            Container(
              //padding: EdgeInsets.all(10),
              child: ListTile(
+               contentPadding: EdgeInsets.all(1),
                leading: IconButton(
                    icon: Icon(Icons.center_focus_strong, color: Colors.red, size: 30,),
                    onPressed: (){
@@ -162,7 +163,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                  ),
                ),
                trailing: IconButton(
-                   icon: Icon(Icons.cancel),
+                   icon: Icon(Icons.cancel, color: Colors.red, size: 30,),
                    onPressed: (){
                      controller.clear();
                    }
@@ -178,21 +179,23 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                itemBuilder: (context, i){
                  final a = _product[i];
                  return ListTile(
-                   contentPadding: EdgeInsets.fromLTRB(10, 7, 10, 7),
+                   contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
                    onTap: (){
 
                    },
                    leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                   title: Text('${a.productName}', style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                   title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                    subtitle: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: <Widget>[
                        Text('${a.productCode}'),
-                       Text('${a.productNameENG}', style: TextStyle(color: Colors.blue),),
+                       Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                       a.productProLimit != "" ?
+                        Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
                      ],
                    ),
                    trailing: IconButton(
-                       icon: Icon(Icons.shopping_basket, color: Colors.teal, size: 30,),
+                       icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
                        onPressed: (){
                          addToOrderFast(a);
                        }
@@ -213,6 +216,8 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
     var unit2;
     var unit3;
 
+    int amount;
+
     if(productFast.productUnit1.toString() != "null"){
       unit1 = productFast.productUnit1.toString();
     }else{
@@ -227,6 +232,16 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       unit3 = productFast.productUnit3.toString();
     }else{
       unit3 = 'NULL';
+    }
+
+    if(productFast.productProLimit != ""){
+
+      if(int.parse(productFast.productProLimit) > 1){
+        amount = int.parse(productFast.productProLimit);
+      }
+
+    }else{
+      amount = 1;
     }
 
     Map order = {
@@ -245,7 +260,8 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       'priceA': productFast.productPriceA,
       'priceB': productFast.productPriceB,
       'priceC': productFast.productPriceC,
-      'amount': 1,
+      'amount': amount,
+      'proStatus': productFast.productProStatus,
     };
 
     var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);
@@ -265,7 +281,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
     }else{
 
-      var sumAmount = checkOrderUnit[0]['amount'] + 1;
+      var sumAmount = checkOrderUnit[0]['amount'] + amount;
       Map order = {
         'id': checkOrderUnit[0]['id'],
         'unit': checkOrderUnit[0]['unit'],

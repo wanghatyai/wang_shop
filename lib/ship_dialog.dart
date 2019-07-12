@@ -85,7 +85,7 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             },
           ),
           RadioListTile(
-            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(รถตู้)'),
+            title: Text('ร้านวังจัดส่งให้โดยฝาก(รถตู้)'),
             activeColor: Colors.green,
             value: 3,
             groupValue: selectedRadioTileShip,
@@ -96,7 +96,7 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             },
           ),
           RadioListTile(
-            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(Taxi)'),
+            title: Text('ร้านวังจัดส่งให้โดยฝาก(Taxi)'),
             activeColor: Colors.green,
             value: 4,
             groupValue: selectedRadioTileShip,
@@ -106,7 +106,7 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             },
           ),
           RadioListTile(
-            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(รถทัวร์)'),
+            title: Text('ร้านวังจัดส่งให้โดยฝาก(รถทัวร์)'),
             activeColor: Colors.green,
             value: 2,
             groupValue: selectedRadioTileShip,
@@ -116,7 +116,7 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             },
           ),
           RadioListTile(
-            title: Text('ทางร้านวังจัดส่งให้โดยฝาก(ขนส่งอื่นๆ)'),
+            title: Text('ร้านวังจัดส่งให้โดยฝาก(ขนส่งอื่นๆ)'),
             activeColor: Colors.green,
             value: 5,
             groupValue: selectedRadioTileShip,
