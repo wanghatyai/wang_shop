@@ -45,7 +45,7 @@ class _ProductNewPageState extends State<ProductNewPage> {
         var jsonData = json.decode(res.body);
 
         jsonData.forEach((products) => productAll.add(Product.fromJson(products)));
-        perPage = productAll.length;
+        perPage = perPage + 30;
 
         print(productAll);
         print(productAll.length);

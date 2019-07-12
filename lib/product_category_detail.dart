@@ -59,7 +59,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
         var jsonData = json.decode(res.body);
 
         jsonData.forEach((products) => _product.add(Product.fromJson(products)));
-        perPage = _product.length;
+        perPage = perPage + 30;
 
         print(_product);
         return _product;
