@@ -36,6 +36,8 @@ class _ProductProPageState extends State<ProductProPage> {
 
   getProduct() async{
 
+    print(perPage);
+
     final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
 
     if(res.statusCode == 200){
@@ -46,10 +48,10 @@ class _ProductProPageState extends State<ProductProPage> {
         var jsonData = json.decode(res.body);
 
         jsonData.forEach((products) => productAll.add(Product.fromJson(products)));
-        perPage = productAll.length;
+        perPage = perPage + 30;
 
         print(productAll);
-        print(productAll.length);
+        print(perPage);
 
         return productAll;
 
