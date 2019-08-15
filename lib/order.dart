@@ -670,7 +670,7 @@ class _OrderPageState extends State<OrderPage> {
                         editOrderDialog(orders[index], 0);
                         //});
                       },
-                      leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                      leading: Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
                       title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -712,7 +712,7 @@ class _OrderPageState extends State<OrderPage> {
                         //context,
                         //MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
                       },
-                      leading: Image.network('http://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
+                      leading: Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
                       title: Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

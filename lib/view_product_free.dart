@@ -48,7 +48,7 @@ class _viewProductFreePageState extends State<viewProductFreePage> {
         itemBuilder: (context, int index){
           return ListTile(
             contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-            leading: Image.network('http://www.wangpharma.com/cms/product/${ordersFree[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+            leading: Image.network('https://www.wangpharma.com/cms/product/${ordersFree[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
             title: Text('${ordersFree[index]['name']}', style: TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

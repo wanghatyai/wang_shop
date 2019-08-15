@@ -48,7 +48,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
 
     //_product.clear();
 
-    final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&SearchVal=${widget.catValue}&act=SearchCat');
+    final res = await http.get('https://wangpharma.com/API/product.php?PerPage=$perPage&SearchVal=${widget.catValue}&act=SearchCat');
 
     if(res.statusCode == 200){
 
@@ -171,7 +171,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
                     onTap: (){
 
                     },
-                    leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
+                    leading: Image.network('https://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
                     title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

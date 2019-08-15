@@ -103,7 +103,7 @@ class LoginPageState extends State<LoginPage>{
 
   _doLogin() async{
     final response = await http.post(
-      'http://wangpharma.com/API/login.php',
+      'https://wangpharma.com/API/login.php',
       body: {'usr': ctrlUser.text, 'pss': ctrlPass.text});
 
     if(response.statusCode == 200){

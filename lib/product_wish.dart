@@ -41,7 +41,7 @@ class _ProductWishPageState extends State<ProductWishPage> {
     var userID = resUser[0]['idUser'];
     userName = resUser[0]['name'];
 
-    final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act&userID=$userID');
+    final res = await http.get('https://wangpharma.com/API/product.php?PerPage=$perPage&act=$act&userID=$userID');
 
     if(res.statusCode == 200){
 
@@ -154,7 +154,7 @@ class _ProductWishPageState extends State<ProductWishPage> {
                   context,
                   MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
             },
-            leading: Image.network('http://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70),
+            leading: Image.network('https://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70),
             title: Text('${productAll[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

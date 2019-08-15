@@ -26,7 +26,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
 
   getProduct() async{
 
-    final res = await http.get('http://wangpharma.com/API/product.php?Score=${widget.score}&act=Free');
+    final res = await http.get('https://wangpharma.com/API/product.php?Score=${widget.score}&act=Free');
 
     if(res.statusCode == 200){
 
@@ -171,7 +171,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
                       });
                     },
                     contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                    leading: Image.network('http://www.wangpharma.com/cms/product/${productFree[index].productPic}',fit: BoxFit.cover, width: 70, height: 70,),
+                    leading: Image.network('https://www.wangpharma.com/cms/product/${productFree[index].productPic}',fit: BoxFit.cover, width: 70, height: 70,),
                     title: Text('${productFree[index].productName}', style: TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

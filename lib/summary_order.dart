@@ -262,7 +262,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
     userID = resUser[0]['idUser'];
 
-    var url = 'http://wangpharma.com/API/confirm.php';
+    var url = 'https://wangpharma.com/API/confirm.php';
 
     Map<String, dynamic> data = {
       'pIDc': pID,
@@ -390,7 +390,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   itemBuilder: (context, int index){
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                      leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                      leading: Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
                       title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -453,7 +453,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   itemBuilder: (context, int index){
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                      leading: Image.network('http://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                      leading: Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
                       title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
