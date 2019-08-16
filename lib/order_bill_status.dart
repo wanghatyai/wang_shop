@@ -92,7 +92,7 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("${userName}"),
+        title: Text("สถานะรายการ"),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -154,7 +154,7 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
               ],
             ),
             trailing: IconButton(
-                icon: Icon(Icons.view_list, color: Colors.yellow, size: 40,),
+                icon: Icon(Icons.view_list, color: Colors.purple, size: 40,),
                 onPressed: (){
                   //addToOrderFast(productAll[index]);
                 }
