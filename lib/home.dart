@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.view_list, color: Colors.lightGreen, size: 30,),
+            leading: Icon(Icons.category, color: Colors.deepOrange, size: 30,),
             title: Text("หมวดสินค้า", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
@@ -156,6 +156,18 @@ class _HomeState extends State<Home> {
                 context,
                 MaterialPageRoute(builder: (context) => ProductCategoryPage()),
               );
+
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.view_list, color: Colors.lightGreen, size: 30,),
+            title: Text("รายการที่เคยสั่ง", style: TextStyle(fontSize: 17)),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: (){
+              /*Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProductCategoryPage()),
+              );*/
 
             },
           ),
