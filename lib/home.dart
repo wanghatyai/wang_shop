@@ -19,6 +19,8 @@ import 'package:wang_shop/search.dart';
 import 'package:wang_shop/search_auto.dart';
 import 'package:wang_shop/search_auto_out.dart';
 
+import 'package:wang_shop/order_bill_status.dart';
+
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
@@ -161,13 +163,13 @@ class _HomeState extends State<Home> {
           ),
           ListTile(
             leading: Icon(Icons.view_list, color: Colors.lightGreen, size: 30,),
-            title: Text("รายการที่เคยสั่ง", style: TextStyle(fontSize: 17)),
+            title: Text("สถานะรายการ", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
-              /*Navigator.push(
+              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProductCategoryPage()),
-              );*/
+                MaterialPageRoute(builder: (context) => OrderBillStatusPage()),
+              );
 
             },
           ),
