@@ -102,6 +102,9 @@ class LoginPageState extends State<LoginPage>{
   }*/
 
   _doLogin() async{
+
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final response = await http.post(
       'https://wangpharma.com/API/login.php',
       body: {'usr': ctrlUser.text, 'pss': ctrlPass.text});
@@ -111,6 +114,8 @@ class LoginPageState extends State<LoginPage>{
       //print(jsonResponse['error']);
 
       if(jsonResponse['error']=='0'){
+
+        //prefs.setString("IDuser", jsonResponse['iduser']);
         
         Map user = {
           'idUser': jsonResponse['iduser'],
