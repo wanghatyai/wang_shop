@@ -19,6 +19,8 @@ import 'package:wang_shop/search.dart';
 import 'package:wang_shop/search_auto.dart';
 import 'package:wang_shop/search_auto_out.dart';
 
+import 'package:wang_shop/order_bill_status.dart';
+
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
@@ -148,13 +150,25 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.view_list, color: Colors.lightGreen, size: 30,),
+            leading: Icon(Icons.category, color: Colors.deepOrange, size: 30,),
             title: Text("หมวดสินค้า", style: TextStyle(fontSize: 17)),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ProductCategoryPage()),
+              );
+
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.view_list, color: Colors.lightGreen, size: 30,),
+            title: Text("สถานะรายการ", style: TextStyle(fontSize: 17)),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OrderBillStatusPage()),
               );
 
             },

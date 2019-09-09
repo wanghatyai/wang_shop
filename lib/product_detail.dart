@@ -46,7 +46,7 @@ class _productDetailPageState extends State<productDetailPage> {
 
   getProductImg()async{
 
-    final res = await http.get('http://wangpharma.com/API/getImgAll.php?proCodeImg=${widget.product.productCode}');
+    final res = await http.get('https://wangpharma.com/API/getImgAll.php?proCodeImg=${widget.product.productCode}');
 
     //var defaultImg = {'src': 'http://www.wangpharma.com/cms/product/${widget.product.productPic}'};
 

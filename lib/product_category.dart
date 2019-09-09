@@ -41,7 +41,7 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
     var resUser = await databaseHelper.getList();
     userName = resUser[0]['name'];
 
-    final res = await http.get('http://wangpharma.com/API/product.php?act=Cat');
+    final res = await http.get('https://wangpharma.com/API/product.php?act=Cat');
 
     if(res.statusCode == 200){
 
