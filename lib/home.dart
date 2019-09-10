@@ -24,6 +24,8 @@ import 'package:wang_shop/order_bill_status.dart';
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 class Home extends StatefulWidget {
 
@@ -34,6 +36,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   BlocCountOrder blocCountOrder;
 
@@ -69,6 +73,26 @@ class _HomeState extends State<Home> {
   void initState(){
     super.initState();
     getUser();
+    setupNotif();
+  }
+
+  setupNotif() async {
+    _firebaseMessaging.getToken().then((token){
+      print(token);
+    });
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> msg) async {
+        print(msg);
+      },
+      onResume: (Map<String, dynamic> msg) async {
+        print(msg);
+      },
+      onLaunch: (Map<String, dynamic> msg) async {
+        print(msg);
+      },
+
+    );
   }
 
   int currentIndex = 0;
