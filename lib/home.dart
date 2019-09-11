@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:wang_shop/member.dart';
 import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
 import 'package:wang_shop/product_new.dart';
@@ -96,7 +97,7 @@ class _HomeState extends State<Home> {
   }
 
   int currentIndex = 0;
-  List pages = [ProductProPage(), ProductHotPage(), searchAutoOutPage(), ProductNewPage(), ProductRecomPage()];
+  List pages = [ProductProPage(), ProductHotPage(), ProductNewPage(), ProductRecomPage(), MemberPage()];
 
 
   @override
@@ -125,16 +126,16 @@ class _HomeState extends State<Home> {
             title: Text('ขายดี', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              title: Text('ค้นหา', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.fiber_new),
             title: Text('ใหม่', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.thumb_up),
             title: Text('แนะนำ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              title: Text('ลูกค้า', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
         ]
     );
@@ -212,7 +213,27 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("${name}"),
+        //title: Text("${name}"),
+        title: Container(
+          height: 40,
+          color: Colors.green,
+          child: TextField(
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              prefixIcon: Icon(
+                Icons.search,
+              ),
+              hintText: 'ค้นหา',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+            ),
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+            },
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -253,7 +274,7 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      drawer: drawer,
+      //drawer: drawer,
       body: pages[currentIndex],
       bottomNavigationBar: bottomNavBar,
     );
