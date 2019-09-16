@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:wang_shop/home_new.dart';
 import 'package:wang_shop/member.dart';
 import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
@@ -20,12 +21,14 @@ import 'package:wang_shop/search.dart';
 import 'package:wang_shop/search_auto.dart';
 import 'package:wang_shop/search_auto_out.dart';
 
+
 import 'package:wang_shop/order_bill_status.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 
 class Home extends StatefulWidget {
@@ -97,7 +100,8 @@ class _HomeState extends State<Home> {
   }
 
   int currentIndex = 0;
-  List pages = [ProductProPage(), ProductHotPage(), ProductNewPage(), ProductRecomPage(), MemberPage()];
+  //List pages = [HomeNewPage(), ProductHotPage(), ProductNewPage(), ProductRecomPage(), MemberPage()];
+  List pages = [HomeNewPage(), ProductHotPage(), ProductNewPage(), MemberPage()];
 
 
   @override
@@ -118,21 +122,21 @@ class _HomeState extends State<Home> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.assistant_photo),
-            title: Text('โปร', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+            icon: Icon(Icons.home),
+            title: Text('หน้าหลัก', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.monetization_on),
-            title: Text('ขายดี', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+            icon: Icon(Icons.rss_feed),
+            title: Text('ข่าวสาร', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.fiber_new),
-            title: Text('ใหม่', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+            icon: Icon(Icons.playlist_add_check),
+            title: Text('รายการ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
-          BottomNavigationBarItem(
+          /*BottomNavigationBarItem(
             icon: Icon(Icons.thumb_up),
             title: Text('แนะนำ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-          ),
+          ),*/
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
               title: Text('ลูกค้า', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
