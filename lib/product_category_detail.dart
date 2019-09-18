@@ -113,7 +113,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("${widget.catName}"),
+        title: Text('${widget.catName}'),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
