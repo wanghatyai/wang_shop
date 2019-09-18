@@ -101,7 +101,7 @@ class _ProductWishPageState extends State<ProductWishPage> {
     blocCountOrder = BlocProvider.of(context);
 
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text("${userName}"),
         actions: <Widget>[
@@ -142,7 +142,7 @@ class _ProductWishPageState extends State<ProductWishPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
               })
         ],
-      ),
+      ),*/
       body: isLoading ? CircularProgressIndicator()
           :ListView.builder(
         controller: _scrollController,
