@@ -146,7 +146,7 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
                     trailing: IconButton(
                         icon: Icon(Icons.view_list, color: Colors.teal, size: 40,),
                         onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCategoryDetailPage(catValue: a['code'],)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCategoryDetailPage(catValue: a['code'], catName: a['name'],)));
                         }
                     ),
                   );
