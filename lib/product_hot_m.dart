@@ -86,6 +86,8 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
     return Scaffold(
       body: isLoading ? CircularProgressIndicator()
           :GridView.builder(
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
         //controller: _scrollController,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (context, int index){
