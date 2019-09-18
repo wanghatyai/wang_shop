@@ -21,6 +21,8 @@ import 'package:wang_shop/search.dart';
 import 'package:wang_shop/search_auto.dart';
 import 'package:wang_shop/search_auto_out.dart';
 
+import 'package:wang_shop/news.dart';
+
 
 import 'package:wang_shop/order_bill_status.dart';
 
@@ -101,7 +103,7 @@ class _HomeState extends State<Home> {
 
   int currentIndex = 0;
   //List pages = [HomeNewPage(), ProductHotPage(), ProductNewPage(), ProductRecomPage(), MemberPage()];
-  List pages = [HomeNewPage(), ProductHotPage(), ProductNewPage(), MemberPage()];
+  List pages = [HomeNewPage(), NewsPage(), ProductWishPage(), MemberPage()];
 
 
   @override
