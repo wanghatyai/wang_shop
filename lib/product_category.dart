@@ -83,7 +83,7 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("${userName}"),
+        title: Text("หมวดสินค้า"),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
