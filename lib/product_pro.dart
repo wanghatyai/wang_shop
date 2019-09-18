@@ -7,6 +7,9 @@ import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/product_detail.dart';
 
+import 'package:wang_shop/order.dart';
+import 'package:wang_shop/search_auto_out.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
@@ -99,6 +102,61 @@ class _ProductProPageState extends State<ProductProPage> {
     blocCountOrder = BlocProvider.of(context);
 
       return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green,
+          title: Text("สินค้าโปรโมชั่น"),
+          actions: <Widget>[
+            IconButton(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                icon: Stack(
+                  children: <Widget>[
+                    Icon(Icons.search, size: 40,),
+                  ],
+                ),
+                onPressed: (){
+                  //Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+                }
+            ),
+            IconButton(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                icon: Stack(
+                  children: <Widget>[
+                    Icon(Icons.shopping_cart, size: 40,),
+                    Positioned(
+                      right: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 20,
+                          minHeight: 20,
+                        ),
+                        child: StreamBuilder(
+                          initialData: blocCountOrder.countOrder,
+                          stream: blocCountOrder.counterStream,
+                          builder: (BuildContext context, snapshot) => Text(
+                            '${snapshot.data}',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
+                }
+            ),
+          ],
+        ),
         body: isLoading ? CircularProgressIndicator()
             :ListView.builder(
                       controller: _scrollController,
