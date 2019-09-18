@@ -121,7 +121,7 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
                                 child: IconButton(
                                     icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 30,),
                                     onPressed: (){
-                                      //addToOrderFast(productTop[index]);
+                                      addToOrderFast(productTop[index]);
                                     }
                                 ),
                               )
@@ -141,5 +141,99 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
 
 
     );
+  }
+
+  addToOrderFast(productFast) async{
+
+    var unit1;
+    var unit2;
+    var unit3;
+
+    int amount;
+
+    if(productFast.productUnit1.toString() != "null"){
+      unit1 = productFast.productUnit1.toString();
+    }else{
+      unit1 = 'NULL';
+    }
+    if(productFast.productUnit2.toString() != "null"){
+      unit2 = productFast.productUnit2.toString();
+    }else{
+      unit2 = 'NULL';
+    }
+    if(productFast.productUnit3.toString() != "null"){
+      unit3 = productFast.productUnit3.toString();
+    }else{
+      unit3 = 'NULL';
+    }
+
+    if(productFast.productProLimit != ""){
+
+      if(int.parse(productFast.productProLimit) > 1){
+        amount = int.parse(productFast.productProLimit);
+      }
+
+    }else{
+      amount = 1;
+    }
+
+    //print('99999-${productFast.productPriceA}');
+
+    Map order = {
+      'productID': productFast.productId.toString(),
+      'code': productFast.productCode.toString(),
+      'name': productFast.productName.toString(),
+      'pic': productFast.productPic.toString(),
+      'unit': productFast.productUnit1.toString(),
+      'unitStatus': 1,
+      'unit1': unit1,
+      'unitQty1': productFast.productUnitQty1,
+      'unit2': unit2,
+      'unitQty2': productFast.productUnitQty2,
+      'unit3': unit3,
+      'unitQty3': productFast.productUnitQty3,
+      'priceA': productFast.productPriceA,
+      'priceB': productFast.productPriceB,
+      'priceC': productFast.productPriceC,
+      'amount': amount,
+      'proStatus': productFast.productProStatus,
+    };
+
+    var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);
+
+    //print(checkOrderUnit.isEmpty);
+
+    if(checkOrderUnit.isEmpty){
+
+      //print(order);
+      await databaseHelper.saveOrder(order);
+
+      showToastAddFast();
+
+      //add notify order
+      blocCountOrder.getOrderCount();
+
+    }else{
+
+      var sumAmount = checkOrderUnit[0]['amount'] + amount;
+      Map order = {
+        'id': checkOrderUnit[0]['id'],
+        'unit': checkOrderUnit[0]['unit'],
+        'unitStatus': 1,
+        'amount': sumAmount,
+      };
+
+      await databaseHelper.updateOrder(order);
+
+      showToastAddFast();
+
+
+      //add notify order
+      blocCountOrder.getOrderCount();
+
+    }
+
+    //Navigator.pushReplacementNamed(context, '/Home');
+
   }
 }
