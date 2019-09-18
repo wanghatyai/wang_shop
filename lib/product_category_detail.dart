@@ -18,8 +18,9 @@ import 'package:wang_shop/bloc_count_order.dart';
 class ProductCategoryDetailPage extends StatefulWidget {
 
   final String catValue;
+  final String catName;
 
-  ProductCategoryDetailPage({Key key, this.catValue}) : super (key: key);
+  ProductCategoryDetailPage({Key key, this.catValue, this.catName}) : super (key: key);
 
   @override
   _ProductCategoryDetailPageState createState() => _ProductCategoryDetailPageState();
@@ -112,7 +113,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("${userName}"),
+        title: Text("${widget.catName}"),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
