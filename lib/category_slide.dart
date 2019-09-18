@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:wang_shop/product_pro.dart';
+import 'package:wang_shop/product_hot.dart';
+import 'package:wang_shop/product_new.dart';
+import 'package:wang_shop/product_recom.dart';
+import 'package:wang_shop/product_category.dart';
+
 class CategorySlidePage extends StatefulWidget {
   @override
   _CategorySlidePageState createState() => _CategorySlidePageState();
@@ -16,6 +22,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
         children: <Widget>[
           InkWell(
             onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProductProPage()));
               print('โปร');
             },
             child: Container(
@@ -30,6 +37,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
           ),
           InkWell(
               onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductHotPage()));
                 print('ขายดี');
               },
               child: Container(
@@ -44,6 +52,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
           ),
           InkWell(
               onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductNewPage()));
                 print('ใหม่');
               },
               child: Container(
@@ -58,6 +67,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
           ),
           InkWell(
               onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductRecomPage()));
                 print('แนะนำ');
               },
               child: Container(
@@ -86,6 +96,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
           ),
           InkWell(
               onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCategoryPage()));
                 print('หมวดหมู่');
               },
               child: Container(
