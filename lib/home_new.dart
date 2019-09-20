@@ -43,7 +43,7 @@ class _HomeNewPageState extends State<HomeNewPage> {
                 child: Text('/// สินค้าขายดีประจำเดือน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
               ),
               Container(
-                height: 1030,
+                height: 1050,
                 child: ProductHotMonthPage(),
               ),
               PromotionSlidePage(),
