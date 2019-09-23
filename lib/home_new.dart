@@ -46,6 +46,10 @@ class _HomeNewPageState extends State<HomeNewPage> {
                 height: 1050,
                 child: ProductHotMonthPage(),
               ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text('/// โปรโมชั่นพิเศษ ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+              ),
               PromotionSlidePage(),
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
