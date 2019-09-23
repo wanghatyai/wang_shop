@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'package:wang_shop/database_helper.dart';
+import 'package:wang_shop/member_model.dart';
+
+
 
 class MemberPage extends StatefulWidget {
   @override
@@ -10,40 +16,43 @@ class _MemberPageState extends State<MemberPage> {
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
-  var userName;
+  var userID;
+
+  List <Member>memberAll = [];
+  bool isLoading = true;
+  int perPage = 30;
+  String act = "Member";
 
   getUser() async{
 
     var resUser = await databaseHelper.getList();
     setState(() {
-      userName = resUser[0]['name'];
+      userID = resUser[0]['idUser'];
     });
 
-    print(userName);
+    print(userID);
 
-    /*final res = await http.get('https://wangpharma.com/API/product.php?act=Cat');
+    final res = await http.get('https://wangpharma.com/API/member.php?userID=$userID&act=$act');
 
     if(res.statusCode == 200){
 
       setState(() {
+        isLoading = false;
 
-        var jsonDataCat = json.decode(res.body);
+        var jsonData = json.decode(res.body);
 
-        jsonDataCat.forEach((category) {
-          categoryAll.add(category);
-          categoryNameAll.add(category['name']);
+        jsonData.forEach((products) => memberAll.add(Member.fromJson(products)));
 
-          categoryCodeAll.add(category['code']);
-        });
+        print(memberAll);
 
-        print(categoryCodeAll);
-        return categoryAll;
+        return memberAll;
 
       });
 
+
     }else{
       throw Exception('Failed load Json');
-    }*/
+    }
 
   }
 
@@ -57,72 +66,74 @@ class _MemberPageState extends State<MemberPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 120,
-            decoration: BoxDecoration(
-              color: Colors.green
-            ),
-            child: Column(
+      body: isLoading
+          ? CircularProgressIndicator()
+          : Column(
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.account_circle, size: 60, color: Colors.white,),
-                      Text('${userName}', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),
-                    ],
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.green
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                  child: Text('ที่อยู่ร้าน : **************', style: TextStyle(color: Colors.white)),
-                )
-              ],
-            ),
-          ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Icon(Icons.beenhere, size: 40,),
-                          Text('ยืนยันรายการ')
-                        ],
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.account_circle, size: 60, color: Colors.white,),
+                            Text('${memberAll[0].memberName}', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),
+                          ],
+                        ),
                       ),
-                      Column(
-                        children: <Widget>[
-                          Icon(Icons.check_circle, size: 40,),
-                          Text('เตรียมจัดส่ง')
-                        ],
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Icon(Icons.local_shipping, size: 40,),
-                          Text('ระหว่างขนส่ง')
-                        ],
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Icon(Icons.comment, size: 40,),
-                          Text('ข้อเสนอแนะ')
-                        ],
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        child: Text('ที่อยู่ร้าน : ${memberAll[0].memberAddress}', style: TextStyle(color: Colors.white)),
                       )
                     ],
                   ),
                 ),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Icon(Icons.beenhere, size: 40, color: Colors.grey,),
+                                Text('ยืนยันรายการ')
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(Icons.check_circle, size: 40, color: Colors.grey,),
+                                Text('เตรียมจัดส่ง')
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(Icons.local_shipping, size: 40, color: Colors.grey,),
+                                Text('ระหว่างขนส่ง')
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(Icons.comment, size: 40, color: Colors.grey,),
+                                Text('ข้อเสนอแนะ')
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
-      ),
     );
   }
 }
