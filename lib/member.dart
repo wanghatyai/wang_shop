@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -96,7 +97,12 @@ class _MemberPageState extends State<MemberPage> {
                 ),
                 Container(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        child: Text('สถานะรายการ', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                      ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                         child: Row(
