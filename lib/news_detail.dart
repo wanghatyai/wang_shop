@@ -18,7 +18,7 @@ class _newsDetailPageState extends State<newsDetailPage> {
     return Scaffold(
       appBar: AppBar(
         //title: Text(widget.product.productName.toString()),
-        title: Text("รายละเอียดข่าว"),
+        title: Text('${widget.news.newsTopic}'),
         actions: <Widget>[
           /*IconButton(
               icon: Icon(Icons.shopping_cart),
@@ -27,6 +27,17 @@ class _newsDetailPageState extends State<newsDetailPage> {
               }
           )*/
         ],
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Image.network('https://www.wangpharma.com/wang/${widget.news.newsImages}', fit: BoxFit.cover ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: Text('${widget.news.newsDetail}', style: TextStyle(fontSize: 16,),),
+            ),
+          ],
+        ),
       ),
     );
   }
