@@ -4,6 +4,7 @@ import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
 import 'package:wang_shop/product_new.dart';
 import 'package:wang_shop/product_recom.dart';
+import 'package:wang_shop/product_gim.dart';
 import 'package:wang_shop/product_category.dart';
 
 class CategorySlidePage extends StatefulWidget {
@@ -82,6 +83,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
           ),
           InkWell(
               onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductGimPage()));
                 print('ของแถม');
               },
               child: Container(
