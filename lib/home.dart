@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.playlist_add_check),
-            title: Text('รายการ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+            title: Text('เคยสั่ง', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
           ),
           /*BottomNavigationBarItem(
             icon: Icon(Icons.thumb_up),
