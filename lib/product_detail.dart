@@ -5,6 +5,10 @@ import 'dart:convert';
 import 'package:wang_shop/database_helper.dart';
 
 import 'package:wang_shop/product_relation_type.dart';
+import 'package:wang_shop/product_relation_company.dart';
+
+import 'package:wang_shop/order.dart';
+import 'package:wang_shop/search_auto_out.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -23,12 +27,14 @@ class productDetailPage extends StatefulWidget {
   _productDetailPageState createState() => _productDetailPageState();
 }
 
-class _productDetailPageState extends State<productDetailPage> {
+class _productDetailPageState extends State<productDetailPage> with SingleTickerProviderStateMixin {
 
   BlocCountOrder blocCountOrder;
   @override
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
+
+  TabController _RelationProductTab;
 
   //List<DropdownMenuItem<String>> units = [];
   List units = [];
@@ -44,6 +50,7 @@ class _productDetailPageState extends State<productDetailPage> {
     // TODO: implement initState
     super.initState();
     getProductImg();
+    _RelationProductTab = new TabController(length: 2, vsync: this);
   }
 
   getProductImg()async{
@@ -158,6 +165,55 @@ class _productDetailPageState extends State<productDetailPage> {
                 //Navigator.pushReplacementNamed(context, '/Order');
               }
           )*/
+          IconButton(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              icon: Stack(
+                children: <Widget>[
+                  Icon(Icons.search, size: 40,),
+                ],
+              ),
+              onPressed: (){
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+              }
+          ),
+          IconButton(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              icon: Stack(
+                children: <Widget>[
+                  Icon(Icons.shopping_cart, size: 40,),
+                  Positioned(
+                    right: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 20,
+                        minHeight: 20,
+                      ),
+                      child: StreamBuilder(
+                        initialData: blocCountOrder.countOrder,
+                        stream: blocCountOrder.counterStream,
+                        builder: (BuildContext context, snapshot) => Text(
+                          '${snapshot.data}',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
+              }
+          ),
         ],
       ),
       body: CustomScrollView(
@@ -267,13 +323,33 @@ class _productDetailPageState extends State<productDetailPage> {
                           Padding(
                             padding: const EdgeInsets.all(5),
                           ),
+                          MaterialButton(
+                            color: Colors.deepOrange,
+                            textColor: Colors.white,
+                            minWidth: double.infinity,
+                            height: 50,
+                            child: Text(
+                              "หยิบใส่ตะกร้า",
+                              style: new TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
+                            onPressed: () {
+                              addToOrder();
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5),
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              Padding(
+              /*Padding(
                 padding: EdgeInsets.fromLTRB(0, 2, 0, 2),
                 child: Container(
                   color: Colors.blue,
@@ -283,12 +359,42 @@ class _productDetailPageState extends State<productDetailPage> {
               Container(
                 height: MediaQuery.of(context).size.height+1000,
                 child: ProductRelationTypePage(product: widget.product,),
+              ),*/
+              Container(
+                decoration: BoxDecoration(color: Colors.blueAccent),
+                child: TabBar(
+                  controller: _RelationProductTab,
+                  tabs: <Widget>[
+                    Tab(
+                      child: Text('สินค้าหมวดเดียวกัน', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                    ),
+                    Tab(
+                      child: Text('สินค้าผู้ผลิตเดียวกัน', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                    ),
+                  ],
+                )
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height+1000,
+                child: TabBarView(
+                  controller: _RelationProductTab,
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height+1000,
+                      child: ProductRelationTypePage(product: widget.product,),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height+1000,
+                      child: ProductRelationCompanyPage(product: widget.product,),
+                    ),
+                  ],
+                ),
               )
             ])
           )
         ],
       ),
-      bottomNavigationBar: MaterialButton(
+      /*bottomNavigationBar: MaterialButton(
         color: Colors.deepOrange,
         textColor: Colors.white,
         minWidth: double.infinity,
@@ -304,7 +410,7 @@ class _productDetailPageState extends State<productDetailPage> {
         onPressed: () {
           addToOrder();
         },
-      ),
+      ),*/
     );
 
   }
