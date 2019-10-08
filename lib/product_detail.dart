@@ -4,6 +4,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:wang_shop/database_helper.dart';
 
+import 'package:wang_shop/product_relation_type.dart';
+import 'package:wang_shop/product_relation_company.dart';
+
+import 'package:wang_shop/order.dart';
+import 'package:wang_shop/search_auto_out.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
@@ -21,12 +27,14 @@ class productDetailPage extends StatefulWidget {
   _productDetailPageState createState() => _productDetailPageState();
 }
 
-class _productDetailPageState extends State<productDetailPage> {
+class _productDetailPageState extends State<productDetailPage> with SingleTickerProviderStateMixin {
 
   BlocCountOrder blocCountOrder;
   @override
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
+
+  TabController _RelationProductTab;
 
   //List<DropdownMenuItem<String>> units = [];
   List units = [];
@@ -42,6 +50,7 @@ class _productDetailPageState extends State<productDetailPage> {
     // TODO: implement initState
     super.initState();
     getProductImg();
+    _RelationProductTab = new TabController(length: 2, vsync: this);
   }
 
   getProductImg()async{
@@ -156,133 +165,252 @@ class _productDetailPageState extends State<productDetailPage> {
                 //Navigator.pushReplacementNamed(context, '/Order');
               }
           )*/
-        ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(5),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          IconButton(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              icon: Stack(
                 children: <Widget>[
-                  Expanded(
-                    child: PhotoViewGallery.builder(
-                      itemCount: imgList.length,
-                      builder: (context, index){
-                        return PhotoViewGalleryPageOptions(
-                          imageProvider: NetworkImage(imgList[index]['src']),
-                          minScale: PhotoViewComputedScale.contained * 0.8,
-                          maxScale: PhotoViewComputedScale.covered * 2,
-                        );
-                      },
-                      scrollPhysics: BouncingScrollPhysics(),
-
-                      backgroundDecoration: BoxDecoration(
-                        color: Theme.of(context).canvasColor,
-                      ),
-                      loadingChild: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      //imageProvider: NetworkImage('http://www.wangpharma.com/cms/product/${widget.product.productPic}'),
-
-                    ),
-                  ),
-                  //Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
-                  Text("รหัสสินค้า : ${widget.product.productCode}",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
-                    ),
-                  ),
-                  Text("ชื่อไทย : ${widget.product.productName}",
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold
-                    ),
-                  ),
-
-                  Text("Barcode : ${widget.product.productBarcode}",
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold
-                    ),
-                  ),
-
-                  Text("ชื่ออังกฤษ : ${widget.product.productNameENG}",
-                    style: TextStyle(
-                        fontSize: 17,
-                        color: Colors.blue
-                    ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18),
-                          controller: valAmount,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: "จำนวน",
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: (String val){
-                            if(val.isEmpty) return 'กรุณากรอกข้อมูล';
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: DropdownButton(
-                          hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
-                          items: units.map((dropDownStringItem){
-                            return DropdownMenuItem<String>(
-                              value: dropDownStringItem,
-                              child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
-                            );
-                          }).toList(),
-                          onChanged: (newValueSelected){
-                            var tempIndex = units.indexOf(newValueSelected)+1;
-                            _onDropDownItemSelected(newValueSelected, tempIndex);
-                            print(this._currentUnit);
-                            print(tempIndex);
-
-                          },
-                          value: _currentUnit,
-
-                        ),
-
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                  ),
-                  MaterialButton(
-                    color: Colors.deepOrange,
-                    textColor: Colors.white,
-                    minWidth: double.infinity,
-                    height: 50,
-                    child: Text(
-                      "หยิบใส่ตะกร้า",
-                      style: new TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
-                    onPressed: () {
-                      addToOrder();
-                    },
-                  )
+                  Icon(Icons.search, size: 40,),
                 ],
               ),
-            ),
-          ],
-        ),
+              onPressed: (){
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+              }
+          ),
+          IconButton(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              icon: Stack(
+                children: <Widget>[
+                  Icon(Icons.shopping_cart, size: 40,),
+                  Positioned(
+                    right: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 20,
+                        minHeight: 20,
+                      ),
+                      child: StreamBuilder(
+                        initialData: blocCountOrder.countOrder,
+                        stream: blocCountOrder.counterStream,
+                        builder: (BuildContext context, snapshot) => Text(
+                          '${snapshot.data}',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
+              }
+          ),
+        ],
       ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                height: 500,
+                padding: const EdgeInsets.all(5),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: PhotoViewGallery.builder(
+                              itemCount: imgList.length,
+                              builder: (context, index){
+                                return PhotoViewGalleryPageOptions(
+                                  imageProvider: NetworkImage(imgList[index]['src']),
+                                  minScale: PhotoViewComputedScale.contained * 0.8,
+                                  maxScale: PhotoViewComputedScale.covered * 2,
+                                );
+                              },
+                              scrollPhysics: BouncingScrollPhysics(),
+
+                              backgroundDecoration: BoxDecoration(
+                                color: Theme.of(context).canvasColor,
+                              ),
+                              loadingChild: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              //imageProvider: NetworkImage('http://www.wangpharma.com/cms/product/${widget.product.productPic}'),
+
+                            ),
+                          ),
+                          //Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
+                          Text("รหัสสินค้า : ${widget.product.productCode}",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          Text("ชื่อไทย : ${widget.product.productName}",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+
+                          Text("Barcode : ${widget.product.productBarcode}",
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+
+                          Text("ชื่ออังกฤษ : ${widget.product.productNameENG}",
+                            style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.blue
+                            ),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: TextFormField(
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 18),
+                                  controller: valAmount,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    hintText: "จำนวน",
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  validator: (String val){
+                                    if(val.isEmpty) return 'กรุณากรอกข้อมูล';
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                child: DropdownButton(
+                                  hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
+                                  items: units.map((dropDownStringItem){
+                                    return DropdownMenuItem<String>(
+                                      value: dropDownStringItem,
+                                      child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
+                                    );
+                                  }).toList(),
+                                  onChanged: (newValueSelected){
+                                    var tempIndex = units.indexOf(newValueSelected)+1;
+                                    _onDropDownItemSelected(newValueSelected, tempIndex);
+                                    print(this._currentUnit);
+                                    print(tempIndex);
+
+                                  },
+                                  value: _currentUnit,
+
+                                ),
+
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5),
+                          ),
+                          MaterialButton(
+                            color: Colors.deepOrange,
+                            textColor: Colors.white,
+                            minWidth: double.infinity,
+                            height: 50,
+                            child: Text(
+                              "หยิบใส่ตะกร้า",
+                              style: new TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
+                            onPressed: () {
+                              addToOrder();
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              /*Padding(
+                padding: EdgeInsets.fromLTRB(0, 2, 0, 2),
+                child: Container(
+                  color: Colors.blue,
+                  child: Text('/// สินค้าหมวดเดียวกัน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.white),),
+                )
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height+1000,
+                child: ProductRelationTypePage(product: widget.product,),
+              ),*/
+              Container(
+                decoration: BoxDecoration(color: Colors.blueAccent),
+                child: TabBar(
+                  controller: _RelationProductTab,
+                  tabs: <Widget>[
+                    Tab(
+                      child: Text('สินค้าหมวดเดียวกัน', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                    ),
+                    Tab(
+                      child: Text('สินค้าผู้ผลิตเดียวกัน', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                    ),
+                  ],
+                )
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height+1000,
+                child: TabBarView(
+                  controller: _RelationProductTab,
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height+1000,
+                      child: ProductRelationTypePage(product: widget.product,),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height+1000,
+                      child: ProductRelationCompanyPage(product: widget.product,),
+                    ),
+                  ],
+                ),
+              )
+            ])
+          )
+        ],
+      ),
+      /*bottomNavigationBar: MaterialButton(
+        color: Colors.deepOrange,
+        textColor: Colors.white,
+        minWidth: double.infinity,
+        height: 50,
+        child: Text(
+          "หยิบใส่ตะกร้า",
+          style: new TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold
+          ),
+        ),
+        //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
+        onPressed: () {
+          addToOrder();
+        },
+      ),*/
     );
 
   }

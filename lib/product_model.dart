@@ -5,6 +5,8 @@ class Product{
   final String productBarcode;
   final String productNameENG;
   final String productPic;
+  final String productCategory;
+  final String productCompany;
   final String productUnit1;
   final String productUnitQty1;
   final String productUnit2;
@@ -26,6 +28,8 @@ class Product{
     this.productBarcode,
     this.productNameENG,
     this.productPic,
+    this.productCategory,
+    this.productCompany,
     this.productUnit1,
     this.productUnitQty1,
     this.productUnit2,
@@ -48,6 +52,8 @@ class Product{
       productBarcode: json['bcode'],
       productNameENG: json['nproductENG'],
       productPic: json['pic'],
+      productCategory: json['ptype'],
+      productCompany: json['company'],
       productUnit1: json['unit1'],
       productUnitQty1: json['unitQty1'],
       productUnit2: json['unit2'],

@@ -4,88 +4,79 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:wang_shop/database_helper.dart';
-
 import 'package:wang_shop/product_model.dart';
-import 'package:wang_shop/product_pro.dart';
-import 'package:wang_shop/order.dart';
 import 'package:wang_shop/product_detail.dart';
+
+import 'package:wang_shop/order.dart';
+import 'package:wang_shop/search_auto_out.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
-class ProductCategoryDetailPage extends StatefulWidget {
-
-  final String catValue;
-  final String catName;
-
-  ProductCategoryDetailPage({Key key, this.catValue, this.catName}) : super (key: key);
-
+class ProductGimPage extends StatefulWidget {
   @override
-  _ProductCategoryDetailPageState createState() => _ProductCategoryDetailPageState();
+  _ProductGimPageState createState() => _ProductGimPageState();
 }
 
-class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
+class _ProductGimPageState extends State<ProductGimPage> {
 
   BlocCountOrder blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
-  List<Product> _product = [];
-
   ScrollController _scrollController = new ScrollController();
 
+  //Product product;
+  List <Product>productAll = [];
+  bool isLoading = true;
   int perPage = 30;
+  String act = "Gim";
 
-  var loading = true;
+  //var product;
 
-  var userName;
+  getProduct() async{
 
-  getCategoryDetail() async{
+    print(perPage);
 
-    var resUser = await databaseHelper.getList();
-    userName = resUser[0]['name'];
-
-    //_product.clear();
-
-    final res = await http.get('https://wangpharma.com/API/product.php?PerPage=$perPage&SearchVal=${widget.catValue}&act=SearchCat');
+    final res = await http.get('https://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
 
     if(res.statusCode == 200){
 
       setState(() {
-
-        loading = false;
+        isLoading = false;
 
         var jsonData = json.decode(res.body);
 
-        jsonData.forEach((products) => _product.add(Product.fromJson(products)));
+        jsonData.forEach((products) => productAll.add(Product.fromJson(products)));
         perPage = perPage + 30;
 
-        print(_product);
-        return _product;
+        print(productAll);
+        print(perPage);
+
+        return productAll;
 
       });
+
 
     }else{
       throw Exception('Failed load Json');
     }
-
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getCategoryDetail();
+    getProduct();
 
     _scrollController.addListener((){
       //print(_scrollController.position.pixels);
       if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
-        getCategoryDetail();
+        getProduct();
       }
     });
-
   }
 
   @override
@@ -94,7 +85,6 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
     _scrollController.dispose();
     super.dispose();
   }
-
 
   showToastAddFast(){
     Fluttertoast.showToast(
@@ -113,8 +103,20 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text('${widget.catName}'),
+        title: Text("สินค้ามีของแถม"),
         actions: <Widget>[
+          IconButton(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              icon: Stack(
+                children: <Widget>[
+                  Icon(Icons.search, size: 40,),
+                ],
+              ),
+              onPressed: (){
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+              }
+          ),
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               icon: Stack(
@@ -150,52 +152,43 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
               ),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
-              })
+              }
+          ),
         ],
       ),
-      resizeToAvoidBottomPadding: false,
-      body: Container(
-        child: Column(
-          children: <Widget>[
-
-            loading ? Center(
-              child: CircularProgressIndicator(),
-            ) :
-            Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: _product.length,
-                itemBuilder: (context, i){
-                  final a = _product[i];
-                  return ListTile(
-                    contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
-                    onTap: (){
-
-                    },
-                    leading: Image.network('https://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                    title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('${a.productCode}'),
-                        Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
-                        a.productProLimit != "" ?
-                          Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
-                      ],
-                    ),
-                    trailing: IconButton(
-                        icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
-                        onPressed: (){
-                          addToOrderFast(a);
-                        }
-                    ),
-                  );
-                },
-              ),
+      body: isLoading ? CircularProgressIndicator()
+          :ListView.builder(
+        controller: _scrollController,
+        itemBuilder: (context, int index){
+          return ListTile(
+            contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
+            onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
+            },
+            leading: Image.network('https://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
+            title: Text('${productAll[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('${productAll[index].productCode}'),
+                Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                productAll[index].productProLimit != "" ?
+                Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
+              ],
             ),
-          ],
-        ),
+            trailing: IconButton(
+                icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
+                onPressed: (){
+                  addToOrderFast(productAll[index]);
+                }
+            ),
+          );
+        },
+        itemCount: productAll != null ? productAll.length : 0,
       ),
+
     );
   }
 
@@ -232,6 +225,8 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
     }else{
       amount = 1;
     }
+
+    //print('99999-${productFast.productPriceA}');
 
     Map order = {
       'productID': productFast.productId.toString(),
@@ -285,7 +280,6 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
       blocCountOrder.getOrderCount();
 
     }
-
     //Navigator.pushReplacementNamed(context, '/Home');
 
   }
