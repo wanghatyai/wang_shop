@@ -169,7 +169,7 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
 
     if(productFast.productProLimit != ""){
 
-      if(int.parse(productFast.productProLimit) > 1){
+      if(int.parse(productFast.productProLimit) > 0){
         amount = int.parse(productFast.productProLimit);
       }
 

@@ -225,7 +225,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
 
     if(productFast.productProLimit != ""){
 
-      if(int.parse(productFast.productProLimit) > 1){
+      if(int.parse(productFast.productProLimit) > 0){
         amount = int.parse(productFast.productProLimit);
       }
 
