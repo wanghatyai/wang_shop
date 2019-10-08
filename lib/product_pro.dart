@@ -219,7 +219,7 @@ class _ProductProPageState extends State<ProductProPage> {
 
     if(productFast.productProLimit != ""){
 
-      if(int.parse(productFast.productProLimit) > 1){
+      if(int.parse(productFast.productProLimit) > 0){
         amount = int.parse(productFast.productProLimit);
       }
 
