@@ -4,6 +4,7 @@ import 'package:wang_shop/category_slide.dart';
 import 'package:wang_shop/product_hot_m.dart';
 import 'package:wang_shop/promotion_slide.dart';
 import 'package:wang_shop/product_hot_m30.dart';
+import 'package:wang_shop/main_slide.dart';
 
 class HomeNewPage extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class HomeNewPage extends StatefulWidget {
 
 class _HomeNewPageState extends State<HomeNewPage> {
 
-  Widget slideBanner = Container(
+  /*Widget slideBanner = Container(
     height: 150,
     child: Carousel(
       overlayShadow: false,
@@ -28,7 +29,8 @@ class _HomeNewPageState extends State<HomeNewPage> {
       animationCurve: Curves.fastOutSlowIn,
       animationDuration: Duration(microseconds: 15000),
     ),
-  );
+  );*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +38,7 @@ class _HomeNewPageState extends State<HomeNewPage> {
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildListDelegate([
-              slideBanner,
+              MainSlidePage(),
               CategorySlidePage(),
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
