@@ -224,7 +224,9 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                  return ListTile(
                    contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
                    onTap: (){
-
+                     Navigator.push(
+                         context,
+                         MaterialPageRoute(builder: (context) => productDetailPage(product: a)));
                    },
                    leading: Image.network('https://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
                    title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
