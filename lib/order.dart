@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:wang_shop/product_model.dart';
+import 'package:wang_shop/product_detail.dart';
 
 import 'package:wang_shop/ship_dialog.dart';
 import 'package:wang_shop/pay_dialog.dart';
@@ -465,7 +466,6 @@ class _OrderPageState extends State<OrderPage> {
   void initState(){
     super.initState();
     getOrderAll();
-
     getProductTop();
 
   }
@@ -708,9 +708,13 @@ class _OrderPageState extends State<OrderPage> {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
                       onTap: (){
-                        //Navigator.push(
-                        //context,
-                        //MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => productDetailPage(product: productTop[index]))).then((value){
+                          setState(() {
+                            getOrderAll();
+                          });
+                        });
                       },
                       leading: Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
                       title: Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
