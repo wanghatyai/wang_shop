@@ -25,7 +25,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
         var jsonData = json.decode(res.body);
 
         //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slidesPro1.add('http://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'));
+        jsonData.forEach((slide) => slidesPro1.add('https://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'));
 
         print(slidesPro1);
         return slidesPro1;
@@ -48,7 +48,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
         var jsonData = json.decode(res.body);
 
         //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slidesPro2.add((NetworkImage('http://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'))));
+        jsonData.forEach((slide) => slidesPro2.add('https://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'));
 
         print(slidesPro2);
         return slidesPro2;
@@ -71,7 +71,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
         var jsonData = json.decode(res.body);
 
         //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slidesPro3.add((NetworkImage('http://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'))));
+        jsonData.forEach((slide) => slidesPro3.add('https://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'));
 
         print(slidesPro3);
         return slidesPro3;
@@ -108,7 +108,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
               child: Container(
                 width: 200,
                 padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                child: Image.network('$slidesPro1', fit: BoxFit.fitWidth,),
+                child: Image.network('${slidesPro1[0]}', fit: BoxFit.fitWidth,),
               ),
           ),
           InkWell(
@@ -118,7 +118,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
             child: Container(
               width: 200,
               padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-              child: Image.asset('assets/productDemo1.jpg', fit: BoxFit.fitWidth,),
+              child: Image.network('${slidesPro2[0]}', fit: BoxFit.fitWidth,),
             ),
           ),
           InkWell(
@@ -128,7 +128,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
             child: Container(
               width: 200,
               padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-              child: Image.asset('assets/productDemo2.jpg', fit: BoxFit.fitWidth,),
+              child: Image.network('${slidesPro3[0]}', fit: BoxFit.fitWidth,),
             ),
           ),
         ],
