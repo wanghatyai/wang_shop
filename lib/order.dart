@@ -12,6 +12,7 @@ import 'package:wang_shop/product_detail.dart';
 import 'package:wang_shop/ship_dialog.dart';
 import 'package:wang_shop/pay_dialog.dart';
 import 'package:wang_shop/summary_order.dart';
+import 'package:wang_shop/edit_dialog.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
@@ -230,7 +231,7 @@ class _OrderPageState extends State<OrderPage> {
                     controller: editAmount,
                   ),
                 ),
-                Expanded(
+                /*Expanded(
                   child: DropdownButton(
                     hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
                     items: units.map((dropDownStringItem){
@@ -249,7 +250,10 @@ class _OrderPageState extends State<OrderPage> {
                     value: _currentUnit,
 
                   ),
-                )
+                ),*/
+                Expanded(
+                  child: EditDialogPage(units: units),
+                ),
               ],
             ),
           ),
