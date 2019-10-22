@@ -25,7 +25,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
         var jsonData = json.decode(res.body);
 
         //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slidesPro1.add('https://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'));
+        jsonData.forEach((slide) => slidesPro1.add('https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'));
 
         print(slidesPro1);
         return slidesPro1;

@@ -24,7 +24,7 @@ class _MainSlidePageState extends State<MainSlidePage> {
         var jsonData = json.decode(res.body);
 
         //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slides.add((NetworkImage('http://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'))));
+        jsonData.forEach((slide) => slides.add((NetworkImage('http://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));
 
         print(slides);
         return slides;
