@@ -104,6 +104,9 @@ class _EditDialogPageState extends State<EditDialogPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    blocCountOrder = BlocProvider.of(context);
+
     return SimpleDialog(
       titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 1),
       title: Row(
