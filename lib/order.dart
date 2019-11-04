@@ -285,13 +285,13 @@ class _OrderPageState extends State<OrderPage> {
 
 
 
-  _onDropDownItemSelected(newValueSelected, newIndexSelected){
+  /*_onDropDownItemSelected(newValueSelected, newIndexSelected){
     setState(() {
       this._currentUnit = newValueSelected;
       this.unitStatus = newIndexSelected;
       //print('select--${units}');
     });
-  }
+  }*/
 
   /*void _confirmDelShowAlert(int id, valProduct) async {
     return showDialog<void>(
@@ -471,8 +471,6 @@ class _OrderPageState extends State<OrderPage> {
       //setState(() {
         getOrderAll();
       //});
-
-
 
     }
     //Navigator.pushReplacementNamed(context, '/Home');

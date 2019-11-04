@@ -33,6 +33,7 @@ class _EditDialogPageState extends State<EditDialogPage> {
   void initState(){
     super.initState();
     _currentUnit = widget.orderE['unit'];
+    unitStatus = widget.orderE['unitStatus'];
     editAmount.text = widget.orderE['amount'].toString();
   }
 
