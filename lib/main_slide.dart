@@ -24,7 +24,7 @@ class _MainSlidePageState extends State<MainSlidePage> {
         var jsonData = json.decode(res.body);
 
         //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slides.add((NetworkImage(slide['pws_images']))));
+        jsonData.forEach((slide) => slides.add((NetworkImage('http://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));
 
         print(slides);
         return slides;
@@ -40,6 +40,7 @@ class _MainSlidePageState extends State<MainSlidePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    slides.add(AssetImage('assets/bannerDemo.jpg'));
     getSlideAll();
   }
 
@@ -54,12 +55,9 @@ class _MainSlidePageState extends State<MainSlidePage> {
         autoplay: true,
         dotSize: 5,
         indicatorBgPadding: 9,
-        images: [
-          AssetImage('assets/bannerDemo.jpg'),
-          AssetImage('assets/bannerDemo1.jpg'),
-        ],
+        images: slides,
         animationCurve: Curves.fastOutSlowIn,
-        animationDuration: Duration(microseconds: 15000),
+        animationDuration: Duration(microseconds: 30000),
       ),
     );
   }

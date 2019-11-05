@@ -7,10 +7,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:wang_shop/product_model.dart';
+import 'package:wang_shop/product_detail.dart';
 
 import 'package:wang_shop/ship_dialog.dart';
 import 'package:wang_shop/pay_dialog.dart';
 import 'package:wang_shop/summary_order.dart';
+import 'package:wang_shop/edit_dialog.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
@@ -188,114 +190,11 @@ class _OrderPageState extends State<OrderPage> {
     editAmount.text = order['amount'].toString();
 
     return showDialog(context: context, builder: (context) {
-      return SimpleDialog(
-        titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 1),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text('แก้ไขรายการ'),
-            FlatButton(
-              color: Colors.red,
-              child: Text('ลบ', style: TextStyle(fontSize: 18, color: Colors.white),),
-              onPressed: (){
-                showDialogDelConfirm(order['id']);
-                //Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-        children: <Widget>[
-          Divider(
-            color: Colors.green,
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-            child: Text('${order['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          ),
-          Padding(
-            padding: EdgeInsets.all(5),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: "จำนวน",
-                    ),
-                    keyboardType: TextInputType.number,
-                    controller: editAmount,
-                  ),
-                ),
-                Expanded(
-                  child: DropdownButton(
-                    hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
-                    items: units.map((dropDownStringItem){
-                      return DropdownMenuItem<String>(
-                        value: dropDownStringItem,
-                        child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
-                      );
-                    }).toList(),
-                    onChanged: (newValueSelected){
-                      var tempIndex = units.indexOf(newValueSelected)+1;
-                      _onDropDownItemSelected(newValueSelected, tempIndex);
-                      print(this._currentUnit);
-                      print(tempIndex);
-
-                    },
-                    value: _currentUnit,
-
-                  ),
-                )
-              ],
-            ),
-          ),
-
-          SimpleDialogOption(
-            onPressed: (){
-
-              print(this._currentUnit);
-              print(this.unitStatus);
-
-              saveEditOrderDialog(order['id'], this._currentUnit, this.unitStatus, editAmount.text);
-              //print(order['id']);
-              //print(this._currentUnit);
-              //print(editAmount.text);
-              if(closeDialog == 1){
-                Navigator.of(context).pop();
-                Navigator.pop(context);
-              }else{
-                Navigator.pop(context);
-              }
-
-            },
-            child: Container(
-                padding: EdgeInsets.fromLTRB(1, 10, 1, 10),
-                color: Colors.green,
-                alignment: Alignment.center,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                          'ตกลง',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18, fontWeight: FontWeight.bold
-                          )
-                      ),
-                    ),
-                  ],
-                )
-            ),
-          ),
-        ],
-
-
-      );
+      return EditDialogPage(units: units, orderE: order);
+    }).then((e){
+      getOrderAll();
     });
+
   }
 
   selectShip(){
@@ -386,13 +285,13 @@ class _OrderPageState extends State<OrderPage> {
 
 
 
-  _onDropDownItemSelected(newValueSelected, newIndexSelected){
+  /*_onDropDownItemSelected(newValueSelected, newIndexSelected){
     setState(() {
       this._currentUnit = newValueSelected;
       this.unitStatus = newIndexSelected;
       //print('select--${units}');
     });
-  }
+  }*/
 
   /*void _confirmDelShowAlert(int id, valProduct) async {
     return showDialog<void>(
@@ -465,7 +364,6 @@ class _OrderPageState extends State<OrderPage> {
   void initState(){
     super.initState();
     getOrderAll();
-
     getProductTop();
 
   }
@@ -573,8 +471,6 @@ class _OrderPageState extends State<OrderPage> {
       //setState(() {
         getOrderAll();
       //});
-
-
 
     }
     //Navigator.pushReplacementNamed(context, '/Home');
@@ -708,9 +604,13 @@ class _OrderPageState extends State<OrderPage> {
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
                       onTap: (){
-                        //Navigator.push(
-                        //context,
-                        //MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => productDetailPage(product: productTop[index]))).then((value){
+                          setState(() {
+                            getOrderAll();
+                          });
+                        });
                       },
                       leading: Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
                       title: Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
