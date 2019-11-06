@@ -199,6 +199,8 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
       'proStatus': productFast.productProStatus,
     };
 
+    print(order);
+
     var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);
 
     //print(checkOrderUnit.isEmpty);

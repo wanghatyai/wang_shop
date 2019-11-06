@@ -198,6 +198,8 @@ class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage>
       'proStatus': productFast.productProStatus,
     };
 
+    print(order);
+
     var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);
 
     //print(checkOrderUnit.isEmpty);
