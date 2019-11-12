@@ -40,13 +40,13 @@ class _MainSlidePageState extends State<MainSlidePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    slides.add(AssetImage('assets/bannerDemo.jpg'));
+    //slides.add(AssetImage('assets/bannerDemo.jpg'));
     getSlideAll();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return slides.isEmpty ? CircularProgressIndicator() : Container(
       height: 150,
       child: Carousel(
         overlayShadow: false,
