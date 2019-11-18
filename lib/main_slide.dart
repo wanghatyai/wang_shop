@@ -51,7 +51,7 @@ class _MainSlidePageState extends State<MainSlidePage> {
       child: Carousel(
         overlayShadow: false,
         borderRadius: true,
-        boxFit: BoxFit.cover,
+        boxFit: BoxFit.fill,
         autoplay: true,
         dotSize: 5,
         indicatorBgPadding: 9,

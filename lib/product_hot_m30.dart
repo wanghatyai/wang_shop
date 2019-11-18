@@ -101,7 +101,7 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
                 child: Column(
                   children: <Widget>[
                     Expanded(
-                      child: Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 200,),
+                      child: Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.fill, width: 200,),
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
