@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/member_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -64,6 +66,45 @@ class _MemberPageState extends State<MemberPage> {
     getUser();
   }
 
+  _clearDB() async{
+    //SharedPreferences preferences = await SharedPreferences.getInstance();
+    //preferences.clear();
+    await databaseHelper.removeAll();
+    await databaseHelper.removeAllOrderFree();
+    await databaseHelper.removeAllMember();
+  }
+
+  void _showDialogExit() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("แจ้งเตือน"),
+          content: new Text("ยืนยันออกจากระบบ"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("Ok"),
+              onPressed: () {
+                _clearDB();
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                //Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +114,7 @@ class _MemberPageState extends State<MemberPage> {
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 120,
+                  height: 150,
                   decoration: BoxDecoration(
                     color: Colors.green
                   ),
@@ -134,6 +175,27 @@ class _MemberPageState extends State<MemberPage> {
                             )
                           ],
                         ),
+                      ),
+                      Divider(
+                        color: Colors.black,
+                      ),
+                      MaterialButton(
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        minWidth: double.infinity,
+                        height: 50,
+                        child: Text(
+                          "ออกจากระบบ",
+                          style: new TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
+                        onPressed: () {
+                          _showDialogExit();
+                          //addToOrder();
+                        },
                       ),
                     ],
                   ),
