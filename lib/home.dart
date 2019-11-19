@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
 
   getUser() async {
     var res = await databaseHelper.getList();
-    print(res);
+    //print(res);
 
     setState(() {
       user = res;
