@@ -345,6 +345,14 @@ class DatabaseHelper {
     return await dbClient.rawQuery(sql, [code]);
   }
 
+  Future getMemberCheckCount() async {
+    var dbClient = await getDb();
+    var sql = '''
+      SELECT COUNT(id) AS checkID FROM members 
+    ''';
+    return await dbClient.rawQuery(sql);
+  }
+
   Future saveData(Map member) async {
     var dbClient = await getDb();
 
