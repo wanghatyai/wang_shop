@@ -100,6 +100,17 @@ class LoginPageState extends State<LoginPage>{
       prefer.setString(key, val);
     });
   }*/
+  _checkMemberOnDB() async{
+    var checkMemberOnDB = await databaseHelper.getMemberCheckCount();
+    //var memberVal = await databaseHelper.getList();
+    print(checkMemberOnDB[0]['checkID']);
+    //print(memberVal);
+
+    if(checkMemberOnDB[0]['checkID'] == 1){
+      Navigator.pushReplacementNamed(context, '/Home');
+    }
+
+  }
 
   _doLogin() async{
 
@@ -170,158 +181,169 @@ class LoginPageState extends State<LoginPage>{
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _checkMemberOnDB();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       //backgroundColor: Colors.green,
-      resizeToAvoidBottomPadding: false,
-      body: Container (
-        padding: EdgeInsets.fromLTRB ( 30, 0, 30, 40 ),
-        // ซ้าย , บน , ขวา , ล่าง
-        constraints: BoxConstraints.expand ( ),
-        color: Colors.white,
-        child: Column (
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding (
-              padding: const EdgeInsets.fromLTRB( 0, 0, 0, 25 ),
-              child: Container (
-                width: 100,
-                height: 100,
-                padding: EdgeInsets.all ( 5 ),
-                decoration: BoxDecoration (
-                  shape: BoxShape.circle,
-                  color: Color ( 0xffd8d8d8 ),
-                ),
-                //child: FlutterLogo(),
-                child: Image (
-                  image: AssetImage ( "assets/logo-login.png" ),
-                ),
-              ),
-            ),
-            Padding (
-              padding: const EdgeInsets.fromLTRB( 0, 0, 0, 20 ),
-              child: Text (
-                'Wangpharmacy\nกรุณาเข้าสู่ระบบ Login',
-                style: TextStyle (
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                  fontSize: 30.0,
+      //resizeToAvoidBottomPadding: false,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+        child: Container (
+          padding: EdgeInsets.fromLTRB ( 30, 0, 30, 40 ),
+          // ซ้าย , บน , ขวา , ล่าง
+          //constraints: BoxConstraints.expand ( ),
+          color: Colors.white,
+          child: Column (
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding (
+                padding: const EdgeInsets.fromLTRB( 0, 0, 0, 25 ),
+                child: Container (
+                  width: 100,
+                  height: 100,
+                  padding: EdgeInsets.all ( 5 ),
+                  decoration: BoxDecoration (
+                    shape: BoxShape.circle,
+                    color: Color ( 0xffd8d8d8 ),
+                  ),
+                  //child: FlutterLogo(),
+                  child: Image (
+                    image: AssetImage ( "assets/logo-login.png" ),
+                  ),
                 ),
               ),
-            ),
-            Padding (
-              padding: const EdgeInsets.fromLTRB( 0, 0, 0, 40 ),
-              child: TextFormField (
-                controller: ctrlUser,
-                style: TextStyle (
-                  fontSize: 18,
-                  color: Colors.black,
+              Padding (
+                padding: const EdgeInsets.fromLTRB( 0, 0, 0, 20 ),
+                child: Text (
+                  'Wangpharmacy\nกรุณาเข้าสู่ระบบ Login',
+                  style: TextStyle (
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                    fontSize: 30.0,
+                  ),
                 ),
-                decoration: InputDecoration (
-                    prefixIcon: Icon (
-                      Icons.account_box,
-                      size: 30,
-                    ),
-                    labelText: 'Username / ชื่อบัญชีผู้ใช้',
-                    errorText: userInvalid ? Useralert : null,
-                    //'Please enter the Username / กรุณากรอกชื่อบัญชีผู้',
-                    labelStyle: TextStyle (
-                      color: Color ( 0xff888888 ),
-                      fontSize: (15),
-                    )
-                ),
-                keyboardType: TextInputType.number,
               ),
-            ),
-            Padding (
-              padding: const EdgeInsets.fromLTRB( 0, 0, 0, 40 ),
-              child: Stack (
-                alignment: AlignmentDirectional.centerEnd,
-                children: <Widget>[
-                  TextField (
-                    controller: ctrlPass,
-                    style: TextStyle (
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                    obscureText: !_ShowPass,
-                    decoration: InputDecoration (
+              Padding (
+                padding: const EdgeInsets.fromLTRB( 0, 0, 0, 40 ),
+                child: TextFormField (
+                  controller: ctrlUser,
+                  style: TextStyle (
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration (
                       prefixIcon: Icon (
-                        Icons.vpn_lock,
+                        Icons.account_box,
                         size: 30,
                       ),
-                      labelText: 'Password / รหัสผ่านบัญชีผู้ใช้',
-                      errorText: passInvalid ? Passalert : null,
+                      labelText: 'Username / ชื่อบัญชีผู้ใช้',
+                      errorText: userInvalid ? Useralert : null,
+                      //'Please enter the Username / กรุณากรอกชื่อบัญชีผู้',
                       labelStyle: TextStyle (
                         color: Color ( 0xff888888 ),
-                        fontSize: 15,
-                      ),
-                    ),
-                    keyboardType: TextInputType.text,
+                        fontSize: (15),
+                      )
                   ),
-                  GestureDetector (
-                    onTap: ClickShowpassword,
-                    child: Text (
-                      _ShowPass ? 'Hide' : 'Show',
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+              Padding (
+                padding: const EdgeInsets.fromLTRB( 0, 0, 0, 40 ),
+                child: Stack (
+                  alignment: AlignmentDirectional.centerEnd,
+                  children: <Widget>[
+                    TextField (
+                      controller: ctrlPass,
                       style: TextStyle (
-                        fontSize: 16,
-                        color: Colors.green,
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                      obscureText: !_ShowPass,
+                      decoration: InputDecoration (
+                        prefixIcon: Icon (
+                          Icons.vpn_lock,
+                          size: 30,
+                        ),
+                        labelText: 'Password / รหัสผ่านบัญชีผู้ใช้',
+                        errorText: passInvalid ? Passalert : null,
+                        labelStyle: TextStyle (
+                          color: Color ( 0xff888888 ),
+                          fontSize: 15,
+                        ),
+                      ),
+                      keyboardType: TextInputType.text,
+                    ),
+                    GestureDetector (
+                      onTap: ClickShowpassword,
+                      child: Text (
+                        _ShowPass ? 'Hide' : 'Show',
+                        style: TextStyle (
+                          fontSize: 16,
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding (
+                padding: const EdgeInsets.fromLTRB( 0, 0, 0, 40 ),
+                child: SizedBox (
+                  width: double.infinity,
+                  height: 56,
+                  child: RaisedButton (
+                    color: Colors.green,
+                    shape: RoundedRectangleBorder (
+                      borderRadius: BorderRadius.all (
+                        Radius.circular ( 10 ),
+                      ),
+                    ),
+                    onPressed: _doLogin,
+                    child: Text (
+                      'เข้าสู่ระบบ',
+                      style: TextStyle (
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
                     ),
                   ),
+                ),
+              ),
+              SizedBox (
+                height: 30,
+              ),
+              Row(
+                children: <Widget>[
+                  Icon(
+                      Icons.settings
+                  ),
+                  FlatButton(
+                    onPressed: () {
+
+                      databaseHelper.dropTableOrder();
+                      databaseHelper.dropTableOrderFree();
+                      databaseHelper.dropTableMembers();
+                      databaseHelper.dropTableShipAndPay();
+
+                      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                    },
+                    child: Text("แก้ไขปัญหา", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  )
                 ],
               ),
-            ),
-            Padding (
-              padding: const EdgeInsets.fromLTRB( 0, 0, 0, 40 ),
-              child: SizedBox (
-                width: double.infinity,
-                height: 56,
-                child: RaisedButton (
-                  color: Colors.green,
-                  shape: RoundedRectangleBorder (
-                    borderRadius: BorderRadius.all (
-                      Radius.circular ( 10 ),
-                    ),
-                  ),
-                  onPressed: _doLogin,
-                  child: Text (
-                    'เข้าสู่ระบบ',
-                    style: TextStyle (
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox (
-              height: 70,
-            ),
-            Row(
-              children: <Widget>[
-                Icon(
-                  Icons.settings
-                ),
-                FlatButton(
-                  onPressed: () {
-
-                    databaseHelper.dropTableOrder();
-                    databaseHelper.dropTableOrderFree();
-                    databaseHelper.dropTableMembers();
-                    databaseHelper.dropTableShipAndPay();
-
-                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-                  },
-                  child: Text("แก้ไขปัญหา", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                )
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
