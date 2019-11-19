@@ -14,23 +14,28 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
   var slidesPro2 = [];
   var slidesPro3 = [];
 
+  bool isLoading = true;
+
   getSlideProP1() async{
     final res = await http.get('http://wangpharma.com/API/slides.php?position=P1&act=Slide');
 
     if(res.statusCode == 200){
 
-      setState(() {
-        //isLoading = false;
+      if (mounted) {
+        setState(() {
+          isLoading = false;
 
-        var jsonData = json.decode(res.body);
+          var jsonData = json.decode(res.body);
 
-        //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slidesPro1.add('https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'));
+          //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
+          jsonData.forEach((slide) =>
+              slidesPro1.add(
+                  'https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'));
 
-        print(slidesPro1);
-        return slidesPro1;
-
-      });
+          print(slidesPro1);
+          return slidesPro1;
+        });
+      }
 
     }else{
       throw Exception('Failed load Json');
@@ -42,18 +47,21 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
 
     if(res.statusCode == 200){
 
-      setState(() {
-        //isLoading = false;
+      if (mounted) {
+        setState(() {
+          isLoading = false;
 
-        var jsonData = json.decode(res.body);
+          var jsonData = json.decode(res.body);
 
-        //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slidesPro2.add('https://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'));
+          //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
+          jsonData.forEach((slide) =>
+              slidesPro2.add(
+                  'https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'));
 
-        print(slidesPro2);
-        return slidesPro2;
-
-      });
+          print(slidesPro2);
+          return slidesPro2;
+        });
+      }
 
     }else{
       throw Exception('Failed load Json');
@@ -65,18 +73,21 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
 
     if(res.statusCode == 200){
 
-      setState(() {
-        //isLoading = false;
+      if (mounted) {
+        setState(() {
+          isLoading = false;
 
-        var jsonData = json.decode(res.body);
+          var jsonData = json.decode(res.body);
 
-        //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slidesPro3.add('https://wangpharma.com/wang/images/post-shopping/${slide['pws_images']}'));
+          //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
+          jsonData.forEach((slide) =>
+              slidesPro3.add(
+                  'https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'));
 
-        print(slidesPro3);
-        return slidesPro3;
-
-      });
+          print(slidesPro3);
+          return slidesPro3;
+        });
+      }
 
     }else{
       throw Exception('Failed load Json');
@@ -94,8 +105,14 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return isLoading ? CircularProgressIndicator() : Container(
       height: 200,
       child: ListView(
         padding: EdgeInsets.fromLTRB(0, 5, 0, 0),

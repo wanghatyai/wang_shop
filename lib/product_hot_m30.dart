@@ -36,20 +36,22 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
 
     if(res.statusCode == 200){
 
-      setState(() {
-        isLoading = false;
+      if (mounted) {
+        setState(() {
+          isLoading = false;
 
-        var jsonData = json.decode(res.body);
+          var jsonData = json.decode(res.body);
 
-        jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        perPage = productTop.length;
+          jsonData.forEach((products) =>
+              productTop.add(Product.fromJson(products)));
+          perPage = productTop.length;
 
-        print(productTop);
-        print(productTop.length);
+          print(productTop);
+          print(productTop.length);
 
-        return productTop;
-
-      });
+          return productTop;
+        });
+      }
 
     }else{
       throw Exception('Failed load Json');
@@ -101,7 +103,7 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
                 child: Column(
                   children: <Widget>[
                     Expanded(
-                      child: Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 200,),
+                      child: Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.fill, width: 200,),
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
