@@ -204,18 +204,18 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
           actions: <Widget>[
             FlatButton(
               color: Colors.purple,
-              child: Text('เลือกสินค้าแถม', style: TextStyle(fontSize: 18, color: Colors.white),),
+              child: Text('เลือกสินค้าแถม', style: TextStyle(fontSize: 17, color: Colors.white),),
               onPressed: (){
                 getFreeProductSelect();
                 //Navigator.of(context).pop();
               },
             ),
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(5),
             ),
             FlatButton(
               color: Colors.green,
-              child: Text('ยืนยันส่งรายการ', style: TextStyle(fontSize: 18, color: Colors.white),),
+              child: Text('ยืนยันส่งรายการ', style: TextStyle(fontSize: 16, color: Colors.white),),
               onPressed: (){
                 confirmOrder();
                 //Navigator.of(context).pop();
