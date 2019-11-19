@@ -18,18 +18,21 @@ class _MainSlidePageState extends State<MainSlidePage> {
 
     if(res.statusCode == 200){
 
-      setState(() {
-        //isLoading = false;
+      if (mounted) {
+        setState(() {
+          //isLoading = false;
 
-        var jsonData = json.decode(res.body);
+          var jsonData = json.decode(res.body);
 
-        //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slides.add((NetworkImage('http://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));
+          //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
+          jsonData.forEach((slide) =>
+              slides.add((NetworkImage(
+                  'http://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));
 
-        print(slides);
-        return slides;
-
-      });
+          print(slides);
+          return slides;
+        });
+      }
 
     }else{
       throw Exception('Failed load Json');
@@ -40,18 +43,24 @@ class _MainSlidePageState extends State<MainSlidePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    slides.add(AssetImage('assets/bannerDemo.jpg'));
+    //slides.add(AssetImage('assets/bannerDemo.jpg'));
     getSlideAll();
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return slides.isEmpty ? CircularProgressIndicator() : Container(
       height: 150,
       child: Carousel(
         overlayShadow: false,
         borderRadius: true,
-        boxFit: BoxFit.cover,
+        boxFit: BoxFit.fill,
         autoplay: true,
         dotSize: 5,
         indicatorBgPadding: 9,
