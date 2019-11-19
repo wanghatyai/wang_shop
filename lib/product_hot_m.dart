@@ -36,20 +36,22 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
 
     if(res.statusCode == 200){
 
-      setState(() {
-        isLoading = false;
+      if (mounted) {
+        setState(() {
+          isLoading = false;
 
-        var jsonData = json.decode(res.body);
+          var jsonData = json.decode(res.body);
 
-        jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        perPage = productTop.length;
+          jsonData.forEach((products) =>
+              productTop.add(Product.fromJson(products)));
+          perPage = productTop.length;
 
-        print(productTop);
-        print(productTop.length);
+          print(productTop);
+          print(productTop.length);
 
-        return productTop;
-
-      });
+          return productTop;
+        });
+      }
 
     }else{
       throw Exception('Failed load Json');
