@@ -18,18 +18,21 @@ class _MainSlidePageState extends State<MainSlidePage> {
 
     if(res.statusCode == 200){
 
-      setState(() {
-        //isLoading = false;
+      if (mounted) {
+        setState(() {
+          //isLoading = false;
 
-        var jsonData = json.decode(res.body);
+          var jsonData = json.decode(res.body);
 
-        //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-        jsonData.forEach((slide) => slides.add((NetworkImage('http://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));
+          //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
+          jsonData.forEach((slide) =>
+              slides.add((NetworkImage(
+                  'http://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));
 
-        print(slides);
-        return slides;
-
-      });
+          print(slides);
+          return slides;
+        });
+      }
 
     }else{
       throw Exception('Failed load Json');
@@ -42,6 +45,12 @@ class _MainSlidePageState extends State<MainSlidePage> {
     super.initState();
     //slides.add(AssetImage('assets/bannerDemo.jpg'));
     getSlideAll();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
