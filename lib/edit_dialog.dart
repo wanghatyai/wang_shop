@@ -143,6 +143,7 @@ class _EditDialogPageState extends State<EditDialogPage> {
                     filled: true,
                     fillColor: Colors.white,
                     hintText: "จำนวน",
+                    contentPadding: EdgeInsets.all(4),
                   ),
                   keyboardType: TextInputType.number,
                   controller: editAmount,
@@ -150,6 +151,7 @@ class _EditDialogPageState extends State<EditDialogPage> {
               ),
               Expanded(
                 child: DropdownButton(
+                  isExpanded: true,
                   hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
                   items: widget.units.map((dropDownStringItem){
                     return DropdownMenuItem<String>(
