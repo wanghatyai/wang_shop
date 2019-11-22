@@ -29,7 +29,7 @@ import 'package:wang_shop/order_bill_status.dart';
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
-//import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 
 
@@ -43,7 +43,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  //FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   BlocCountOrder blocCountOrder;
 
@@ -79,10 +79,10 @@ class _HomeState extends State<Home> {
   void initState(){
     super.initState();
     getUser();
-    //setupNotif();
+    setupNotif();
   }
 
-  /*setupNotif() async {
+  setupNotif() async {
     _firebaseMessaging.getToken().then((token){
       print(token);
     });
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
       },
 
     );
-  }*/
+  }
 
   int currentIndex = 0;
   //List pages = [HomeNewPage(), ProductHotPage(), ProductNewPage(), ProductRecomPage(), MemberPage()];
