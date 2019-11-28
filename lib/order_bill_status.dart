@@ -133,7 +133,12 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
         ],
       ),
       body: isLoading ? CircularProgressIndicator()
-          :ListView.builder(
+          :ListView.separated(
+        separatorBuilder: (context, index) {
+          return Divider(
+            color: Colors.black,
+          );
+        },
         controller: _scrollController,
         itemBuilder: (context, int index){
           return ListTile(

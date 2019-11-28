@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/member_model.dart';
+import 'package:wang_shop/order_bill_status.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -66,6 +67,13 @@ class _MemberPageState extends State<MemberPage> {
     getUser();
   }
 
+  _dropDB() async{
+    await databaseHelper.dropTableOrder();
+    await databaseHelper.dropTableOrderFree();
+    await databaseHelper.dropTableMembers();
+    await databaseHelper.dropTableShipAndPay();
+  }
+
   _clearDB() async{
     //SharedPreferences preferences = await SharedPreferences.getInstance();
     //preferences.clear();
@@ -89,6 +97,37 @@ class _MemberPageState extends State<MemberPage> {
               child: new Text("Ok"),
               onPressed: () {
                 _clearDB();
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                //Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialogDrop() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("แจ้งเตือน"),
+          content: new Text("แก้ไขปัญหา App"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: new Text("Ok"),
+              onPressed: () {
+                _dropDB();
                 SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                 //Navigator.of(context).pop();
               },
@@ -169,8 +208,8 @@ class _MemberPageState extends State<MemberPage> {
                             ),
                             Column(
                               children: <Widget>[
-                                Icon(Icons.comment, size: 40, color: Colors.grey,),
-                                Text('ข้อเสนอแนะ')
+                                Icon(Icons.add_comment, size: 40, color: Colors.grey,),
+                                Text('รับสินค้าแล้ว')
                               ],
                             )
                           ],
@@ -178,6 +217,71 @@ class _MemberPageState extends State<MemberPage> {
                       ),
                       Divider(
                         color: Colors.black,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        child: Text('ข้อมูลลูกค้า', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 5, 5, 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillStatusPage()),
+                                );
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.description, size: 40, color: Colors.grey,),
+                                  Text('บิลรายการสั่งซื้อ')
+                                ],
+                              ),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(Icons.playlist_add_check, size: 40, color: Colors.grey,),
+                                Text('สินค้าสั่งประจำ')
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(Icons.comment, size: 40, color: Colors.grey,),
+                                Text('ข้อเสนอแนะ')
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Icon(Icons.help, size: 40, color: Colors.grey,),
+                                Text('คู่มือการใช้งาน')
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      MaterialButton(
+                        color: Colors.amber,
+                        textColor: Colors.white,
+                        minWidth: double.infinity,
+                        height: 50,
+                        child: Text(
+                          "แก้ไขปัญหา",
+                          style: new TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
+                        onPressed: () {
+                          _showDialogDrop();
+                          //addToOrder();
+                        },
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                       ),
                       MaterialButton(
                         color: Colors.red,
