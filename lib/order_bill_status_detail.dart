@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:wang_shop/database_helper.dart';
@@ -23,6 +24,8 @@ class OrderBillStatusDetailPage extends StatefulWidget {
 
 class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
+  final formatter = new NumberFormat("#,##0.00");
+
   BlocCountOrder blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
@@ -34,14 +37,22 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
   String act = "Detail";
   List statusOrderBillDetail = ['ยังไม่มีสถานะ','พิมพ์บิล','จัดสินค้า','จัดส่ง','รอการอนุมัติ'];
   var userName;
+  var userCredit;
+  var sumAmount = 0.0;
+
+  var priceNowAll = [];
 
   getOrderBillDetail() async{
 
     var resUser = await databaseHelper.getList();
     var userID = resUser[0]['idUser'];
     userName = resUser[0]['name'];
+    userCredit = resUser[0]['credit'];
+    var priceCredit;
+    var priceNow;
 
-    final res = await http.get('https://wangpharma.com/API/orderBill.php?act=$act&orderID=${widget.orderID.orderBillId}');
+    final res = await http.get('https://wangpharma.com/API/orderBill.php?act=$act&orderID=${widget.orderID.orderBillMainId}');
+    //print('https://wangpharma.com/API/orderBill.php?act=$act&orderID=${widget.orderID.orderBillId}');
 
     if(res.statusCode == 200){
 
@@ -50,7 +61,50 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
         var jsonData = json.decode(res.body);
 
-        jsonData.forEach((orderBills) => orderBillDetailAll.add(OrderBill.fromJson(orderBills)));
+        jsonData.forEach((orderBills){
+
+                  orderBillDetailAll.add(OrderBill.fromJson(orderBills));
+
+                  if(orderBills['stype'] == 2){
+                    priceCredit = orderBills['priceA'];
+                  }else{
+                    if(userCredit == 'A'){
+                      priceCredit = orderBills['priceA'];
+                    }else if(userCredit == 'B'){
+                      priceCredit = orderBills['priceB'];
+                    }else{
+                      priceCredit = orderBills['priceC'];
+                    }
+                  }
+
+                  if(orderBills['type'] == 1){
+
+                    sumAmount = sumAmount + ((priceCredit * orderBills['unitQty3']) * orderBills['pno']);
+                    priceNow = priceCredit*orderBills['unitQty3'];
+                    priceNowAll.add(priceNow);
+                    print('----$priceNow');
+
+                  }
+
+                  if(orderBills['type'] == 2){
+
+                    sumAmount = sumAmount + ((priceCredit * orderBills['unitQty2']) * orderBills['pno']);
+                    priceNow = priceCredit*orderBills['unitQty2'];
+                    priceNowAll.add(priceNow);
+                    print('----$priceNow');
+
+                  }
+
+                  if(orderBills['type'] == 3){
+
+                    sumAmount = sumAmount + ((priceCredit * orderBills['unitQty1']) * orderBills['pno']);
+                    priceNow = priceCredit*orderBills['unitQty1'];
+                    priceNowAll.add(priceNow);
+                    print('----$priceNow');
+
+                  }
+
+                });
 
         print(orderBillDetailAll);
         print(orderBillDetailAll.length);
@@ -91,26 +145,23 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
         //controller: _scrollController,
         itemBuilder: (context, int index){
           return ListTile(
-            contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
+            contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
             onTap: (){
-              /*Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OrderBillStatusDetailPage(orderID: orderBillAll[index])));*/
+              //setState(() {
+              //editOrderDialog(orders[index], 0);
+              //});
             },
-            //leading: Image.network('https://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70),
-            title: Text('${orderBillDetailAll[index].orderBillProductCode}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            leading: Image.network('https://www.wangpharma.com/cms/product/${orderBillDetailAll[index].orderBillProductPic}',fit: BoxFit.cover, width: 70, height: 70,),
+            title: Text('${orderBillDetailAll[index].orderBillProductName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('${orderBillDetailAll[index].orderBillProductName}'),
+                Text('${orderBillDetailAll[index].orderBillProductCode}'),
+                Text('จำนวน ${orderBillDetailAll[index].orderBillProductSelectQty} : ${orderBillDetailAll[index].orderBillProductUnit1}',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
               ],
             ),
-            trailing: IconButton(
-                icon: Icon(Icons.view_list, color: Colors.purple, size: 40,),
-                onPressed: (){
-                  //addToOrderFast(productAll[index]);
-                }
-            ),
+            trailing: Text('฿', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
           );
         },
         itemCount: orderBillDetailAll != null ? orderBillDetailAll.length : 0,
