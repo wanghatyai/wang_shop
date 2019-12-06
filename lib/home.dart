@@ -50,6 +50,9 @@ class _HomeState extends State<Home> {
   List user = [];
   String name;
   String value;
+  String userCode;
+  var overdueStatus = 0;
+  var overdueValue = 0.0;
 
   var countOrderAll;
 
@@ -62,8 +65,26 @@ class _HomeState extends State<Home> {
     setState(() {
       user = res;
       name = user[0]['name'];
+      userCode = user[0]['code'];
     });
 
+  }
+
+  getOverdue() async {
+    final res = await http.get('https://wangpharma.com/API/overduePopup.php?act=Overdue&userCode=05085');
+    if(res.statusCode == 200){
+
+      setState(() {
+        var jsonData = json.decode(res.body);
+        jsonData.forEach((overDueGet) {
+          overdueValue = double.parse(overDueGet['CBS_Price_Bill']);
+        });
+
+        overdueStatus = jsonData.length;
+        print(overdueValue);
+        print('overdue--${jsonData.length}');
+      });
+    }
   }
 
   _launchURL() async {
@@ -80,6 +101,48 @@ class _HomeState extends State<Home> {
     super.initState();
     getUser();
     setupNotif();
+    getOverdue();
+
+
+      Future.delayed(Duration.zero, () {
+        //if(overdueStatus > 0) {
+          this.showDialogOverdue();
+        //}
+      });
+
+    //showDialogOverdue();
+
+  }
+
+  showDialogOverdue(){
+    // flutter defined function
+    showDialog(
+      //barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("แจ้งเตือน"),
+          content: Column(
+            children: <Widget>[
+              Text('ขออภัยในความไม่สะดวก:'),
+              Text('หากท่านได้มีการชำระยอดใบวางบิลดังกล่าวเป็นที่เรียบร้อยแล้ว ต้องขออภัยมา ณ ที่นี้ด้วย หากมีข้อสงสัย หรือสอบถามข้อมูลเพิ่มเติม สามารถติดต่อสอบถามได้ที่ 088-788-6967  K.กำธร ( เจ้าหน้าที่ฝ่ายบัญชี )'),
+            ],
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              color: Colors.green,
+              child: Text("ตกลง",style: TextStyle(color: Colors.white, fontSize: 18),),
+              onPressed: () {
+                Navigator.pop(context);
+                //Navigator.popUntil(context, ModalRoute.withName('/Home'));
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   setupNotif() async {
