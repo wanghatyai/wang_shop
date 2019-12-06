@@ -6,6 +6,7 @@ import 'package:wang_shop/database_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:wang_shop/order_bill_model.dart';
+import 'package:wang_shop/order_bill_status_detail.dart';
 
 import 'package:wang_shop/order.dart';
 
@@ -144,9 +145,9 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
           return ListTile(
             contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
             onTap: (){
-              /*Navigator.push(
+              Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));*/
+                  MaterialPageRoute(builder: (context) => OrderBillStatusDetailPage(orderID: orderBillAll[index])));
             },
             //leading: Image.network('https://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70),
             title: Text('${orderBillAll[index].orderBillCode}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
