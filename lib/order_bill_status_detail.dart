@@ -50,6 +50,8 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
     userCredit = resUser[0]['credit'];
     var priceCredit;
     var priceNow;
+    var orderBillType;
+    var orderBillProductSelectQty;
 
     final res = await http.get('https://wangpharma.com/API/orderBill.php?act=$act&orderID=${widget.orderID.orderBillMainId}');
     //print('https://wangpharma.com/API/orderBill.php?act=$act&orderID=${widget.orderID.orderBillId}');
@@ -61,52 +63,56 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
         var jsonData = json.decode(res.body);
 
-        jsonData.forEach((orderBills){
+        jsonData.forEach((orderBills)=> orderBillDetailAll.add(OrderBill.fromJson(orderBills)));
 
-                  orderBillDetailAll.add(OrderBill.fromJson(orderBills));
+        for(var index = 0; index < orderBillDetailAll.length; index++){
 
-                  if(orderBills['stype'] == 2){
-                    priceCredit = orderBills['priceA'];
-                  }else{
-                    if(userCredit == 'A'){
-                      priceCredit = orderBills['priceA'];
-                    }else if(userCredit == 'B'){
-                      priceCredit = orderBills['priceB'];
-                    }else{
-                      priceCredit = orderBills['priceC'];
-                    }
-                  }
+          /*if(int.parse(orderBillDetailAll[index].orderBillProductProStatus) == 2){
+            priceCredit = orderBillDetailAll[index].orderBillProductPriceA;
+          }else{
+            if(userCredit == 'A'){
+              priceCredit = orderBillDetailAll[index].orderBillProductPriceA;
+            }else if(userCredit == 'B'){
+              priceCredit = orderBillDetailAll[index].orderBillProductPriceB;
+            }else{
+              priceCredit = orderBillDetailAll[index].orderBillProductPriceC;
+            }
+          }*/
 
-                  if(orderBills['type'] == 1){
+          priceCredit = double.parse(orderBillDetailAll[index].orderBillProductSelectPrice);
+          orderBillType = int.parse(orderBillDetailAll[index].orderBillProductSelectUnit);
+          orderBillProductSelectQty = int.parse(orderBillDetailAll[index].orderBillProductSelectQty);
 
-                    sumAmount = sumAmount + ((priceCredit * orderBills['unitQty3']) * orderBills['pno']);
-                    priceNow = priceCredit*orderBills['unitQty3'];
-                    priceNowAll.add(priceNow);
-                    print('----$priceNow');
+          if(orderBillType == 1){
 
-                  }
+            sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty3)) * orderBillProductSelectQty);
+            priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty3);
+            priceNowAll.add(priceNow);
+            print('----$priceNow');
 
-                  if(orderBills['type'] == 2){
+          }
 
-                    sumAmount = sumAmount + ((priceCredit * orderBills['unitQty2']) * orderBills['pno']);
-                    priceNow = priceCredit*orderBills['unitQty2'];
-                    priceNowAll.add(priceNow);
-                    print('----$priceNow');
+          if(orderBillType == 2){
 
-                  }
+            sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty2)) * orderBillProductSelectQty);
+            priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty2);
+            priceNowAll.add(priceNow);
+            print('----$priceNow');
 
-                  if(orderBills['type'] == 3){
+          }
 
-                    sumAmount = sumAmount + ((priceCredit * orderBills['unitQty1']) * orderBills['pno']);
-                    priceNow = priceCredit*orderBills['unitQty1'];
-                    priceNowAll.add(priceNow);
-                    print('----$priceNow');
+          if(orderBillType == 3){
 
-                  }
+            sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty1)) * orderBillProductSelectQty);
+            priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty1);
+            priceNowAll.add(priceNow);
+            print('----$priceNow');
 
-                });
+          }
 
-        print(orderBillDetailAll);
+        }
+
+        print(sumAmount);
         print(orderBillDetailAll.length);
 
         return orderBillDetailAll;
@@ -135,36 +141,51 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
         //title: Text(widget.product.productName.toString()),
         title: Text("รายละเอียดรายการสินค้า"),
       ),
-      body: isLoading ? CircularProgressIndicator()
-          :ListView.separated(
-        separatorBuilder: (context, index) {
-          return Divider(
-            color: Colors.black,
-          );
-        },
-        //controller: _scrollController,
-        itemBuilder: (context, int index){
-          return ListTile(
-            contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-            onTap: (){
-              //setState(() {
-              //editOrderDialog(orders[index], 0);
-              //});
-            },
-            leading: Image.network('https://www.wangpharma.com/cms/product/${orderBillDetailAll[index].orderBillProductPic}',fit: BoxFit.cover, width: 70, height: 70,),
-            title: Text('${orderBillDetailAll[index].orderBillProductName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('${orderBillDetailAll[index].orderBillProductCode}'),
-                Text('จำนวน ${orderBillDetailAll[index].orderBillProductSelectQty} : ${orderBillDetailAll[index].orderBillProductUnit1}',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
-              ],
+      body: Column(
+        children: <Widget>[
+          Center(
+            child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
+          ),
+          Expanded(
+            child: isLoading ? CircularProgressIndicator()
+                :ListView.separated(
+              separatorBuilder: (context, index) {
+                return Divider(
+                  color: Colors.black,
+                );
+              },
+              //controller: _scrollController,
+              itemBuilder: (context, int index){
+                return ListTile(
+                  contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                  onTap: (){
+                    //setState(() {
+                    //editOrderDialog(orders[index], 0);
+                    //});
+                  },
+                  leading: Image.network('https://www.wangpharma.com/cms/product/${orderBillDetailAll[index].orderBillProductPic}',fit: BoxFit.cover, width: 70, height: 70,),
+                  title: Text('${orderBillDetailAll[index].orderBillProductName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('${orderBillDetailAll[index].orderBillProductCode}'),
+                      Text('จำนวน ${orderBillDetailAll[index].orderBillProductSelectQty} : ${orderBillDetailAll[index].orderBillProductUnit1}',
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
+                    ],
+                  ),
+                  /*trailing: IconButton(
+                      icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
+                      onPressed: (){
+                        //addToOrderFast(productAll[index]);
+                      }
+                  ),*/
+                  trailing: Text('฿${formatter.format(priceNowAll[index]*int.parse(orderBillDetailAll[index].orderBillProductSelectQty))}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                );
+              },
+              itemCount: orderBillDetailAll != null ? orderBillDetailAll.length : 0,
             ),
-            trailing: Text('฿', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
-          );
-        },
-        itemCount: orderBillDetailAll != null ? orderBillDetailAll.length : 0,
+          )
+        ],
       ),
     );
   }
