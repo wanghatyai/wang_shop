@@ -86,28 +86,27 @@ class _HomeState extends State<Home> {
       setState(() {
 
         var jsonData = json.decode(res.body);
-        overdueBillAllDetail = jsonData[0];
 
-        /*jsonData.forEach((overDueGet) {
+        if(jsonData.isNotEmpty){
+          overdueBillAllDetail = jsonData[0];
+
+          /*jsonData.forEach((overDueGet) {
           overdueValue = double.parse(overDueGet['CBS_Price_Bill']);
           //overdueBillAllDetail[0]['overdueBillCode'] = overDueGet['CBS_Number'];
-          overdueBillCode = overDueGet['CBS_Number'];
-          overdueBillAllDetail[0]['hhhh'] = overdueValue;
-          //overdueBillAllDetail[1] = overdueBillCode;
         });*/
 
-        overdueStatus = jsonData.length;
-        //print(overdueValue);
-        print(overdueBillAllDetail);
-        //print( overdueBillAllDetail[1]);
-        print('overdue--${jsonData.length}');
-        var newDateTimeObj2 = DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive']);
-        //dateFormate = DateFormat("dd-MM-yyyy").format(DateTime.parse("2019-09-30"));
-        dateFormat.format(newDateTimeObj2);
-        print(DateFormat("dd-MM-yyyy").format(DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive'])));
-        //print(DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive']));
+          overdueStatus = jsonData.length;
 
-        //var newDateTimeObj2 = new DateFormat("dd/MM/yyyy HH:mm:ss").parse("10/02/2000 15:13:09")
+          print(overdueBillAllDetail);
+
+          print('overdue--${jsonData.length}');
+          var newDateTimeObj2 = DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive']);
+          //dateFormate = DateFormat("dd-MM-yyyy").format(DateTime.parse("2019-09-30"));
+          dateFormat.format(newDateTimeObj2);
+          print(DateFormat("dd-MM-yyyy").format(DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive'])));
+          //print(DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive']));
+          //var newDateTimeObj2 = new DateFormat("dd/MM/yyyy HH:mm:ss").parse("10/02/2000 15:13:09")
+        }
 
       });
     }
