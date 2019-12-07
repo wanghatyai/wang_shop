@@ -93,7 +93,7 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("สถานะรายการ"),
+        title: Text("บิลรายการที่เคยสั่งทั้งหมด"),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
