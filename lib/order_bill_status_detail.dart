@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wang_shop/product_detail.dart';
 import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/order_bill_model.dart';
+import 'package:wang_shop/product_hot_m30.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -159,7 +160,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("รายละเอียดรายการสินค้า"),
+        title: Text("รายละเอียดรายการในบิล"),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -199,56 +200,77 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
               })
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Center(
-            child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
-          ),
-          Expanded(
-            child: isLoading ? CircularProgressIndicator()
-                :ListView.separated(
-              separatorBuilder: (context, index) {
-                return Divider(
-                  color: Colors.black,
-                );
-              },
-              //controller: _scrollController,
-              itemBuilder: (context, int index){
-                return ListTile(
-                  contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                  onTap: (){
-                    //setState(() {
-                    //editOrderDialog(orders[index], 0);
-                    //});
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
-                  },
-                  leading: Image.network('https://www.wangpharma.com/cms/product/${orderBillDetailAll[index].orderBillProductPic}',fit: BoxFit.cover, width: 70, height: 70,),
-                  title: Text('${orderBillDetailAll[index].orderBillProductName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('${orderBillDetailAll[index].orderBillProductCode}'),
-                      Text('จำนวน ${orderBillDetailAll[index].orderBillProductSelectQty} : ${orderBillDetailAll[index].orderBillProductUnit1}',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
-                    ],
+      body: CustomScrollView(
+          slivers: <Widget>[
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Column(
+                children: <Widget>[
+                  Center(
+                    child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
                   ),
-                  trailing: IconButton(
-                      icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
-                      onPressed: (){
-                        addToOrderFast(productAll[index]);
-                      }
+                  isLoading ? CircularProgressIndicator()
+                        :ListView.separated(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      separatorBuilder: (context, index) {
+                        return Divider(
+                          color: Colors.black,
+                        );
+                      },
+                      //controller: _scrollController,
+                      itemBuilder: (context, int index){
+                        return ListTile(
+                          contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                          onTap: (){
+                            //setState(() {
+                            //editOrderDialog(orders[index], 0);
+                            //});
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
+                          },
+                          leading: Image.network('https://www.wangpharma.com/cms/product/${orderBillDetailAll[index].orderBillProductPic}',fit: BoxFit.cover, width: 70, height: 70,),
+                          title: Text('${orderBillDetailAll[index].orderBillProductName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('${orderBillDetailAll[index].orderBillProductCode}'),
+                              Text('จำนวน ${orderBillDetailAll[index].orderBillProductSelectQty} : ${orderBillDetailAll[index].orderBillProductUnit1}',
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
+                            ],
+                          ),
+                          trailing: IconButton(
+                              icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
+                              onPressed: (){
+                                addToOrderFast(productAll[index]);
+                              }
+                          ),
+                          //trailing: Text('฿${formatter.format(priceNowAll[index]*int.parse(orderBillDetailAll[index].orderBillProductSelectQty))}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                        );
+                      },
+                      itemCount: orderBillDetailAll != null ? orderBillDetailAll.length : 0,
+                    ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.deepOrange,
+                      child: Text('/// สินค้าขายดีประจำเดือน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),),
+                    ),
                   ),
-                  //trailing: Text('฿${formatter.format(priceNowAll[index]*int.parse(orderBillDetailAll[index].orderBillProductSelectQty))}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
-                );
-              },
-              itemCount: orderBillDetailAll != null ? orderBillDetailAll.length : 0,
-            ),
-          )
-        ],
-      ),
-    );
+                  Container(
+                    height: 4150,
+                    child: ProductHotMonth30Page(),
+                  ),
+
+                ],
+              ),
+            ])
+           ),
+          ],
+        ),
+      );
   }
 
   addToOrderFast(productFast) async{
