@@ -7,9 +7,14 @@ class OrderBill{
   final String orderBillStatus;
   final String orderBillDateST;
   final String orderBillTimeST;
+  final String orderBillProductID;
   final String orderBillProductCode;
+  final String orderBillProductBarcode;
   final String orderBillProductName;
+  final String orderBillProductNameENG;
   final String orderBillProductPic;
+  final String orderBillProductCategory;
+  final String orderBillProductCompany;
   final String orderBillProductUnit1;
   final String orderBillProductUnitQty1;
   final String orderBillProductUnit2;
@@ -20,6 +25,7 @@ class OrderBill{
   final String orderBillProductPriceB;
   final String orderBillProductPriceC;
   final String orderBillProductProStatus;
+  final String orderBillProductProLimit;
   final String orderBillProductSelectUnit;
   final String orderBillProductSelectQty;
   final String orderBillProductSelectPrice;
@@ -34,9 +40,14 @@ class OrderBill{
     this.orderBillStatus,
     this.orderBillDateST,
     this.orderBillTimeST,
+    this.orderBillProductID,
     this.orderBillProductCode,
+    this.orderBillProductBarcode,
     this.orderBillProductName,
+    this.orderBillProductNameENG,
     this.orderBillProductPic,
+    this.orderBillProductCategory,
+    this.orderBillProductCompany,
     this.orderBillProductUnit1,
     this.orderBillProductUnitQty1,
     this.orderBillProductUnit2,
@@ -47,6 +58,7 @@ class OrderBill{
     this.orderBillProductPriceB,
     this.orderBillProductPriceC,
     this.orderBillProductProStatus,
+    this.orderBillProductProLimit,
     this.orderBillProductSelectUnit,
     this.orderBillProductSelectQty,
     this.orderBillProductSelectPrice
@@ -62,9 +74,14 @@ class OrderBill{
       orderBillStatus: json['status'],
       orderBillDateST: json['date'],
       orderBillTimeST: json['time'],
+      orderBillProductID: json['pID'],
       orderBillProductCode: json['pcode'],
-      orderBillProductName: json['nproduct'],
+      orderBillProductBarcode: json['bcode'],
+      orderBillProductName: json['nproductMain'],
+      orderBillProductNameENG: json['nproductENG'],
       orderBillProductPic: json['pic'],
+      orderBillProductCategory: json['ptype'],
+      orderBillProductCompany: json['company'],
       orderBillProductUnit1: json['unit1'],
       orderBillProductUnitQty1: json['unitQty1'],
       orderBillProductUnit2: json['unit2'],
@@ -75,6 +92,7 @@ class OrderBill{
       orderBillProductPriceB: json['priceB'],
       orderBillProductPriceC: json['priceC'],
       orderBillProductProStatus: json['stype'],
+      orderBillProductProLimit: json['limit1'],
       orderBillProductSelectUnit: json['type'],
       orderBillProductSelectQty: json['pno'],
       orderBillProductSelectPrice: json['price'],
