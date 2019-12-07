@@ -206,8 +206,12 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
               delegate: SliverChildListDelegate([
                 Column(
                 children: <Widget>[
-                  Center(
-                    child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.blue,
+                    child: Center(
+                        child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30, color: Colors.white), ),
+                    ),
                   ),
                   isLoading ? CircularProgressIndicator()
                         :ListView.separated(
