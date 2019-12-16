@@ -93,7 +93,7 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
     userName = resUser[0]['name'];
 
     final res = await http.get('https://wangpharma.com/API/orderBill.php?PerPage=$perPage&act=AllByDate&userID=$userID&DateSelect=$dateSelect');
-    print('https://wangpharma.com/API/orderBill.php?PerPage=$perPage&act=AllByDate&userID=$userID&DateSelect=$dateSelect');
+    //print('https://wangpharma.com/API/orderBill.php?PerPage=$perPage&act=AllByDate&userID=$userID&DateSelect=$dateSelect');
 
     if(res.statusCode == 200){
 
