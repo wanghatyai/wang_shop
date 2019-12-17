@@ -614,7 +614,23 @@ class _OrderPageState extends State<OrderPage> {
                           });
                         });
                       },
-                      leading: Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
+                      leading: Stack(
+                        children: <Widget>[
+                          Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
+                          (productTop[index].productProStatus == '2')?
+                          Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                            color: Colors.red,
+                            child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                          ) : Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                          )
+                        ],
+                      ),
                       title: Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

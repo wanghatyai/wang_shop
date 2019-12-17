@@ -166,7 +166,23 @@ class _ProductHotPageState extends State<ProductHotPage> {
                   context,
                   MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
             },
-            leading: Image.network('https://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70),
+            leading: Stack(
+              children: <Widget>[
+                Image.network('https://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
+                (productAll[index].productProStatus == '2')?
+                Container(
+                  padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                  width: 30,
+                  height: 20,
+                  color: Colors.red,
+                  child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                ) : Container(
+                  padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                  width: 30,
+                  height: 20,
+                )
+              ],
+            ),
             title: Text('${productAll[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
