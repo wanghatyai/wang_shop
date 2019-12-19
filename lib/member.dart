@@ -2,13 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/services.dart';
 
 import 'package:wang_shop/database_helper.dart';
+import 'package:wang_shop/home.dart';
 import 'package:wang_shop/member_model.dart';
 import 'package:wang_shop/order_bill_status.dart';
+import 'package:wang_shop/order_bill_temps_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
 class MemberPage extends StatefulWidget {
@@ -19,13 +23,19 @@ class MemberPage extends StatefulWidget {
 class _MemberPageState extends State<MemberPage> {
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 
   var userID;
+  var userCode;
+
+  List <OrderBillTemps>orderBillTempsAll = [];
 
   List <Member>memberAll = [];
   bool isLoading = true;
   int perPage = 30;
   String act = "Member";
+
+  Timer timerLoopCheck;
 
   getUser() async{
 
@@ -65,6 +75,99 @@ class _MemberPageState extends State<MemberPage> {
     // TODO: implement initState
     super.initState();
     getUser();
+    //timerLoopCheck = Timer.periodic(Duration(minutes: 15), (Timer t) => checkForNewNotif());
+  }
+
+  void setupNotificationPlugin(){
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+  var initializationSettingsAndroid = new AndroidInitializationSettings('app_icon');
+  var initializationSettingsIOS = IOSInitializationSettings(
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+  var initializationSettings = InitializationSettings(
+      initializationSettingsAndroid, initializationSettingsIOS);
+  flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  onSelectNotification: onSelectNotification);
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    // display a dialog with the notification details, tap ok to go to another page
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: Text("Test Notification"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('OK'),
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+    await Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context) => new Home()),
+    );
+  }
+
+  void setupNotification()async{
+    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 5));
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails('your other channel id', 'your other channel name', 'your other channel description');
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    NotificationDetails platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'scheduled title',
+        'scheduled body',
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
+  }
+
+  getOrderBillTemps() async{
+
+    var resUser = await databaseHelper.getList();
+    setState(() {
+      userCode = resUser[0]['code'];
+    });
+
+    print(userCode);
+
+    final res = await http.get('https://wangpharma.com/API/orderBill.php?orderBillCus=$userCode&act=CheckStatusOrderBill');
+    if(res.statusCode == 200){
+
+      setState(() {
+        isLoading = false;
+
+        var jsonData = json.decode(res.body);
+
+        jsonData.forEach((orderBillTemps) => orderBillTempsAll.add(OrderBillTemps.fromJson(orderBillTemps)));
+
+        print(orderBillTempsAll);
+
+        return orderBillTempsAll;
+
+      });
+
+
+    }else{
+      throw Exception('Failed load Json');
+    }
+    print('check');
+  }
+
+  @override
+  void dispose() {
+    timerLoopCheck?.cancel();
+    super.dispose();
   }
 
   _dropDB() async{
