@@ -70,68 +70,6 @@ class _MemberPageState extends State<MemberPage> {
 
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getUser();
-    //timerLoopCheck = Timer.periodic(Duration(minutes: 15), (Timer t) => checkForNewNotif());
-  }
-
-  void setupNotificationPlugin(){
-// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-  var initializationSettingsAndroid = new AndroidInitializationSettings('app_icon');
-  var initializationSettingsIOS = IOSInitializationSettings(
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-  var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid, initializationSettingsIOS);
-  flutterLocalNotificationsPlugin.initialize(initializationSettings,
-  onSelectNotification: onSelectNotification);
-  }
-
-  Future onDidReceiveLocalNotification(
-      int id, String title, String body, String payload) async {
-    // display a dialog with the notification details, tap ok to go to another page
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        content: Text("Test Notification"),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('OK'),
-            onPressed: (){
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      )
-    );
-  }
-
-  Future onSelectNotification(String payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
-    }
-    await Navigator.push(
-      context,
-      new MaterialPageRoute(builder: (context) => new Home()),
-    );
-  }
-
-  void setupNotification()async{
-    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 5));
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails('your other channel id', 'your other channel name', 'your other channel description');
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    NotificationDetails platformChannelSpecifics = new NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.schedule(
-        0,
-        'scheduled title',
-        'scheduled body',
-        scheduledNotificationDateTime,
-        platformChannelSpecifics);
-  }
-
   getOrderBillTemps() async{
 
     var resUser = await databaseHelper.getList();
@@ -162,6 +100,88 @@ class _MemberPageState extends State<MemberPage> {
       throw Exception('Failed load Json');
     }
     print('check');
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUser();
+    setupNotificationPlugin();
+    //timerLoopCheck = Timer.periodic(Duration(minutes: 15), (Timer t) => setupNotification());
+  }
+
+  void setupNotificationPlugin(){
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+  var initializationSettingsAndroid = new AndroidInitializationSettings('ic_notification');
+  var initializationSettingsIOS = IOSInitializationSettings(
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+  var initializationSettings = InitializationSettings(
+      initializationSettingsAndroid, initializationSettingsIOS);
+  flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  /*onSelectNotification: onSelectNotification).then((init){
+    setupNotification();
+  });*/
+  onSelectNotification: onSelectNotification);
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    // display a dialog with the notification details, tap ok to go to another page
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: Text("ระบบแจ้งเตือนสถานะรายการบิล"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('OK'),
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+    await Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context) => new Home()),
+    );
+  }
+
+  setupNotification(orderBillCode, orderBillStatus)async{
+
+    var orderBillStatusText;
+    if(orderBillStatus == 1){
+      orderBillStatusText = 'เปิดบิล';
+    }else if(orderBillStatus == 2){
+      orderBillStatusText = 'กำลังจัด';
+    }else if(orderBillStatus == 3){
+      orderBillStatusText = 'กำลัง QC';
+    }else if(orderBillStatus == 4){
+      orderBillStatusText = 'กำลังแพ็ค';
+    }else if(orderBillStatus == 5){
+      orderBillStatusText = 'เตรียมส่ง';
+    }else if(orderBillStatus == 6){
+      orderBillStatusText = 'ระหว่างขนส่ง';
+    }
+
+    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 15));
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails('your other channel id', 'your other channel name', 'your other channel description');
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    NotificationDetails platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'รายการบิลเลขที่:$orderBillCode',
+        'สถานะ:$orderBillStatusText',
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
   }
 
   @override
