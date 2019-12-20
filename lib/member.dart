@@ -91,6 +91,10 @@ class _MemberPageState extends State<MemberPage> {
 
         print(orderBillTempsAll);
 
+        for(var index = 0; index < orderBillTempsAll.length; index++){
+          setupNotification(orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+        }
+
         return orderBillTempsAll;
 
       });
@@ -108,6 +112,7 @@ class _MemberPageState extends State<MemberPage> {
     super.initState();
     getUser();
     setupNotificationPlugin();
+    //getOrderBillTemps();
     //timerLoopCheck = Timer.periodic(Duration(minutes: 15), (Timer t) => setupNotification());
   }
 
@@ -171,7 +176,7 @@ class _MemberPageState extends State<MemberPage> {
       orderBillStatusText = 'ระหว่างขนส่ง';
     }
 
-    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 15));
+    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 5));
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails('your other channel id', 'your other channel name', 'your other channel description');
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     NotificationDetails platformChannelSpecifics = new NotificationDetails(
