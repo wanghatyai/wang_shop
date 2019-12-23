@@ -36,6 +36,7 @@ class _MemberPageState extends State<MemberPage> {
   String act = "Member";
 
   Timer timerLoopCheck;
+  var orderBillStatusText;
 
   getUser() async{
 
@@ -93,6 +94,7 @@ class _MemberPageState extends State<MemberPage> {
 
         for(var index = 0; index < orderBillTempsAll.length; index++){
           setupNotification(orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+          //print(orderBillTempsAll[index].orderBillSentStatus);
         }
 
         return orderBillTempsAll;
@@ -112,7 +114,7 @@ class _MemberPageState extends State<MemberPage> {
     super.initState();
     getUser();
     setupNotificationPlugin();
-    //getOrderBillTemps();
+    getOrderBillTemps();
     //timerLoopCheck = Timer.periodic(Duration(minutes: 15), (Timer t) => setupNotification());
   }
 
@@ -161,20 +163,21 @@ class _MemberPageState extends State<MemberPage> {
 
   setupNotification(orderBillCode, orderBillStatus)async{
 
-    var orderBillStatusText;
-    if(orderBillStatus == 1){
+    if(orderBillStatus == '1'){
       orderBillStatusText = 'เปิดบิล';
-    }else if(orderBillStatus == 2){
+    }else if(orderBillStatus == '2'){
       orderBillStatusText = 'กำลังจัด';
-    }else if(orderBillStatus == 3){
+    }else if(orderBillStatus == '3'){
       orderBillStatusText = 'กำลัง QC';
-    }else if(orderBillStatus == 4){
+    }else if(orderBillStatus == '4'){
       orderBillStatusText = 'กำลังแพ็ค';
-    }else if(orderBillStatus == 5){
+    }else if(orderBillStatus == '5'){
       orderBillStatusText = 'เตรียมส่ง';
-    }else if(orderBillStatus == 6){
+    }else if(orderBillStatus == '6'){
       orderBillStatusText = 'ระหว่างขนส่ง';
     }
+
+    print(orderBillStatusText);
 
     var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 5));
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails('your other channel id', 'your other channel name', 'your other channel description');
