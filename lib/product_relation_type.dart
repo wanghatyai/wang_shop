@@ -100,7 +100,23 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
                 child: Column(
                   children: <Widget>[
                     Expanded(
-                      child: Image.network('https://www.wangpharma.com/cms/product/${productRelationType[index].productPic}', fit: BoxFit.cover, width: 200,),
+                      child: Stack(
+                        children: <Widget>[
+                          Image.network('https://www.wangpharma.com/cms/product/${productRelationType[index].productPic}', fit: BoxFit.cover, width: 200,),
+                          (productRelationType[index].productProStatus == '2')?
+                          Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                            color: Colors.red,
+                            child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                          ) : Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                          )
+                        ],
+                      )
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(5, 0, 5, 0),

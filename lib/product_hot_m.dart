@@ -103,7 +103,24 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
                 child: Column(
                   children: <Widget>[
                     Expanded(
-                      child: Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.fill, width: 200,),
+                      child: Stack(
+                        alignment: Alignment.topRight,
+                        children: <Widget>[
+                          Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.fill, width: 200,),
+                          (productTop[index].productProStatus == '2')?
+                            Container(
+                              padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                              width: 30,
+                              height: 20,
+                              color: Colors.red,
+                              child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                            ) : Container(
+                                  padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                  width: 30,
+                                  height: 20,
+                                )
+                        ],
+                      )
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(5, 0, 5, 0),

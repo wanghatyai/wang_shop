@@ -18,6 +18,9 @@ class Product{
   final String productPriceC;
   final String productFreePrice;
   final String productProStatus;
+  final String productNewStatus;
+  final String productProperties;
+  final String productHowTo;
   final String productProLimit;//add comment limit order
 
 
@@ -41,6 +44,9 @@ class Product{
     this.productPriceC,
     this.productFreePrice,
     this.productProStatus,
+    this.productNewStatus,
+    this.productProperties,
+    this.productHowTo,
     this.productProLimit
   });
 
@@ -65,6 +71,9 @@ class Product{
       productPriceC: json['priceC'],
       productFreePrice: json['freePrice'],
       productProStatus: json['stype'],
+      productNewStatus: json['new'],
+      productProperties: json['properties'],
+      productHowTo: json['howTo'],
       productProLimit: json['limit1'],
     );
   }
