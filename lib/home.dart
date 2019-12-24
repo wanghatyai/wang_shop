@@ -32,6 +32,10 @@ import 'package:wang_shop/bloc_count_order.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:wang_shop/order_bill_temps_model.dart';
+
+
 
 
 class Home extends StatefulWidget {
@@ -45,6 +49,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 
   BlocCountOrder blocCountOrder;
 
@@ -59,6 +64,11 @@ class _HomeState extends State<Home> {
   var overdueNewDate;
   String overdueBillCode;
   Map<String, dynamic> overdueBillAllDetail = {};
+
+  List <OrderBillTemps>orderBillTempsAll = [];
+
+  Timer timerLoopCheck;
+  var orderBillStatusText;
 
   DateFormat dateFormat;
   //DateFormat timeFormat;
@@ -144,6 +154,13 @@ class _HomeState extends State<Home> {
           this.showDialogOverdue();
         //}
       });*/
+    setupNotificationPlugin();
+
+    getOrderBillTemps();
+
+    timerLoopCheck = Timer.periodic(Duration(minutes: 15), (Timer t) => getOrderBillTemps());
+
+    //_clearOrderTempsDB();
 
   }
 
@@ -214,6 +231,184 @@ class _HomeState extends State<Home> {
     );
   }
 
+  getOrderBillTemps() async{
+
+    orderBillTempsAll = [];
+
+    var resUser = await databaseHelper.getList();
+    setState(() {
+      userCode = resUser[0]['code'];
+    });
+
+    print(userCode);
+
+    final res = await http.get('https://wangpharma.com/API/orderBill.php?orderBillCus=$userCode&act=CheckStatusOrderBill');
+    if(res.statusCode == 200){
+
+      setState(() {
+        //isLoading = false;
+
+        var jsonData = json.decode(res.body);
+
+        jsonData.forEach((orderBillTemps) => orderBillTempsAll.add(OrderBillTemps.fromJson(orderBillTemps)));
+
+        print(orderBillTempsAll);
+
+        loopSendOrderBillNotification();
+
+        //return orderBillTempsAll;
+
+      });
+
+
+    }else{
+      throw Exception('Failed load Json');
+    }
+    print('check');
+  }
+
+  loopSendOrderBillNotification() async{
+
+    var checkCodeOrderTemps;
+    var checkOrderTemps;
+
+    for(var index = 0; index < orderBillTempsAll.length; index++){
+
+      //Future.delayed(Duration(seconds: 5), () async{
+      checkCodeOrderTemps = await databaseHelper.getOrderTempsCheckCode(orderBillTempsAll[index].orderBillCode);
+
+      if(checkCodeOrderTemps.isEmpty){
+
+        Map orderTemps = {
+          'code': orderBillTempsAll[index].orderBillCode,
+          'status': orderBillTempsAll[index].orderBillSentStatus,
+          'cusCode': userCode,
+        };
+
+        await databaseHelper.saveOrderTemps(orderTemps);
+
+        setupNotification(index, orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+
+
+        print('orderBillSendNew');
+      }else{
+
+        checkOrderTemps = await databaseHelper.getOrderTempsCheck(orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+
+        if(checkOrderTemps.isEmpty){
+
+          Map orderTempsUp = {
+            'code': orderBillTempsAll[index].orderBillCode,
+            'status': orderBillTempsAll[index].orderBillSentStatus,
+          };
+
+          await databaseHelper.updateOrderTemps(orderTempsUp);
+
+
+          setupNotification(index, orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+
+
+          print('orderBillSendUpdate');
+        }else{
+          print('orderBillStatusSame');
+        }
+
+      }
+      //});
+
+    }
+  }
+
+  void setupNotificationPlugin(){
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+    var initializationSettingsAndroid = new AndroidInitializationSettings('ic_notification');
+    var initializationSettingsIOS = IOSInitializationSettings(
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    var initializationSettings = InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        /*onSelectNotification: onSelectNotification).then((init){
+    setupNotification();
+  });*/
+        onSelectNotification: onSelectNotification);
+  }
+
+  Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    // display a dialog with the notification details, tap ok to go to another page
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          content: Text("ระบบแจ้งเตือนสถานะรายการบิล"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        )
+    );
+  }
+
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+    await Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context) => new Home()),
+    );
+  }
+
+  setupNotification(index, orderBillCode, orderBillStatus)async{
+
+    if(orderBillStatus == '1'){
+      orderBillStatusText = 'เปิดบิล';
+    }else if(orderBillStatus == '2'){
+      orderBillStatusText = 'กำลังจัด';
+    }else if(orderBillStatus == '3'){
+      orderBillStatusText = 'กำลัง QC';
+    }else if(orderBillStatus == '4'){
+      orderBillStatusText = 'กำลังแพ็ค';
+    }else if(orderBillStatus == '5'){
+      orderBillStatusText = 'เตรียมส่ง';
+    }else if(orderBillStatus == '6'){
+      orderBillStatusText = 'ระหว่างขนส่ง';
+    }
+
+    print(orderBillStatusText);
+
+    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 1));
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails('your other channel id', 'your other channel name', 'your other channel description');
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    NotificationDetails platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.schedule(
+        index,
+        'รายการบิลเลขที่:$orderBillCode',
+        'สถานะ:$orderBillStatusText',
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
+
+    /*var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        'repeating channel id',
+        'repeating channel name',
+        'repeating description');
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics,
+        iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.periodicallyShow(
+        0,
+        'รายการบิลเลขที่:$orderBillCode',
+        'สถานะ:$orderBillStatusText',
+        RepeatInterval.EveryMinute,
+        platformChannelSpecifics);*/
+  }
+
   setupNotif() async {
     _firebaseMessaging.getToken().then((token){
       print(token);
@@ -242,6 +437,16 @@ class _HomeState extends State<Home> {
   int currentIndex = 0;
   //List pages = [HomeNewPage(), ProductHotPage(), ProductNewPage(), ProductRecomPage(), MemberPage()];
   List pages = [HomeNewPage(), NewsPage(), ProductWishPage(), MemberPage()];
+
+  @override
+  void dispose() {
+    timerLoopCheck?.cancel();
+    super.dispose();
+  }
+
+  _clearOrderTempsDB()async{
+    await databaseHelper.removeAllOrderTemps();
+  }
 
 
   @override
