@@ -65,6 +65,14 @@ class DatabaseHelper {
     pay INTEGER)
   ''';
 
+  String sqlCreateOrderTemps = '''
+  create table if not exists orderTemps(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    code TEXT, 
+    status INTEGER,
+    cusCode TEXT)
+  ''';
+
   String sqlDropTableOrder = '''
   DROP TABLE orders
   ''';
@@ -79,6 +87,10 @@ class DatabaseHelper {
 
   String sqlDropTableShipAndPay = '''
   DROP TABLE shipandpay
+  ''';
+
+  String sqlDropTableOrderTemps = '''
+  DROP TABLE orderTemps
   ''';
 
   Future<Database> getDb() async {
@@ -153,6 +165,24 @@ class DatabaseHelper {
     return _db;
   }
 
+  Future<Database> getDbOrderTemps() async {
+    if (_db == null) {
+      io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+      String path = join(documentDirectory.path, 'orderTemps.db');
+
+      print(path);
+
+      await _lock.synchronized(() async {
+        if (_db == null) {
+          _db = await openDatabase(path, version: 1);
+        }
+      });
+    }
+
+    return _db;
+  }
+
   Future initDatabase() async {
     var dbClient = await getDb();
     // Create table
@@ -181,6 +211,13 @@ class DatabaseHelper {
     print('Table ShipAndPay is created');
   }
 
+  Future initDatabaseOrderTemps() async {
+    var dbClient = await getDbOrderTemps();
+    // Create table
+    await dbClient.rawQuery(sqlCreateOrderTemps);
+    print('Table OrderTemps is created');
+  }
+
   Future dropTableOrder() async {
     var dbClient = await getDbOrder();
     // Create table
@@ -207,6 +244,13 @@ class DatabaseHelper {
     // Create table
     await dbClient.rawQuery(sqlDropTableShipAndPay);
     print('dropTableShipAndPay');
+  }
+
+  Future dropTableOrderTemps() async {
+    var dbClient = await getDbOrderTemps();
+    // Create table
+    await dbClient.rawQuery(sqlDropTableOrderTemps);
+    print('dropTableOrderTemps');
   }
 
   Future getList() async {
@@ -313,6 +357,14 @@ class DatabaseHelper {
     return await dbClient.rawQuery(sql);
   }
 
+  Future removeAllOrderTemps() async {
+    var dbClient = await getDbOrderTemps();
+    var sql = '''
+      DELETE FROM orderTemps
+    ''';
+    return await dbClient.rawQuery(sql);
+  }
+
   Future getDetail(int id) async {
     var dbClient = await getDb();
     var sql = '''
@@ -343,6 +395,30 @@ class DatabaseHelper {
       SELECT * FROM members WHERE code=? 
     ''';
     return await dbClient.rawQuery(sql, [code]);
+  }
+
+  Future getOrderTempsCheck(code, status) async {
+    var dbClient = await getDbOrderTemps();
+    var sql = '''
+      SELECT * FROM orderTemps WHERE code=? AND status=? 
+    ''';
+    return await dbClient.rawQuery(sql, [code, status]);
+  }
+
+  Future getOrderTempsCheckCode(code) async {
+    var dbClient = await getDbOrderTemps();
+    var sql = '''
+      SELECT * FROM orderTemps WHERE code=? 
+    ''';
+    return await dbClient.rawQuery(sql, [code]);
+  }
+
+  Future getOrderTempsCheckCount() async {
+    var dbClient = await getDbOrderTemps();
+    var sql = '''
+      SELECT COUNT(id) AS checkID FROM orderTemps 
+    ''';
+    return await dbClient.rawQuery(sql);
   }
 
   Future getMemberCheckCount() async {
@@ -442,6 +518,23 @@ class DatabaseHelper {
     print('Saved ShipAndPay!');
   }
 
+  Future saveOrderTemps(Map statusOrderTemps) async {
+    var dbClient = await getDbOrderTemps();
+
+    String sql = '''
+    INSERT INTO orderTemps(code, status, cusCode)
+    VALUES(?, ?, ?)
+    ''';
+
+    await dbClient.rawQuery(sql, [
+      statusOrderTemps['code'],
+      statusOrderTemps['status'],
+      statusOrderTemps['cusCode'],
+    ]);
+
+    print('Saved OrderTemps!');
+  }
+
   Future updateData(Map member) async {
     var dbClient = await getDb();
 
@@ -474,6 +567,22 @@ class DatabaseHelper {
     ]);
 
     print('Updated! Credit');
+  }
+
+  Future updateOrderTemps(Map statusOrderTemps) async {
+    var dbClient = await getDbOrderTemps();
+
+    String sql = '''
+    UPDATE orderTemps SET status=?
+    WHERE code=?
+    ''';
+
+    await dbClient.rawQuery(sql, [
+      statusOrderTemps['status'],
+      statusOrderTemps['code'],
+    ]);
+
+    print('Updated! StatusOrderTemps');
   }
 
   Future updateOrder(Map order) async {
@@ -544,4 +653,5 @@ class DatabaseHelper {
 
     print('Updated!');
   }
+
 }
