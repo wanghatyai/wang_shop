@@ -10,7 +10,7 @@ import 'package:wang_shop/home.dart';
 import 'package:wang_shop/member_model.dart';
 import 'package:wang_shop/order_bill_status.dart';
 import 'package:wang_shop/order_bill_temps_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -23,20 +23,20 @@ class MemberPage extends StatefulWidget {
 class _MemberPageState extends State<MemberPage> {
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+  //FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 
   var userID;
   var userCode;
 
-  List <OrderBillTemps>orderBillTempsAll = [];
+  //List <OrderBillTemps>orderBillTempsAll = [];
 
   List <Member>memberAll = [];
   bool isLoading = true;
   int perPage = 30;
   String act = "Member";
 
-  Timer timerLoopCheck;
-  var orderBillStatusText;
+  //Timer timerLoopCheck;
+  //var orderBillStatusText;
 
   getUser() async{
 
@@ -71,7 +71,9 @@ class _MemberPageState extends State<MemberPage> {
 
   }
 
-  getOrderBillTemps() async{
+  /*getOrderBillTemps() async{
+
+    orderBillTempsAll = [];
 
     var resUser = await databaseHelper.getList();
     setState(() {
@@ -92,12 +94,9 @@ class _MemberPageState extends State<MemberPage> {
 
         print(orderBillTempsAll);
 
-        for(var index = 0; index < orderBillTempsAll.length; index++){
-          setupNotification(orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
-          //print(orderBillTempsAll[index].orderBillSentStatus);
-        }
+        loopSendOrderBillNotification();
 
-        return orderBillTempsAll;
+        //return orderBillTempsAll;
 
       });
 
@@ -108,17 +107,75 @@ class _MemberPageState extends State<MemberPage> {
     print('check');
   }
 
+  loopSendOrderBillNotification() async{
+
+    var checkCodeOrderTemps;
+    var checkOrderTemps;
+
+    for(var index = 0; index < orderBillTempsAll.length; index++){
+
+      //Future.delayed(Duration(seconds: 5), () async{
+        checkCodeOrderTemps = await databaseHelper.getOrderTempsCheckCode(orderBillTempsAll[index].orderBillCode);
+
+        if(checkCodeOrderTemps.isEmpty){
+
+          Map orderTemps = {
+            'code': orderBillTempsAll[index].orderBillCode,
+            'status': orderBillTempsAll[index].orderBillSentStatus,
+            'cusCode': userCode,
+          };
+
+          await databaseHelper.saveOrderTemps(orderTemps);
+
+          setupNotification(index, orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+
+
+          print('orderBillSendNew');
+        }else{
+
+          checkOrderTemps = await databaseHelper.getOrderTempsCheck(orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+
+          if(checkOrderTemps.isEmpty){
+
+            Map orderTempsUp = {
+              'code': orderBillTempsAll[index].orderBillCode,
+              'status': orderBillTempsAll[index].orderBillSentStatus,
+            };
+
+            await databaseHelper.updateOrderTemps(orderTempsUp);
+
+
+            setupNotification(index, orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+
+
+            print('orderBillSendUpdate');
+          }else{
+            print('orderBillStatusSame');
+          }
+
+        }
+      //});
+
+    }
+  }*/
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUser();
-    setupNotificationPlugin();
-    getOrderBillTemps();
+    //setupNotificationPlugin();
+    //getOrderBillTemps();
+
     //timerLoopCheck = Timer.periodic(Duration(minutes: 15), (Timer t) => setupNotification());
+
+    //timerLoopCheck = Timer.periodic(Duration(minutes: 15), (Timer t) => getOrderBillTemps());
+
+    //_clearOrderTempsDB();
+
   }
 
-  void setupNotificationPlugin(){
+  /*void setupNotificationPlugin(){
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
   var initializationSettingsAndroid = new AndroidInitializationSettings('ic_notification');
   var initializationSettingsIOS = IOSInitializationSettings(
@@ -161,7 +218,7 @@ class _MemberPageState extends State<MemberPage> {
     );
   }
 
-  setupNotification(orderBillCode, orderBillStatus)async{
+  setupNotification(index, orderBillCode, orderBillStatus)async{
 
     if(orderBillStatus == '1'){
       orderBillStatusText = 'เปิดบิล';
@@ -179,22 +236,38 @@ class _MemberPageState extends State<MemberPage> {
 
     print(orderBillStatusText);
 
-    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 5));
+    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 1));
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails('your other channel id', 'your other channel name', 'your other channel description');
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     NotificationDetails platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.schedule(
-        0,
+        index,
         'รายการบิลเลขที่:$orderBillCode',
         'สถานะ:$orderBillStatusText',
         scheduledNotificationDateTime,
         platformChannelSpecifics);
-  }
+
+    /*var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        'repeating channel id',
+        'repeating channel name',
+        'repeating description');
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics,
+        iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.periodicallyShow(
+        0,
+        'รายการบิลเลขที่:$orderBillCode',
+        'สถานะ:$orderBillStatusText',
+        RepeatInterval.EveryMinute,
+        platformChannelSpecifics);*/
+  }*/
 
   @override
   void dispose() {
-    timerLoopCheck?.cancel();
+    //timerLoopCheck?.cancel();
     super.dispose();
   }
 
@@ -211,6 +284,10 @@ class _MemberPageState extends State<MemberPage> {
     await databaseHelper.removeAll();
     await databaseHelper.removeAllOrderFree();
     await databaseHelper.removeAllMember();
+  }
+
+  _clearOrderTempsDB()async{
+    await databaseHelper.removeAllOrderTemps();
   }
 
   void _showDialogExit() {
