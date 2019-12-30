@@ -33,6 +33,7 @@ dependencies:
   firebase_messaging: ^6.0.9
   carousel_pro: ^1.0.0
   flutter_local_notifications: ^0.9.1
+  background_fetch: ^0.4.0
 
 
 dev_dependencies:
