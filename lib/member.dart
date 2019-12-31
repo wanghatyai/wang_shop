@@ -276,6 +276,7 @@ class _MemberPageState extends State<MemberPage> {
     await databaseHelper.dropTableOrderFree();
     await databaseHelper.dropTableMembers();
     await databaseHelper.dropTableShipAndPay();
+    await databaseHelper.removeAllOrderTemps();
   }
 
   _clearDB() async{
@@ -284,6 +285,7 @@ class _MemberPageState extends State<MemberPage> {
     await databaseHelper.removeAll();
     await databaseHelper.removeAllOrderFree();
     await databaseHelper.removeAllMember();
+    await databaseHelper.removeAllOrderTemps();
   }
 
   _clearOrderTempsDB()async{
