@@ -24,22 +24,20 @@ import 'package:wang_shop/search_auto_out.dart';
 
 import 'package:wang_shop/news.dart';
 
-
 import 'package:wang_shop/order_bill_status.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wang_shop/order_bill_temps_model.dart';
-
-
-
+import 'package:background_fetch/background_fetch.dart';
 
 class Home extends StatefulWidget {
-
 
   @override
   _HomeState createState() => _HomeState();
@@ -49,7 +47,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   BlocCountOrder blocCountOrder;
 
@@ -74,6 +72,8 @@ class _HomeState extends State<Home> {
   //DateFormat timeFormat;
 
   var countOrderAll;
+
+  //List<DateTime> _events = [];
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -156,12 +156,55 @@ class _HomeState extends State<Home> {
       });*/
     setupNotificationPlugin();
 
-    getOrderBillTemps();
+    //getOrderBillTemps();
+    initPlatformState();
 
-    timerLoopCheck = Timer.periodic(Duration(minutes: 15), (Timer t) => getOrderBillTemps());
+    //timerLoopCheck = Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
+    //Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
 
     //_clearOrderTempsDB();
+    orderBillStatusNotificationBG();
 
+  }
+
+  Future<void> initPlatformState() async {
+    // Configure BackgroundFetch.
+    BackgroundFetch.configure(BackgroundFetchConfig(
+        minimumFetchInterval: 15,
+        stopOnTerminate: false,
+        enableHeadless: true,
+        requiresBatteryNotLow: false,
+        requiresCharging: false,
+        requiresStorageNotLow: false,
+        requiresDeviceIdle: false,
+        requiredNetworkType: BackgroundFetchConfig.NETWORK_TYPE_NONE
+    ), () async {
+      // This is the fetch-event callback.
+      print('[BackgroundFetch] Event received');
+      getOrderBillTemps();
+
+      // IMPORTANT:  You must signal completion of your fetch task or the OS can punish your app
+      // for taking too long in the background.
+      //BackgroundFetch.finish();
+    }).then((int status) {
+      print('[BackgroundFetch] configure success: $status');
+
+    }).catchError((e) {
+      print('[BackgroundFetch] configure ERROR: $e');
+    });
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+  }
+
+  orderBillStatusNotificationBG(){
+    BackgroundFetch.start().then((int status) {
+      print('[BackgroundFetch] start success: $status');
+    }).catchError((e) {
+      print('[BackgroundFetch] start FAILURE: $e');
+    });
   }
 
   showDialogOverdue() {
@@ -358,7 +401,7 @@ class _HomeState extends State<Home> {
     }
     await Navigator.push(
       context,
-      new MaterialPageRoute(builder: (context) => new Home()),
+      MaterialPageRoute(builder: (context) => Home()),
     );
   }
 
@@ -380,7 +423,7 @@ class _HomeState extends State<Home> {
 
     print(orderBillStatusText);
 
-    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 1));
+    var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 5));
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails('your other channel id', 'your other channel name', 'your other channel description');
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     NotificationDetails platformChannelSpecifics = new NotificationDetails(
@@ -440,7 +483,7 @@ class _HomeState extends State<Home> {
 
   @override
   void dispose() {
-    timerLoopCheck?.cancel();
+    //timerLoopCheck?.cancel();
     super.dispose();
   }
 
@@ -628,8 +671,6 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: bottomNavBar,
     );
   }
-
-
 
 }
 
