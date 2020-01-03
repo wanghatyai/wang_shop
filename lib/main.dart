@@ -2,30 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wang_shop/home.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
-import 'dart:async';
+//import 'dart:io';
+//import 'dart:async';
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wang_shop/database_helper.dart';
 
 import 'package:wang_shop/order.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
-import 'package:wang_shop/bloc_count_order_all.dart';
+//import 'package:wang_shop/bloc_count_order_all.dart';
 
+import 'package:background_fetch/background_fetch.dart';
+
+/// This "Headless Task" is run when app is terminated.
+void backgroundFetchHeadlessTask() async {
+  print('[BackgroundFetch] Headless event received.');
+  Home().createState().getOrderBillTemps();
+  //BackgroundFetch.finish();
+}
 
 void main() {
+
+  WidgetsFlutterBinding.ensureInitialized();
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
   databaseHelper.initDatabase();
   databaseHelper.initDatabaseOrder();
   databaseHelper.initDatabaseOrderFree();
   databaseHelper.initDatabaseShipAndPay();
+  databaseHelper.initDatabaseOrderTemps();
   //databaseHelper.dropTableOrder();
 
   runApp(MyApp());
 
+  // Register to receive BackgroundFetch events after app is terminated.
+  // Requires {stopOnTerminate: false, enableHeadless: true}
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 class MyApp extends StatelessWidget {
@@ -69,15 +83,15 @@ class LoginPageState extends State<LoginPage>{
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
-  final _loginForm = GlobalKey<FormState>();
+  //final _loginForm = GlobalKey<FormState>();
 
   TextEditingController ctrlUser = TextEditingController();
   TextEditingController ctrlPass = TextEditingController();
 
-  bool _ShowPass = false; // กำหนดสถานะ ShowPass = false;
+  bool _showPass = false; // กำหนดสถานะ ShowPass = false;
 
-  var Useralert = 'Please enter the Username / กรุณากรอกชื่อบัญชีผู้';
-  var Passalert = 'Please enter the Password / กรุณากรอกรหัสผ่านบัญชีผู้ใช้';
+  var userAlert = 'Please enter the Username / กรุณากรอกชื่อบัญชีผู้';
+  var passAlert = 'Please enter the Password / กรุณากรอกรหัสผ่านบัญชีผู้ใช้';
   var userInvalid = false;
   var passInvalid = false;
 
@@ -174,9 +188,9 @@ class LoginPageState extends State<LoginPage>{
   }
 
   // เมื่อกดแสดงรหัสผ่านที่ตัวเองกด
-  void ClickShowpassword() {
+  void clickShowPassword() {
     setState ( () {
-      _ShowPass = !_ShowPass;
+      _showPass = !_showPass;
     } );
   }
 
@@ -246,7 +260,7 @@ class LoginPageState extends State<LoginPage>{
                         size: 30,
                       ),
                       labelText: 'Username / ชื่อบัญชีผู้ใช้',
-                      errorText: userInvalid ? Useralert : null,
+                      errorText: userInvalid ? userAlert : null,
                       //'Please enter the Username / กรุณากรอกชื่อบัญชีผู้',
                       labelStyle: TextStyle (
                         color: Color ( 0xff888888 ),
@@ -267,14 +281,14 @@ class LoginPageState extends State<LoginPage>{
                         fontSize: 18,
                         color: Colors.black,
                       ),
-                      obscureText: !_ShowPass,
+                      obscureText: !_showPass,
                       decoration: InputDecoration (
                         prefixIcon: Icon (
                           Icons.vpn_lock,
                           size: 30,
                         ),
                         labelText: 'Password / รหัสผ่านบัญชีผู้ใช้',
-                        errorText: passInvalid ? Passalert : null,
+                        errorText: passInvalid ? passAlert : null,
                         labelStyle: TextStyle (
                           color: Color ( 0xff888888 ),
                           fontSize: 15,
@@ -283,9 +297,9 @@ class LoginPageState extends State<LoginPage>{
                       keyboardType: TextInputType.text,
                     ),
                     GestureDetector (
-                      onTap: ClickShowpassword,
+                      onTap: clickShowPassword,
                       child: Text (
-                        _ShowPass ? 'Hide' : 'Show',
+                        _showPass ? 'Hide' : 'Show',
                         style: TextStyle (
                           fontSize: 16,
                           color: Colors.green,
