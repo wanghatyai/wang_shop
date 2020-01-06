@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:wang_shop/home_new.dart';
+import 'package:wang_shop/main.dart';
 import 'package:wang_shop/member.dart';
 import 'package:wang_shop/product_pro.dart';
 import 'package:wang_shop/product_hot.dart';
@@ -37,7 +38,16 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wang_shop/order_bill_temps_model.dart';
 import 'package:background_fetch/background_fetch.dart';
 
+final GlobalKey<_HomeState> _homeState = new GlobalKey<_HomeState>();
+
 class Home extends StatefulWidget {
+
+  //Home({Key key}) : super(key: key);
+
+  //final getOrderBillTemps = new Home().getOrderBillTemps();
+  //const Home({Key key, this.getOrderBillTemps}) : super(key: key);
+  final Function() getOrderBillTemps;
+  Home({Key key, this.getOrderBillTemps}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -76,6 +86,10 @@ class _HomeState extends State<Home> {
   //List<DateTime> _events = [];
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
+
+  testPrint(){
+    print('testestttttt');
+  }
 
   getUser() async {
     var res = await databaseHelper.getList();
@@ -181,6 +195,7 @@ class _HomeState extends State<Home> {
     ), () async {
       // This is the fetch-event callback.
       print('[BackgroundFetch] Event received');
+
       getOrderBillTemps();
 
       // IMPORTANT:  You must signal completion of your fetch task or the OS can punish your app
@@ -490,7 +505,6 @@ class _HomeState extends State<Home> {
   _clearOrderTempsDB()async{
     await databaseHelper.removeAllOrderTemps();
   }
-
 
   @override
   Widget build(BuildContext context) {

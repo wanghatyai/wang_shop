@@ -17,9 +17,16 @@ import 'package:wang_shop/bloc_count_order.dart';
 import 'package:background_fetch/background_fetch.dart';
 
 /// This "Headless Task" is run when app is terminated.
-void backgroundFetchHeadlessTask() async {
+backgroundFetchHeadlessTask() async {
+
   print('[BackgroundFetch] Headless event received.');
+  print('[BackgroundFetch] notification test.');
+
+  //home.testPrint();
+
+  Home().createState().testPrint();
   Home().createState().getOrderBillTemps();
+  //new Home( getOrderBillTemps: getOrderBillTemps );
   //BackgroundFetch.finish();
 }
 
