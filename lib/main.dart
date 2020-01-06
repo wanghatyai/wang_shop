@@ -17,9 +17,17 @@ import 'package:wang_shop/bloc_count_order.dart';
 import 'package:background_fetch/background_fetch.dart';
 
 /// This "Headless Task" is run when app is terminated.
-void backgroundFetchHeadlessTask() async {
+backgroundFetchHeadlessTask(home) async {
+
   print('[BackgroundFetch] Headless event received.');
-  Home().createState().getOrderBillTemps();
+  print('[BackgroundFetch] notification test.');
+
+  home.testPrint();
+  home.getOrderBillTemps();
+
+  //Home().createState().testPrint();
+  //Home().createState().getOrderBillTemps();
+  //new Home( getOrderBillTemps: getOrderBillTemps );
   //BackgroundFetch.finish();
 }
 
@@ -39,7 +47,7 @@ void main() {
 
   // Register to receive BackgroundFetch events after app is terminated.
   // Requires {stopOnTerminate: false, enableHeadless: true}
-  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask(Home()));
 }
 
 class MyApp extends StatelessWidget {
