@@ -173,7 +173,7 @@ class _HomeState extends State<Home> {
 
     //timerLoopCheck = Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
     //Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
-    Future.delayed(Duration(seconds: 15), () => getOrderBillTemps());
+    //Future.delayed(Duration(seconds: 15), () => getOrderBillTemps());
 
     //_clearOrderTempsDB();
     orderBillStatusNotificationBG();
