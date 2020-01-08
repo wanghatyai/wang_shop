@@ -38,16 +38,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wang_shop/order_bill_temps_model.dart';
 import 'package:background_fetch/background_fetch.dart';
 
-final GlobalKey<_HomeState> _homeState = new GlobalKey<_HomeState>();
-
 class Home extends StatefulWidget {
 
   //Home({Key key}) : super(key: key);
 
   //final getOrderBillTemps = new Home().getOrderBillTemps();
   //const Home({Key key, this.getOrderBillTemps}) : super(key: key);
-  final Function() getOrderBillTemps;
-  Home({Key key, this.getOrderBillTemps}) : super(key: key);
+  //final Function testPrint;
+  //Home({Key key, this.testPrint}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -75,7 +73,7 @@ class _HomeState extends State<Home> {
 
   List <OrderBillTemps>orderBillTempsAll = [];
 
-  Timer timerLoopCheck;
+  //Timer timerLoopCheck;
   var orderBillStatusText;
 
   DateFormat dateFormat;
@@ -175,6 +173,7 @@ class _HomeState extends State<Home> {
 
     //timerLoopCheck = Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
     //Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
+    //Future.delayed(Duration(seconds: 15), () => getOrderBillTemps());
 
     //_clearOrderTempsDB();
     orderBillStatusNotificationBG();

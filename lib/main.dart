@@ -16,14 +16,14 @@ import 'package:wang_shop/bloc_count_order.dart';
 
 import 'package:background_fetch/background_fetch.dart';
 
+//GlobalKey<_HomeState> _homeState = new GlobalKey();
+
 /// This "Headless Task" is run when app is terminated.
 backgroundFetchHeadlessTask() async {
 
   print('[BackgroundFetch] Headless event received.');
   print('[BackgroundFetch] notification test.');
-
-  //home.testPrint();
-
+  //Home().testPrint();
   Home().createState().testPrint();
   Home().createState().getOrderBillTemps();
   //new Home( getOrderBillTemps: getOrderBillTemps );
@@ -31,6 +31,7 @@ backgroundFetchHeadlessTask() async {
 }
 
 void main() {
+
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -41,6 +42,8 @@ void main() {
   databaseHelper.initDatabaseShipAndPay();
   databaseHelper.initDatabaseOrderTemps();
   //databaseHelper.dropTableOrder();
+
+  //Home().createState().testPrint();
 
   runApp(MyApp());
 
