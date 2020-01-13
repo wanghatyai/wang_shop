@@ -97,35 +97,40 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
           if(orderBillType == 1){
 
-            sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty3)) * orderBillProductSelectQty);
+            //sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty3)) * orderBillProductSelectQty);
+            sumAmount = sumAmount + (priceCredit * orderBillProductSelectQty);
             priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty3);
             priceNowAll.add(priceNow);
-            print('----$priceNow');
+            //print('----$priceNow');
 
           }
 
           if(orderBillType == 2){
 
-            sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty2)) * orderBillProductSelectQty);
+            //sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty2)) * orderBillProductSelectQty);
+            sumAmount = sumAmount + (priceCredit * orderBillProductSelectQty);
             priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty2);
             priceNowAll.add(priceNow);
-            print('----$priceNow');
+            //print('----$priceNow');
 
           }
 
           if(orderBillType == 3){
 
-            sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty1)) * orderBillProductSelectQty);
+            //sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty1)) * orderBillProductSelectQty);
+            sumAmount = sumAmount + (priceCredit * orderBillProductSelectQty);
             priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty1);
             priceNowAll.add(priceNow);
-            print('----$priceNow');
+            //print('----$priceNow');
 
           }
 
+          //print(sumAmount);
+
         }
 
-        print(sumAmount);
-        print(orderBillDetailAll.length);
+        //print(sumAmount);
+        //print(orderBillDetailAll.length);
 
         return orderBillDetailAll;
 
