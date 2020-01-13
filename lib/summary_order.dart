@@ -398,7 +398,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                           Text('${orders[index]['code']}'),
                           Text('จำนวนที่สั่ง ${orders[index]['amount']} : ${orders[index]['unit']}',
                             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
-                          Text("ราคาต่อชิ้น ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
+                          Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
                         ],
                       ),
                       trailing: Column(
