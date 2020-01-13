@@ -396,11 +396,16 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('${orders[index]['code']}'),
-                          Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
+                          Text('จำนวนที่สั่ง ${orders[index]['amount']} : ${orders[index]['unit']}',
                             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
+                          Text("ราคาต่อชิ้น ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
                         ],
                       ),
-                      trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                      trailing: Column(
+                        children: <Widget>[
+                          Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                        ],
+                      ),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,
