@@ -247,6 +247,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
                               Text('${orderBillDetailAll[index].orderBillProductCode}'),
                               Text('จำนวน ${orderBillDetailAll[index].orderBillProductSelectQty} : ${orderBillDetailAll[index].orderBillProductUnit1}',
                                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
+                              Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
                             ],
                           ),
                           trailing: IconButton(
