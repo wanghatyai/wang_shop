@@ -232,7 +232,9 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('วันที่สั่ง ${orderBillAll[index].orderBillDate} : ${orderBillAll[index].orderBillTime}'),
-                            Text('สถานะ ${statusOrderBill[int.parse(orderBillAll[index].orderBillStatus)]}', style: TextStyle(color: Colors.blue)),
+                            orderBillAll[index].orderBillStatus == null
+                                ? Text("สถานะ")
+                                : Text('สถานะ ${statusOrderBill[int.parse(orderBillAll[index].orderBillStatus)]}', style: TextStyle(color: Colors.blue)),
                             Text('วันที่ดำเนินการ ${orderBillAll[index].orderBillDateST} : ${orderBillAll[index].orderBillTimeST}', style: TextStyle(color: Colors.red)),
                           ],
                         ),
