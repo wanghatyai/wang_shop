@@ -171,7 +171,7 @@ class _HomeState extends State<Home> {
     //getOrderBillTemps();
     initPlatformState();
 
-    getOrderBillTemps();
+    //getOrderBillTemps();
 
     //timerLoopCheck = Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
     //Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
