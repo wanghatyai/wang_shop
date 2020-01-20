@@ -70,8 +70,15 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
         if(order['unitStatus'] == 1){
 
-          sumAmount = sumAmount + ((priceCredit * order['unitQty3']) * order['amount']);
-          priceNow = priceCredit*order['unitQty3'];
+          if(order['unit3'] == 'NULL'){
+            sumAmount = sumAmount + ((priceCredit * order['unitQty2']) * order['amount']);
+            priceNow = priceCredit*order['unitQty2'];
+
+          }else{
+            sumAmount = sumAmount + ((priceCredit * order['unitQty3']) * order['amount']);
+            priceNow = priceCredit*order['unitQty3'];
+          }
+
           priceNowAll.add(priceNow);
           print('----${priceNow}');
 
@@ -79,8 +86,14 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
         if(order['unitStatus'] == 2){
 
-          sumAmount = sumAmount + ((priceCredit * order['unitQty2']) * order['amount']);
-          priceNow = priceCredit*order['unitQty2'];
+          if(order['unit3'] == 'NULL'){
+            sumAmount = sumAmount + ((priceCredit * order['unitQty1']) * order['amount']);
+            priceNow = priceCredit*order['unitQty1'];
+          }else{
+            sumAmount = sumAmount + ((priceCredit * order['unitQty2']) * order['amount']);
+            priceNow = priceCredit*order['unitQty2'];
+          }
+
           priceNowAll.add(priceNow);
           print('----${priceNow}');
 
