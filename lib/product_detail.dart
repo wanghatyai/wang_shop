@@ -276,6 +276,24 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                           color: Colors.blue
                       ),
                     ),
+                    Text("รายละเอียด : ${widget.product.productDetail}",
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.blueGrey
+                      ),
+                    ),
+                    Text("สรรพคุณ : ${widget.product.productProperties}",
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.deepPurple
+                      ),
+                    ),
+                    Text("วิธีใช้ : ${widget.product.productHowTo}",
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.teal
+                      ),
+                    ),
                     Container(
                       //padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                       child: Row(
