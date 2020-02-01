@@ -431,6 +431,7 @@ class _OrderPageState extends State<OrderPage> {
       'priceC': productFast.productPriceC,
       'amount': amount,
       'proStatus': productFast.productProStatus,
+      'proLimit': amount,
     };
 
     print(order);
@@ -590,7 +591,10 @@ class _OrderPageState extends State<OrderPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('${orders[index]['code']}'),
-                          Text('จำนวน ${orders[index]['amount']} : ${orders[index]['unit']}',
+                          (orders[index]['proStatus'] == 2)
+                            ? Text('สั่งขั้นต่ำ ${orders[index]['proLimit']} : ${orders[index]['unit1']}', style: TextStyle(color: Colors.red),)
+                            : Text(''),
+                          Text('จำนวนที่สั่ง ${orders[index]['amount']} : ${orders[index]['unit']}',
                             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
                         ],
                       ),
