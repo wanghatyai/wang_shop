@@ -337,6 +337,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
       'priceC': productFast.productPriceC,
       'amount': amount,
       'proStatus': productFast.productProStatus,
+      'proLimit': amount,
     };
 
     print(order);
