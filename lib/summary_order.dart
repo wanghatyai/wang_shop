@@ -55,7 +55,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
     res.forEach((order) {
 
-          if(order['proStatus'] == 2){
+          if(order['proStatus'] == 2 && order['amount'] >= order['proLimit']){
               priceCredit = order['priceA'];
           }else{
             if(userCredit == 'A'){

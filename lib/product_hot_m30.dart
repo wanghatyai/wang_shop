@@ -216,6 +216,7 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
       'priceC': productFast.productPriceC,
       'amount': amount,
       'proStatus': productFast.productProStatus,
+      'proLimit': amount,
     };
 
     print(order);

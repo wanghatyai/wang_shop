@@ -448,6 +448,8 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
 
   addToOrder() async{
 
+    var proLimit;
+
     var unit1;
     var unit2;
     var unit3;
@@ -475,6 +477,16 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
 
     if(valAmount.text == ''){
       valAmount.text = '1';
+    }
+
+    if(widget.product.productProLimit.toString() != ""){
+
+      if(int.parse(widget.product.productProLimit) > 0){
+        proLimit = int.parse(widget.product.productProLimit);
+      }
+
+    }else{
+      proLimit = 1;
     }
 
     /*if(widget.product.productUnit1.toString() == _currentUnit){
@@ -505,6 +517,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
       'priceC': widget.product.productPriceC,
       'amount': valAmount.text,
       'proStatus': widget.product.productProStatus,
+      'proLimit': proLimit,
     };
 
     var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);

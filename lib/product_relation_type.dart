@@ -211,6 +211,7 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
       'priceC': productFast.productPriceC,
       'amount': amount,
       'proStatus': productFast.productProStatus,
+      'proLimit': amount,
     };
 
     print(order);

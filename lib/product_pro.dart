@@ -263,6 +263,7 @@ class _ProductProPageState extends State<ProductProPage> {
       'priceC': productFast.productPriceC,
       'amount': amount,
       'proStatus': productFast.productProStatus,
+      'proLimit': amount,
     };
 
     var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);
