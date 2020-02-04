@@ -13,6 +13,9 @@ class HomeNewPage extends StatefulWidget {
 
 class _HomeNewPageState extends State<HomeNewPage> {
 
+  double heightValForDevice = 1050;
+  double heightValForDevice30 = 4150;
+
   /*Widget slideBanner = Container(
     height: 150,
     child: Carousel(
@@ -33,6 +36,14 @@ class _HomeNewPageState extends State<HomeNewPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final double shortestSide = MediaQuery.of(context).size.shortestSide;
+    print(shortestSide);
+    if(shortestSide > 600){
+      heightValForDevice = 600;
+      heightValForDevice30 = 2000;
+    }
+
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
@@ -45,7 +56,7 @@ class _HomeNewPageState extends State<HomeNewPage> {
                 child: Text('/// สินค้าขายดีประจำเดือน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
               ),
               Container(
-                height: 1050,
+                height: heightValForDevice,
                 child: ProductHotMonthPage(),
               ),
               Padding(
@@ -58,7 +69,7 @@ class _HomeNewPageState extends State<HomeNewPage> {
                 child: Text('/// สินค้าขายดีประจำเดือน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
               ),
               Container(
-                height: 4150,
+                height: heightValForDevice30,
                 child: ProductHotMonth30Page(),
               ),
 

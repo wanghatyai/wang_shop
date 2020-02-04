@@ -13,9 +13,18 @@ class CategorySlidePage extends StatefulWidget {
 }
 
 class _CategorySlidePageState extends State<CategorySlidePage> {
+  double marginValForDevice = 0;
+
   @override
   Widget build(BuildContext context) {
+    final double shortestSide = MediaQuery.of(context).size.shortestSide;
+    print(shortestSide);
+    if(shortestSide > 600){
+      marginValForDevice = 150;
+    }
+
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: marginValForDevice),
       height: 80,
       child: ListView(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),

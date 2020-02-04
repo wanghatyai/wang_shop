@@ -30,6 +30,8 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
   int perPage = 30;
   String act = "Top";
 
+  var gridValForDevice = 2;
+
   getProductTop() async{
 
     final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
@@ -85,13 +87,19 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
 
     blocCountOrder = BlocProvider.of(context);
 
+    final double shortestSide = MediaQuery.of(context).size.shortestSide;
+    print(shortestSide);
+    if(shortestSide > 600.0){
+      gridValForDevice = 4;
+    }
+
     return Scaffold(
       body: isLoading ? CircularProgressIndicator()
           :GridView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
         //controller: _scrollController,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridValForDevice),
         itemBuilder: (context, int index){
           return InkWell(
             onTap: (){

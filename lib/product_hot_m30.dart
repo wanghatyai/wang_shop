@@ -30,6 +30,8 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
   int perPage = 30;
   String act = "Top30";
 
+  var gridValForDevice = 2;
+
   getProductTop() async{
 
     final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
@@ -83,6 +85,13 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
   @override
   Widget build(BuildContext context) {
 
+    final double shortestSide = MediaQuery.of(context).size.shortestSide;
+    print(shortestSide);
+    if(shortestSide > 600.0){
+      gridValForDevice = 4;
+    }
+
+
     blocCountOrder = BlocProvider.of(context);
 
     return Scaffold(
@@ -91,7 +100,7 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
         //controller: _scrollController,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridValForDevice),
         itemBuilder: (context, int index){
           return InkWell(
             onTap: (){
