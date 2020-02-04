@@ -60,7 +60,7 @@ class _MainSlidePageState extends State<MainSlidePage> {
       child: Carousel(
         overlayShadow: false,
         borderRadius: true,
-        boxFit: BoxFit.fill,
+        boxFit: BoxFit.contain,
         autoplay: true,
         dotSize: 5,
         indicatorBgPadding: 9,
