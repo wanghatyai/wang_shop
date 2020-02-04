@@ -31,6 +31,8 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
   List <Product>productRelationType = [];
   bool isLoading = true;
 
+  var gridValForDevice = 2;
+
   getProductRelationType() async{
 
     final res = await http.get('https://wangpharma.com/API/product.php?ptype=${widget.product.productCategory}&act=Rtype');
@@ -82,13 +84,19 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
 
     blocCountOrder = BlocProvider.of(context);
 
+    final double shortestSide = MediaQuery.of(context).size.shortestSide;
+    print(shortestSide);
+    if(shortestSide > 600.0){
+      gridValForDevice = 4;
+    }
+
     return Scaffold(
       body: isLoading ? CircularProgressIndicator()
           :GridView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
         //controller: _scrollController,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: gridValForDevice),
         itemBuilder: (context, int index){
           return InkWell(
             onTap: (){

@@ -12,6 +12,7 @@ class MainSlidePage extends StatefulWidget {
 class _MainSlidePageState extends State<MainSlidePage> {
 
   var slides = [];
+  double heightValForDevice = 150;
 
   getSlideAll() async{
     final res = await http.get('http://wangpharma.com/API/slides.php?position=P0&act=Slide');
@@ -55,12 +56,19 @@ class _MainSlidePageState extends State<MainSlidePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final double shortestSide = MediaQuery.of(context).size.shortestSide;
+    print(shortestSide);
+    if(shortestSide > 600){
+      heightValForDevice = 300;
+    }
+
     return slides.isEmpty ? CircularProgressIndicator() : Container(
-      height: 150,
+      height: heightValForDevice,
       child: Carousel(
         overlayShadow: false,
         borderRadius: true,
-        boxFit: BoxFit.fill,
+        boxFit: BoxFit.contain,
         autoplay: true,
         dotSize: 5,
         indicatorBgPadding: 9,

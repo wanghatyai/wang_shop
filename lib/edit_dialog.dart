@@ -83,6 +83,30 @@ class _EditDialogPageState extends State<EditDialogPage> {
     );
   }
 
+  /*showDialogLimitProduct() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Text("แจ้งเตือน"),
+          content: Text("จำนวนที่เลือกต่ำกว่าจำนวนขั้นต่ำรายการโปร"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              color: Colors.red,
+              child: Text("ตกลง",style: TextStyle(color: Colors.white, fontSize: 18),),
+              onPressed: () {
+                //Navigator.of(context).pop();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }*/
+
   removeOrder(int id) async{
     await databaseHelper.removeOrder(id);
     //getOrderAll();
@@ -99,6 +123,15 @@ class _EditDialogPageState extends State<EditDialogPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIos: 3
+    );
+  }
+
+  showToastAmountLessProductProLimit(){
+    Fluttertoast.showToast(
+        msg: "จำนวนที่เลือกต่ำกว่าจำนวนขั้นต่ำรายการโปร",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 10
     );
   }
 
@@ -179,6 +212,15 @@ class _EditDialogPageState extends State<EditDialogPage> {
 
             print(this._currentUnit);
             print(this.unitStatus);
+            print(widget.orderE['proStatus']);
+            print(editAmount.text);
+            print(widget.orderE['proLimit']);
+
+            if(widget.orderE['proStatus'] == 2 && int.parse(editAmount.text) < widget.orderE['proLimit']){
+              //showDialogLimitProduct();
+              //print('lesssssssssss');
+              showToastAmountLessProductProLimit();
+            }
 
             saveEditOrderDialog(widget.orderE['id'], this._currentUnit, this.unitStatus, editAmount.text);
             //print(order['id']);

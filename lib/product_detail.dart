@@ -221,7 +221,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
           SliverList(
             delegate: SliverChildListDelegate([
               Container(
-                height: 500,
+                height: 550,
                 padding: const EdgeInsets.all(5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,6 +249,19 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                       ),
                     ),
                     //Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
+                    (widget.product.productProStatus == '2')
+                      ? Container(
+                          padding: EdgeInsets.all(2),
+                          color: Colors.red,
+                          child: Text("Promotion",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        )
+                      : Text(''),
                     Text("รหัสสินค้า : ${widget.product.productCode}",
                       style: TextStyle(
                           fontSize: 18,
@@ -294,6 +307,10 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                           color: Colors.teal
                       ),
                     ),
+                    (widget.product.productProStatus == '2')
+                      ? Text('สั่งขั้นต่ำรายการโปร ${widget.product.productProLimit} : ${widget.product.productUnit1}',
+                          style: TextStyle(color: Colors.red, fontSize: 17, fontWeight: FontWeight.bold))
+                      : Text(''),
                     Container(
                       //padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                       child: Row(
@@ -476,7 +493,12 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
     }
 
     if(valAmount.text == ''){
-      valAmount.text = '1';
+      if(widget.product.productProStatus == '2'){
+        valAmount.text = widget.product.productProLimit;
+      }else{
+        valAmount.text = '1';
+      }
+
     }
 
     if(widget.product.productProLimit.toString() != ""){
