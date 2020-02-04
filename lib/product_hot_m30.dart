@@ -106,7 +106,7 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
                       child: Stack(
                         alignment: Alignment.topRight,
                         children: <Widget>[
-                          Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.fill, width: 200,),
+                          Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 200,),
                           (productTop[index].productProStatus == '2')?
                           Container(
                             padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
