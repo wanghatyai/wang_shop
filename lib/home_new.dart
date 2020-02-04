@@ -13,7 +13,7 @@ class HomeNewPage extends StatefulWidget {
 
 class _HomeNewPageState extends State<HomeNewPage> {
 
-  double heightValForDevice = 1050;
+  double heightValForDevice = 1250;
   double heightValForDevice30 = 4150;
 
   /*Widget slideBanner = Container(
@@ -40,8 +40,8 @@ class _HomeNewPageState extends State<HomeNewPage> {
     final double shortestSide = MediaQuery.of(context).size.shortestSide;
     print(shortestSide);
     if(shortestSide > 600){
-      heightValForDevice = 600;
-      heightValForDevice30 = 2000;
+      heightValForDevice = 800;
+      heightValForDevice30 = 2600;
     }
 
     return Scaffold(

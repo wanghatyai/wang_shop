@@ -16,6 +16,8 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
 
   bool isLoading = true;
 
+  double sizePromotionSlidePic = 200;
+
   getSlideProP1() async{
     final res = await http.get('http://wangpharma.com/API/slides.php?position=P1&act=Slide');
 
@@ -112,8 +114,15 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final double shortestSide = MediaQuery.of(context).size.shortestSide;
+    print(shortestSide);
+    if(shortestSide > 600){
+      sizePromotionSlidePic = 300;
+    }
+
     return isLoading ? CircularProgressIndicator() : Container(
-      height: 200,
+      height: sizePromotionSlidePic,
       child: ListView(
         padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
         scrollDirection: Axis.horizontal,
@@ -123,7 +132,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
                 print('โปร1');
               },
               child: Container(
-                width: 200,
+                width: sizePromotionSlidePic,
                 padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: Image.network('${slidesPro1[0]}', fit: BoxFit.fitWidth,),
               ),
@@ -133,7 +142,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
               print('โปร1');
             },
             child: Container(
-              width: 200,
+              width: sizePromotionSlidePic,
               padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
               child: Image.network('${slidesPro2[0]}', fit: BoxFit.fitWidth,),
             ),
@@ -143,7 +152,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
               print('โปร1');
             },
             child: Container(
-              width: 200,
+              width: sizePromotionSlidePic,
               padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
               child: Image.network('${slidesPro3[0]}', fit: BoxFit.fitWidth,),
             ),
