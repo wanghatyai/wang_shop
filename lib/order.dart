@@ -49,6 +49,10 @@ class _OrderPageState extends State<OrderPage> {
 
   getOrderAll() async{
 
+    var unitQty1;
+    var unitQty2;
+    var unitQty3;
+
     sumAmount = 0.0;
 
     var res = await databaseHelper.getOrder();
@@ -62,6 +66,10 @@ class _OrderPageState extends State<OrderPage> {
     var priceCredit;
 
     res.forEach((order) {
+
+      unitQty1 = (order['unitQty1']/order['unitQty1']);
+      unitQty2 = (order['unitQty1']/order['unitQty2']);
+      unitQty3 = (order['unitQty1']/order['unitQty3']);
 
       if(order['proStatus'] == 2){
         priceCredit = order['priceA'];
@@ -77,16 +85,16 @@ class _OrderPageState extends State<OrderPage> {
 
 
       if(order['unitStatus'] == 1){
-        sumAmount = sumAmount + ((priceCredit * order['unitQty3']) * order['amount']);
+        sumAmount = sumAmount + ((priceCredit * unitQty1) * order['amount']);
       }
 
       if(order['unitStatus'] == 2){
-        sumAmount = sumAmount + ((priceCredit * order['unitQty2']) * order['amount']);
+        sumAmount = sumAmount + ((priceCredit * unitQty2) * order['amount']);
 
       }
 
       if(order['unitStatus'] == 3){
-        sumAmount = sumAmount + ((priceCredit * order['unitQty1']) * order['amount']);
+        sumAmount = sumAmount + ((priceCredit * unitQty3) * order['amount']);
       }
 
     });
