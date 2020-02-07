@@ -13,7 +13,7 @@ class HomeNewPage extends StatefulWidget {
 
 class _HomeNewPageState extends State<HomeNewPage> {
 
-  double heightValForDevice = 1250;
+  double heightValForDevice = 1260;
   double heightValForDevice30 = 4150;
 
   /*Widget slideBanner = Container(
@@ -51,22 +51,25 @@ class _HomeNewPageState extends State<HomeNewPage> {
             delegate: SliverChildListDelegate([
               MainSlidePage(),
               CategorySlidePage(),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
-                child: Text('/// สินค้าขายดีประจำเดือน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+              Container(
+                  padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
+                  color: Colors.deepOrange,
+                  child: Text('/// สินค้าขายดีประจำเดือน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
               ),
               Container(
                 height: heightValForDevice,
                 child: ProductHotMonthPage(),
               ),
-              Padding(
+              Container(
                 padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Text('/// โปรโมชั่นพิเศษ ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                color: Colors.deepOrange,
+                child: Text('/// โปรโมชั่นพิเศษ ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
               ),
               PromotionSlidePage(),
-              Padding(
+              Container(
                 padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
-                child: Text('/// สินค้าขายดีประจำเดือน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                color: Colors.deepOrange,
+                child: Text('/// สินค้าขายดีประจำเดือน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
               ),
               Container(
                 height: heightValForDevice30,
