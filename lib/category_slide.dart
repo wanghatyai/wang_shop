@@ -14,18 +14,23 @@ class CategorySlidePage extends StatefulWidget {
 
 class _CategorySlidePageState extends State<CategorySlidePage> {
   double marginValForDevice = 0;
+  double heightCategorySlide = 80;
+  double sizeCategorySlideIcon = 40;
 
   @override
   Widget build(BuildContext context) {
+
     final double shortestSide = MediaQuery.of(context).size.shortestSide;
     print(shortestSide);
     if(shortestSide > 600){
-      marginValForDevice = 150;
+      marginValForDevice = 250;
+      heightCategorySlide = 120;
+      sizeCategorySlideIcon = 80;
     }
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: marginValForDevice),
-      height: 80,
+      //margin: EdgeInsets.symmetric(horizontal: marginValForDevice),
+      height: heightCategorySlide,
       child: ListView(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
         scrollDirection: Axis.horizontal,
@@ -39,7 +44,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
               padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
               child: Column(
                 children: <Widget>[
-                  Icon(Icons.assistant_photo, color: Colors.green, size: 40),
+                  Icon(Icons.assistant_photo, color: Colors.green, size: sizeCategorySlideIcon),
                   Text('โปร', style: TextStyle(fontSize: 16))
                 ],
               ),
@@ -54,7 +59,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
                 padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                 child: Column(
                   children: <Widget>[
-                    Icon(Icons.monetization_on, color: Colors.amber, size: 40),
+                    Icon(Icons.monetization_on, color: Colors.amber, size: sizeCategorySlideIcon),
                     Text('ขายดี', style: TextStyle(fontSize: 16))
                   ],
                 ),
@@ -69,7 +74,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
                 padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                 child: Column(
                   children: <Widget>[
-                    Icon(Icons.fiber_new, color: Colors.red, size: 40),
+                    Icon(Icons.fiber_new, color: Colors.red, size: sizeCategorySlideIcon),
                     Text('ใหม่', style: TextStyle(fontSize: 16))
                   ],
                 ),
@@ -84,7 +89,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
                 padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                 child: Column(
                   children: <Widget>[
-                    Icon(Icons.thumb_up, color: Colors.blue, size: 40),
+                    Icon(Icons.thumb_up, color: Colors.blue, size: sizeCategorySlideIcon),
                     Text('แนะนำ', style: TextStyle(fontSize: 16))
                   ],
                 ),
@@ -99,7 +104,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
                 padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                 child: Column(
                   children: <Widget>[
-                    Icon(Icons.tag_faces, color: Colors.deepPurple, size: 40),
+                    Icon(Icons.tag_faces, color: Colors.deepPurple, size: sizeCategorySlideIcon),
                     Text('ของแถม', style: TextStyle(fontSize: 16))
                   ],
                 ),
@@ -114,7 +119,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
                 padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                 child: Column(
                   children: <Widget>[
-                    Icon(Icons.list, color: Colors.pink, size: 40),
+                    Icon(Icons.list, color: Colors.pink, size: sizeCategorySlideIcon),
                     Text('หมวดหมู่', style: TextStyle(fontSize: 16))
                   ],
                 ),
