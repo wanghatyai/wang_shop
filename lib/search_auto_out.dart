@@ -193,7 +193,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
              child: ListTile(
                contentPadding: EdgeInsets.all(1),
                leading: IconButton(
-                   icon: Icon(Icons.center_focus_strong, color: Colors.red, size: 30,),
+                   icon: Icon(Icons.border_horizontal, color: Colors.red, size: 40,),
                    onPressed: (){
                      scanBarcode();
                    }
