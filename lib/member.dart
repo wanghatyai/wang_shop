@@ -478,7 +478,7 @@ class _MemberPageState extends State<MemberPage> {
                         minWidth: double.infinity,
                         height: 50,
                         child: Text(
-                          "แก้ไขปัญหา",
+                          "อัปเดต ฐานข้อมูล",
                           style: new TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold

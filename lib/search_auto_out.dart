@@ -29,7 +29,12 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   List<Product> _product = [];
+  var _productAutoAdd;
   List<Product> _search = [];
+
+  List <Product>productTop = [];
+  int perPage = 30;
+  bool isLoading = true;
 
   var loading = false;
   String barcode;
@@ -40,6 +45,15 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
       setState((){
         this.barcode = barcode;
         searchProduct(this.barcode);
+
+        Future.delayed(Duration(seconds: 2), () {
+          //if(overdueStatus > 0) {
+          //this.showDialogOverdue();
+          print(_product[0]);
+          addToOrderFast(_product[0]);
+          //}
+        });
+        scanBarcode();
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -66,6 +80,32 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
         );
       },
     );
+  }
+
+  getProductTop() async{
+
+    final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=Top');
+
+    if(res.statusCode == 200){
+
+      setState(() {
+        isLoading = false;
+
+        var jsonData = json.decode(res.body);
+
+        jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
+        perPage = productTop.length;
+
+        print(productTop);
+        print(productTop.length);
+
+        return productTop;
+
+      });
+
+    }else{
+      throw Exception('Failed load Json');
+    }
   }
 
   searchProduct(searchVal) async{
@@ -137,6 +177,13 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getProductTop();
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     blocCountOrder = BlocProvider.of(context);
@@ -185,39 +232,52 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
         ],
       ),
       resizeToAvoidBottomPadding: false,
-      body: Container(
-        child: Column(
-         children: <Widget>[
-           Container(
-             //padding: EdgeInsets.all(10),
-             child: ListTile(
-               contentPadding: EdgeInsets.all(1),
-               leading: IconButton(
-                   icon: Icon(Icons.center_focus_strong, color: Colors.red, size: 30,),
-                   onPressed: (){
-                     scanBarcode();
-                   }
-               ),
-               title: TextField(
-                 controller: controller,
-                 onChanged: onSearch,
-                 decoration: InputDecoration(
-                   hintText: "ค้นหา",
-                 ),
-               ),
-               trailing: IconButton(
-                   icon: Icon(Icons.cancel, color: Colors.red, size: 30,),
-                   onPressed: (){
-                     controller.clear();
-                   }
-               ),
-             ),
-           ),
-           loading ? Center(
-             child: CircularProgressIndicator(),
-           ) :
-           Expanded(
-             child: ListView.builder(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _SliverAppBarDelegate(
+                child: PreferredSize(
+                  preferredSize: Size.fromHeight(60.0),
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          contentPadding: EdgeInsets.all(1),
+                          leading: IconButton(
+                              icon: Icon(Icons.border_horizontal, color: Colors.red, size: 40,),
+                              onPressed: (){
+                                scanBarcode();
+                              }
+                          ),
+                          title: TextField(
+                            controller: controller,
+                            onChanged: onSearch,
+                            decoration: InputDecoration(
+                              hintText: "ค้นหา",
+                            ),
+                          ),
+                          trailing: IconButton(
+                              icon: Icon(Icons.cancel, color: Colors.red, size: 30,),
+                              onPressed: (){
+                                controller.clear();
+                              }
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+            ),
+          ),
+          SliverList(
+           delegate: SliverChildListDelegate([
+             loading ? Center(
+               child: CircularProgressIndicator(),
+             ) : ListView.builder(
+               shrinkWrap: true,
+               physics: ClampingScrollPhysics(),
                itemCount: _product.length,
                itemBuilder: (context, i){
                  final a = _product[i];
@@ -252,7 +312,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                        Text('${a.productCode}'),
                        Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
                        a.productProLimit != "" ?
-                        Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
+                       Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
                      ],
                    ),
                    trailing: IconButton(
@@ -264,9 +324,73 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                  );
                },
              ),
-           ),
-         ],
-        ),
+             SizedBox(
+               height: 100,
+             ),
+             Divider(
+               color: Colors.black,
+             ),
+             Center(
+               child: Text('*** 10 อันดับสินค้าขายดีประจำเดือน ***', style: TextStyle(fontSize: 18, color: Colors.deepOrange, fontWeight: FontWeight.bold,) ),
+             ),
+             Divider(
+               color: Colors.black,
+             ),
+             ListView.builder(
+               shrinkWrap: true,
+               physics: ClampingScrollPhysics(),
+               //controller: _scrollController,
+               itemBuilder: (context, int index){
+                 return ListTile(
+                   contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
+                   onTap: (){
+                     Navigator.push(
+                         context,
+                         MaterialPageRoute(builder: (context) => productDetailPage(product: productTop[index])));
+                   },
+                   leading: Stack(
+                     children: <Widget>[
+                       Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
+                       (productTop[index].productProStatus == '2')?
+                       Container(
+                         padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                         width: 30,
+                         height: 20,
+                         color: Colors.red,
+                         child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                       ) : Container(
+                         padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                         width: 30,
+                         height: 20,
+                       )
+                     ],
+                   ),
+                   title: Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                   subtitle: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: <Widget>[
+                       Text('${productTop[index].productCode}'),
+                       Text('${productTop[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                       productTop[index].productProLimit != "" ?
+                       Text('สั่งขั้นต่ำ ${productTop[index].productProLimit} : ${productTop[index].productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
+                     ],
+                   ),
+                   trailing: IconButton(
+                       icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
+                       onPressed: (){
+                         //setState(() {
+                         addToOrderFast(productTop[index]);
+                         //getOrderAll();
+                         //});
+                       }
+                   ),
+                 );
+               },
+               itemCount: productTop != null ? productTop.length : 0,
+             ),
+           ])
+          )
+        ],
       ),
     );
   }
@@ -363,6 +487,33 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
     //Navigator.pushReplacementNamed(context, '/Home');
 
+  }
+
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  final PreferredSize child;
+
+  _SliverAppBarDelegate({ this.child });
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    // TODO: implement build
+    return child;
+  }
+
+  @override
+  // TODO: implement maxExtent
+  double get maxExtent => child.preferredSize.height;
+
+  @override
+  // TODO: implement minExtent
+  double get minExtent => child.preferredSize.height;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    // TODO: implement shouldRebuild
+    return false;
   }
 
 }

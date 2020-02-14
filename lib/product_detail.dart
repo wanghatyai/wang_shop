@@ -221,7 +221,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
           SliverList(
             delegate: SliverChildListDelegate([
               Container(
-                height: 550,
+                height: MediaQuery.of(context).size.height,
                 padding: const EdgeInsets.all(5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,7 +311,12 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                       ? Text('สั่งขั้นต่ำรายการโปร ${widget.product.productProLimit} : ${widget.product.productUnit1}',
                           style: TextStyle(color: Colors.red, fontSize: 17, fontWeight: FontWeight.bold))
                       : Text(''),
+                    Divider(
+                      color: Colors.deepOrange,
+                      thickness: 2,
+                    ),
                     Container(
+                      color: Colors.white,
                       //padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                       child: Row(
                         //crossAxisAlignment: CrossAxisAlignment.center,

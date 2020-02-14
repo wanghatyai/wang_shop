@@ -38,6 +38,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wang_shop/order_bill_temps_model.dart';
 import 'package:background_fetch/background_fetch.dart';
 
+import 'package:wang_shop/overdue_model.dart';
+
 class Home extends StatefulWidget {
 
   //Home({Key key}) : super(key: key);
@@ -102,12 +104,17 @@ class _HomeState extends State<Home> {
   }
 
   getOverdue() async {
-    final res = await http.get('https://wangpharma.com/API/overduePopup.php?act=Overdue&userCode=$userCode');
-    if(res.statusCode == 200){
+    final res_overdue = await http.get('https://wangpharma.com/API/overduePopup.php?act=Overdue&userCode=$userCode');
 
-      setState(() {
+    //print('https://wangpharma.com/API/overduePopup.php?act=Overdue&userCode=$userCode');
 
-        var jsonData = json.decode(res.body);
+    if(res_overdue.statusCode == 200){
+
+        //print(res_overdue);
+
+        var jsonData = json.decode(res_overdue.body);
+
+        //print('getOverdue-----$jsonData');
 
         if(jsonData.isNotEmpty){
           overdueBillAllDetail = jsonData[0];
@@ -130,11 +137,12 @@ class _HomeState extends State<Home> {
           //var newDateTimeObj2 = new DateFormat("dd/MM/yyyy HH:mm:ss").parse("10/02/2000 15:13:09")
         }
 
-      });
     }
 
+    print(overdueStatus);
+
     if(overdueStatus > 0) {
-    this.showDialogOverdue();
+      this.showDialogOverdue();
     }
 
     //return overdueBillAllDetail;
@@ -159,13 +167,15 @@ class _HomeState extends State<Home> {
 
     dateFormat = new DateFormat.yMMMMd('th');
     //timeFormat = new DateFormat.Hms('cs');
-    getOverdue();
+    //getOverdue();
 
-      /*Future.delayed(Duration.zero, () {
+      Future.delayed(Duration(seconds: 3), () {
         //if(overdueStatus > 0) {
-          this.showDialogOverdue();
+          //this.showDialogOverdue();
+          getOverdue();
         //}
-      });*/
+      });
+
     setupNotificationPlugin();
 
     //getOrderBillTemps();
