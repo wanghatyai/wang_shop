@@ -187,8 +187,9 @@ class _ProductRecomPageState extends State<ProductRecomPage> {
               children: <Widget>[
                 Text('${productAll[index].productCode}'),
                 Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
-                productAll[index].productProLimit != "" ?
-                Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
+                (productAll[index].productProLimit != "" && productAll[index].productProStatus == '2')
+                    ? Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red))
+                    : Text(''),
               ],
             ),
             trailing: IconButton(

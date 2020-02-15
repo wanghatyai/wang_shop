@@ -179,8 +179,9 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
                       children: <Widget>[
                         Text('${a.productCode}'),
                         Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
-                        a.productProLimit != "" ?
-                          Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
+                        (a.productProLimit != "" && a.productProStatus == '2')
+                            ? Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red))
+                            : Text(''),
                       ],
                     ),
                     trailing: IconButton(
