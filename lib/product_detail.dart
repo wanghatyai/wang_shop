@@ -221,32 +221,33 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
           SliverList(
             delegate: SliverChildListDelegate([
               Container(
-                height: MediaQuery.of(context).size.height,
+                //height: MediaQuery.of(context).size.height,
                 padding: const EdgeInsets.all(5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Expanded(
-                      child: PhotoViewGallery.builder(
-                        itemCount: imgList.length,
-                        builder: (context, index){
-                          return PhotoViewGalleryPageOptions(
-                            imageProvider: NetworkImage(imgList[index]['src']),
-                            minScale: PhotoViewComputedScale.contained * 0.8,
-                            maxScale: PhotoViewComputedScale.covered * 2,
-                          );
-                        },
-                        scrollPhysics: BouncingScrollPhysics(),
+                    Container(
+                        height: 300,
+                        child: PhotoViewGallery.builder(
+                          itemCount: imgList.length,
+                          builder: (context, index){
+                            return PhotoViewGalleryPageOptions(
+                              imageProvider: NetworkImage(imgList[index]['src']),
+                              minScale: PhotoViewComputedScale.contained * 0.8,
+                              maxScale: PhotoViewComputedScale.covered * 2,
+                            );
+                          },
+                          scrollPhysics: BouncingScrollPhysics(),
 
-                        backgroundDecoration: BoxDecoration(
-                          color: Theme.of(context).canvasColor,
-                        ),
-                        loadingChild: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        //imageProvider: NetworkImage('http://www.wangpharma.com/cms/product/${widget.product.productPic}'),
+                          backgroundDecoration: BoxDecoration(
+                            color: Theme.of(context).canvasColor,
+                          ),
+                          loadingChild: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          //imageProvider: NetworkImage('http://www.wangpharma.com/cms/product/${widget.product.productPic}'),
 
-                      ),
+                        ),
                     ),
                     //Image.network('http://www.wangpharma.com/cms/product/${widget.product.productPic}',fit: BoxFit.contain, width:double.infinity, height: 250,),
                     (widget.product.productProStatus == '2')
