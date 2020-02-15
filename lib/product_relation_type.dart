@@ -189,10 +189,12 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
       unit3 = 'NULL';
     }
 
-    if(productFast.productProLimit != ""){
+    if(productFast.productProLimit != "" && productFast.productProStatus == '2'){
 
       if(int.parse(productFast.productProLimit) > 0){
         amount = int.parse(productFast.productProLimit);
+      }else{
+        amount = 1;
       }
 
     }else{
