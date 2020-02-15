@@ -631,6 +631,14 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.green,
         //title: Text("${name}"),
+        /*leading: IconButton(
+            padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+            icon: Icon(Icons.border_horizontal, color: Colors.white, size: 40,),
+            onPressed: (){
+              //scanBarcode();
+              searchAutoOutPage().createState().scanBarcode();
+            }
+        ),*/
         title: Container(
           height: 40,
           color: Colors.green,
