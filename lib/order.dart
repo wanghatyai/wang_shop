@@ -409,10 +409,12 @@ class _OrderPageState extends State<OrderPage> {
       unit3 = 'NULL';
     }
 
-    if(productFast.productProLimit != ""){
+    if(productFast.productProLimit != "" && productFast.productProStatus == '2'){
 
       if(int.parse(productFast.productProLimit) > 0){
         amount = int.parse(productFast.productProLimit);
+      }else{
+        amount = 1;
       }
 
     }else{
@@ -665,8 +667,9 @@ class _OrderPageState extends State<OrderPage> {
                         children: <Widget>[
                           Text('${productTop[index].productCode}'),
                           Text('${productTop[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
-                          productTop[index].productProLimit != "" ?
-                          Text('สั่งขั้นต่ำ ${productTop[index].productProLimit} : ${productTop[index].productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
+                          (productTop[index].productProLimit != "" && productTop[index].productProStatus == '2')
+                              ? Text('สั่งขั้นต่ำ ${productTop[index].productProLimit} : ${productTop[index].productUnit1}', style: TextStyle(color: Colors.red))
+                              : Text(''),
                         ],
                       ),
                       trailing: IconButton(

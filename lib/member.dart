@@ -474,11 +474,11 @@ class _MemberPageState extends State<MemberPage> {
                       ),
                       MaterialButton(
                         color: Colors.amber,
-                        textColor: Colors.white,
+                        textColor: Colors.black,
                         minWidth: double.infinity,
                         height: 50,
                         child: Text(
-                          "อัปเดต ฐานข้อมูล",
+                          "อัปเดตฐานข้อมูล",
                           style: new TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold

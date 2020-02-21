@@ -189,8 +189,9 @@ class _ProductHotPageState extends State<ProductHotPage> {
               children: <Widget>[
                 Text('${productAll[index].productCode}'),
                 Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
-                productAll[index].productProLimit != "" ?
-                  Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
+                (productAll[index].productProLimit != "" && productAll[index].productProStatus == '2')
+                    ? Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red))
+                    : Text(''),
               ],
             ),
             trailing: IconButton(
@@ -232,10 +233,12 @@ class _ProductHotPageState extends State<ProductHotPage> {
       unit3 = 'NULL';
     }
 
-    if(productFast.productProLimit != ""){
+    if(productFast.productProLimit != "" && productFast.productProStatus == '2'){
 
       if(int.parse(productFast.productProLimit) > 0){
         amount = int.parse(productFast.productProLimit);
+      }else{
+        amount = 1;
       }
 
     }else{
