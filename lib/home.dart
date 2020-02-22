@@ -16,6 +16,9 @@ import 'package:wang_shop/product_new.dart';
 import 'package:wang_shop/product_recom.dart';
 import 'package:wang_shop/product_wish.dart';
 import 'package:wang_shop/product_category.dart';
+
+import 'package:wang_shop/product_model.dart';
+
 import 'package:wang_shop/history.dart';
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/order.dart';
@@ -39,6 +42,9 @@ import 'package:wang_shop/order_bill_temps_model.dart';
 import 'package:background_fetch/background_fetch.dart';
 
 import 'package:wang_shop/overdue_model.dart';
+
+import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
 
@@ -74,6 +80,9 @@ class _HomeState extends State<Home> {
   Map<String, dynamic> overdueBillAllDetail = {};
 
   List <OrderBillTemps>orderBillTempsAll = [];
+
+  List<Product> _product = [];
+  String barcode;
 
   //Timer timerLoopCheck;
   var orderBillStatusText;
@@ -147,6 +156,85 @@ class _HomeState extends State<Home> {
 
     //return overdueBillAllDetail;
 
+  }
+
+  searchProduct(searchVal) async{
+
+    _product.clear();
+
+    //productAll = [];
+
+    final res = await http.get('https://wangpharma.com/API/product.php?SearchVal=$searchVal&act=Search');
+
+    if(res.statusCode == 200){
+
+      setState(() {
+
+        var jsonData = json.decode(res.body);
+
+        jsonData.forEach((products) => _product.add(Product.fromJson(products)));
+
+        //products = json.decode(res.body);
+        //recentProducts = json.decode(res.body);
+        /*jsonData.forEach(([product, i]) {
+          if(product['nproductMain'] != 'null'){
+            products.add(product['nproductMain']);
+          }
+          print(product['nproductMain']);
+        });*/
+        print(_product);
+        return _product;
+
+      });
+
+    }else{
+      throw Exception('Failed load Json');
+    }
+    //print(searchVal);
+    //print(json.decode(res.body));
+  }
+
+  scanBarcode() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState((){
+        this.barcode = barcode;
+        searchProduct(this.barcode);
+
+        Future.delayed(Duration(seconds: 2), () {
+          //if(overdueStatus > 0) {
+          //this.showDialogOverdue();
+          print(_product[0]);
+          addToOrderFast(_product[0]);
+          //}
+        });
+        scanBarcode();
+      });
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        _showAlertBarcode();
+        print('Camera permission was denied');
+      } else {
+        print('Unknow Error $e');
+      }
+    } on FormatException {
+      print('User returned using the "back"-button before scanning anything.');
+    } catch (e) {
+      print('Unknown error.');
+    }
+  }
+
+  void _showAlertBarcode() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('แจ้งเตือน'),
+          content: Text('คุณไม่เปิดอนุญาตใช้กล้อง'),
+        );
+      },
+    );
   }
 
   _launchURL() async {
@@ -631,14 +719,14 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.green,
         //title: Text("${name}"),
-        /*leading: IconButton(
+        leading: IconButton(
             padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
             icon: Icon(Icons.border_horizontal, color: Colors.white, size: 40,),
             onPressed: (){
-              //scanBarcode();
-              searchAutoOutPage().createState().scanBarcode();
+              scanBarcode();
+              //searchAutoOutPage().createState().scanBarcode();
             }
-        ),*/
+        ),
         title: Container(
           height: 40,
           color: Colors.green,
@@ -702,6 +790,111 @@ class _HomeState extends State<Home> {
       //drawer: drawer,
       body: pages[currentIndex],
       bottomNavigationBar: bottomNavBar,
+    );
+  }
+
+  addToOrderFast(productFast) async{
+
+    var unit1;
+    var unit2;
+    var unit3;
+
+    int amount;
+
+    if(productFast.productUnit1.toString() != "null"){
+      unit1 = productFast.productUnit1.toString();
+    }else{
+      unit1 = 'NULL';
+    }
+    if(productFast.productUnit2.toString() != "null"){
+      unit2 = productFast.productUnit2.toString();
+    }else{
+      unit2 = 'NULL';
+    }
+    if(productFast.productUnit3.toString() != "null"){
+      unit3 = productFast.productUnit3.toString();
+    }else{
+      unit3 = 'NULL';
+    }
+
+    if(productFast.productProLimit != "" && productFast.productProStatus == '2'){
+
+      if(int.parse(productFast.productProLimit) > 0){
+        amount = int.parse(productFast.productProLimit);
+      }else{
+        amount = 1;
+      }
+
+    }else{
+      amount = 1;
+    }
+
+    Map order = {
+      'productID': productFast.productId.toString(),
+      'code': productFast.productCode.toString(),
+      'name': productFast.productName.toString(),
+      'pic': productFast.productPic.toString(),
+      'unit': productFast.productUnit1.toString(),
+      'unitStatus': 1,
+      'unit1': unit1,
+      'unitQty1': productFast.productUnitQty1,
+      'unit2': unit2,
+      'unitQty2': productFast.productUnitQty2,
+      'unit3': unit3,
+      'unitQty3': productFast.productUnitQty3,
+      'priceA': productFast.productPriceA,
+      'priceB': productFast.productPriceB,
+      'priceC': productFast.productPriceC,
+      'amount': amount,
+      'proStatus': productFast.productProStatus,
+      'proLimit': amount,
+    };
+
+    var checkOrderUnit = await databaseHelper.getOrderCheck(order['code'], order['unit']);
+
+    //print(checkOrderUnit.isEmpty);
+
+    if(checkOrderUnit.isEmpty){
+
+      //print(order);
+      await databaseHelper.saveOrder(order);
+
+      showToastAddFast();
+
+
+      //add notify order
+      blocCountOrder.getOrderCount();
+
+    }else{
+
+      var sumAmount = checkOrderUnit[0]['amount'] + amount;
+      Map order = {
+        'id': checkOrderUnit[0]['id'],
+        'unit': checkOrderUnit[0]['unit'],
+        'unitStatus': 1,
+        'amount': sumAmount,
+      };
+
+      await databaseHelper.updateOrder(order);
+
+      showToastAddFast();
+
+
+      //add notify order
+      blocCountOrder.getOrderCount();
+
+    }
+
+    //Navigator.pushReplacementNamed(context, '/Home');
+
+  }
+
+  showToastAddFast(){
+    Fluttertoast.showToast(
+        msg: "เพิ่มรายการแล้ว",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 3
     );
   }
 
