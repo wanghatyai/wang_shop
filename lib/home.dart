@@ -721,7 +721,12 @@ class _HomeState extends State<Home> {
         //title: Text("${name}"),
         leading: IconButton(
             padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-            icon: Icon(Icons.border_horizontal, color: Colors.white, size: 40,),
+            icon: Column(
+              children: <Widget>[
+                Icon(Icons.crop_free, color: Colors.white, size: 40,),
+                Text('สแกน', style: TextStyle(fontSize: 12),)
+              ],
+            ),
             onPressed: (){
               scanBarcode();
               //searchAutoOutPage().createState().scanBarcode();
