@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/product_detail.dart';
 
+import 'package:wang_shop/product_wish.dart';
+
 import 'package:wang_shop/ship_dialog.dart';
 import 'package:wang_shop/pay_dialog.dart';
 import 'package:wang_shop/summary_order.dart';
@@ -500,10 +502,30 @@ class _OrderPageState extends State<OrderPage> {
           title: Text('สินค้าในตะกร้า'),
           actions: <Widget>[
             IconButton(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              icon: Column(
+                children: <Widget>[
+                  Icon(Icons.star, size: 40,),
+                  Text('สั่งล่าสุด', style: TextStyle(fontSize: 12),),
+                ],
+              ),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductWishPage()));
+              },
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            IconButton(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 icon: Stack(
                   children: <Widget>[
-                    Icon(Icons.shopping_basket, size: 40,),
+                    Column(
+                      children: <Widget>[
+                        Icon(Icons.shopping_basket, size: 40,),
+                        Text('ชำระเงิน', style: TextStyle(fontSize: 12),),
+                      ],
+                    ),
                     Positioned(
                       right: 0,
                       child: Container(
