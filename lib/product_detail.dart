@@ -308,7 +308,11 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                           color: Colors.teal
                       ),
                     ),
-                    (widget.product.productProStatus == '2')
+                    Divider(
+                      color: Colors.deepOrange,
+                      thickness: 2,
+                    ),
+                    /*(widget.product.productProStatus == '2')
                       ? Text('สั่งขั้นต่ำรายการโปร ${widget.product.productProLimit} : ${widget.product.productUnit1}',
                           style: TextStyle(color: Colors.red, fontSize: 17, fontWeight: FontWeight.bold))
                       : Text(''),
@@ -375,7 +379,11 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                         ],
                       ),
                     ),
-                    MaterialButton(
+                    Divider(
+                      color: Colors.deepOrange,
+                      thickness: 2,
+                    ),*/
+                    /*MaterialButton(
                       color: Colors.deepOrange,
                       textColor: Colors.white,
                       minWidth: double.infinity,
@@ -391,7 +399,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                       onPressed: () {
                         addToOrder();
                       },
-                    ),
+                    ),*/
                   ],
                 ),
               ),
@@ -457,6 +465,98 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
           addToOrder();
         },
       ),*/
+      bottomNavigationBar: Container(
+        height: 130,
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+              child: (widget.product.productProStatus == '2')
+                  ? Text('สั่งขั้นต่ำรายการโปร ${widget.product.productProLimit} : ${widget.product.productUnit1}',
+                  style: TextStyle(color: Colors.red, fontSize: 17, fontWeight: FontWeight.bold))
+                  : Text(''),
+            ),
+            Container(
+              color: Colors.white,
+              //padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+              child: Row(
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    child: Expanded(
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18),
+                        controller: valAmount,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "จำนวน",
+                          contentPadding: EdgeInsets.all(4),
+                        ),
+                        keyboardType: TextInputType.number,
+                        validator: (val){
+                          if(val.isEmpty){
+                            return 'กรุณากรอกข้อมูล';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Expanded(
+                      child: DropdownButton(
+                        isExpanded: true,
+                        hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
+                        items: units.map((dropDownStringItem){
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Container(
+                              //color: Colors.white,
+                              padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                              child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (newValueSelected){
+                          var tempIndex = units.indexOf(newValueSelected)+1;
+                          _onDropDownItemSelected(newValueSelected, tempIndex);
+                          print(this._currentUnit);
+                          print(tempIndex);
+
+                        },
+                        value: _currentUnit,
+
+                      ),
+
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              child: MaterialButton(
+                color: Colors.deepOrange,
+                textColor: Colors.white,
+                minWidth: double.infinity,
+                height: 50,
+                child: Text(
+                  "หยิบใส่ตะกร้า",
+                  style: new TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+                //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
+                onPressed: () {
+                  addToOrder();
+                },
+              ),
+            )
+          ],
+        ),
+      ),
     );
 
   }
