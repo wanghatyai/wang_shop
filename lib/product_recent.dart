@@ -32,13 +32,20 @@ class _ProductRecomPageState extends State<ProductRecentPage> {
   List <Product>productAll = [];
   bool isLoading = true;
   int perPage = 30;
-  String act = "RC";
+  //String act = "RC";
+
+  var userName;
 
   //var product;
 
   getProduct() async{
 
-    final res = await http.get('https://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
+    var resUser = await databaseHelper.getList();
+    var userCode = resUser[0]['code'];
+    var userID = resUser[0]['idUser'];
+    userName = resUser[0]['name'];
+
+    final res = await http.get('https://wangpharma.com/API/product.php?PerPage=$perPage&act=RC&userCode=$userCode');
 
     if(res.statusCode == 200){
 
@@ -100,7 +107,7 @@ class _ProductRecomPageState extends State<ProductRecentPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("สินค้าแนะนำ"),
+        title: Text("สินค้าสั่งล่าสุด"),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),

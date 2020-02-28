@@ -401,7 +401,23 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   itemBuilder: (context, int index){
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                      leading: Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                      leading: Stack(
+                        children: <Widget>[
+                          Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                          (orders[index]['proStatus'] == 2)?
+                          Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                            color: Colors.red,
+                            child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                          ) : Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                          )
+                        ],
+                      ),
                       title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -469,7 +485,23 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   itemBuilder: (context, int index){
                     return ListTile(
                       contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                      leading: Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                      leading: Stack(
+                        children: <Widget>[
+                          Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                          (orders[index]['proStatus'] == 2)?
+                          Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                            color: Colors.red,
+                            child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                          ) : Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                          )
+                        ],
+                      ),
                       title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

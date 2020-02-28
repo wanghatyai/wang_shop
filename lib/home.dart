@@ -258,6 +258,8 @@ class _HomeState extends State<Home> {
     //getOverdue();
 
       Future.delayed(Duration(seconds: 3), () {
+        //add notify order
+        blocCountOrder.getOrderCount();
         //if(overdueStatus > 0) {
           //this.showDialogOverdue();
           getOverdue();

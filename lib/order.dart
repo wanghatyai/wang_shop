@@ -10,6 +10,7 @@ import 'package:wang_shop/product_model.dart';
 import 'package:wang_shop/product_detail.dart';
 
 import 'package:wang_shop/product_wish.dart';
+import 'package:wang_shop/product_recent.dart';
 
 import 'package:wang_shop/ship_dialog.dart';
 import 'package:wang_shop/pay_dialog.dart';
@@ -510,7 +511,7 @@ class _OrderPageState extends State<OrderPage> {
                 ],
               ),
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductWishPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductRecentPage()));
               },
             ),
             SizedBox(
