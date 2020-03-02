@@ -12,6 +12,8 @@ import 'package:wang_shop/product_detail.dart';
 import 'package:wang_shop/product_wish.dart';
 import 'package:wang_shop/product_recent.dart';
 
+import 'package:wang_shop/search_auto_out.dart';
+
 import 'package:wang_shop/ship_dialog.dart';
 import 'package:wang_shop/pay_dialog.dart';
 import 'package:wang_shop/summary_order.dart';
@@ -220,30 +222,63 @@ class _OrderPageState extends State<OrderPage> {
           Padding(
             padding: EdgeInsets.all(10),
           ),
-          SimpleDialogOption(
-            onPressed: (){
-              selectPay();
-            },
-            child: Container(
-                padding: EdgeInsets.all(10),
-                color: Colors.green,
-                alignment: Alignment.center,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                          'ตกลง',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18, fontWeight: FontWeight.bold
-                          )
-                      ),
-                    ),
-                  ],
-                )
-            ),
-          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: SimpleDialogOption(
+                  onPressed: (){
+                    Navigator.pop(context);
+                    //Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryOrderPage()));
+                  },
+                  child: Container(
+                      padding: EdgeInsets.all(10),
+                      color: Colors.red,
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                                'กลับ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18, fontWeight: FontWeight.bold
+                                )
+                            ),
+                          ),
+                        ],
+                      )
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SimpleDialogOption(
+                  onPressed: (){
+                    selectPay();
+                  },
+                  child: Container(
+                      padding: EdgeInsets.all(10),
+                      color: Colors.green,
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                                'ตกลง',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18, fontWeight: FontWeight.bold
+                                )
+                            ),
+                          ),
+                        ],
+                      )
+                  ),
+                ),
+              )
+            ],
+          )
         ],
       );
     });
@@ -262,31 +297,64 @@ class _OrderPageState extends State<OrderPage> {
           Padding(
             padding: EdgeInsets.all(10),
           ),
-          SimpleDialogOption(
-            onPressed: (){
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: SimpleDialogOption(
+                  onPressed: (){
+                    Navigator.pop(context);
+                    //Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryOrderPage()));
+                  },
+                  child: Container(
+                      padding: EdgeInsets.all(10),
+                      color: Colors.red,
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                                'กลับ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18, fontWeight: FontWeight.bold
+                                )
+                            ),
+                          ),
+                        ],
+                      )
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SimpleDialogOption(
+                  onPressed: (){
 
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryOrderPage()));
-            },
-            child: Container(
-                padding: EdgeInsets.all(10),
-                color: Colors.green,
-                alignment: Alignment.center,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                          'ตกลง',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18, fontWeight: FontWeight.bold
-                          )
-                      ),
-                    ),
-                  ],
-                )
-            ),
-          ),
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryOrderPage()));
+                  },
+                  child: Container(
+                      padding: EdgeInsets.all(10),
+                      color: Colors.green,
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                                'ตกลง',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18, fontWeight: FontWeight.bold
+                                )
+                            ),
+                          ),
+                        ],
+                      )
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
 
 
@@ -500,8 +568,23 @@ class _OrderPageState extends State<OrderPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green,
-          title: Text('สินค้าในตะกร้า'),
+          title: Text('ตะกร้า'),
           actions: <Widget>[
+            IconButton(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              icon: Column(
+                children: <Widget>[
+                  Icon(Icons.search, size: 40,),
+                  Text('ค้นหา', style: TextStyle(fontSize: 12),),
+                ],
+              ),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+              },
+            ),
+            SizedBox(
+              width: 20,
+            ),
             IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               icon: Column(
