@@ -142,6 +142,33 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
               children: <Widget>[
                 Divider(color: Colors.black),
                 getProductFreePage(score: freeLimit.toInt()),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        child: Text('ดูสินค้าแถมที่เลือก', style: TextStyle(fontSize: 16),),
+                        onPressed: (){
+                          print('viewProductAdd');
+                          Navigator.pop(context);
+                          viewFreeProductSelect();
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        child: Text('กลับ', style: TextStyle(fontSize: 16),),
+                        onPressed: (){
+                          //print('freeProductAdd');
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
                 Padding(
                   padding: EdgeInsets.all(40),
                 ),
@@ -165,8 +192,36 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Text('คุณมี ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 17),),
                 Divider(color: Colors.black),
                 viewProductFreePage(),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.deepPurple,
+                        textColor: Colors.white,
+                        child: Text('เลือกสินค้าแถมเพิ่ม', style: TextStyle(fontSize: 16),),
+                        onPressed: (){
+                          print('freeProductAdd');
+                          Navigator.pop(context);
+                          getFreeProductSelect();
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        child: Text('กลับ', style: TextStyle(fontSize: 16),),
+                        onPressed: (){
+                          //print('freeProductAdd');
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
                 Padding(
                   padding: EdgeInsets.all(40),
                 ),
