@@ -3,13 +3,10 @@ import 'package:wang_shop/database_helper.dart';
 import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:wang_shop/get_product_free.dart';
 import 'package:wang_shop/view_product_free.dart';
-
-import 'package:wang_shop/home.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
@@ -28,12 +25,62 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
+  List user = [];
+  String name;
+  String value;
+  String userCode;
+  DateFormat dateFormat;
+  Map<String, dynamic> transportationDetail = {};
+
   List ordersFree = [];
   List orders = [];
   var sumAmount = 0.0;
   var freeLimit = 0.0;
 
   var priceNowAll = [];
+
+  getUser() async {
+    var res = await databaseHelper.getList();
+    //print(res);
+
+    setState(() {
+      user = res;
+      name = user[0]['name'];
+      userCode = user[0]['code'];
+    });
+
+  }
+
+  getTransportation() async {
+    final resTransportation = await http.get('https://wangpharma.com/API/transportation.php?act=TransportationDate&userCode=$userCode');
+
+    if(resTransportation.statusCode == 200){
+
+      var jsonData = json.decode(resTransportation.body);
+
+      if(jsonData.isNotEmpty){
+        transportationDetail = jsonData[0];
+
+        print(transportationDetail);
+
+        print('TransportationDay--${jsonData.length}');
+        var newDateTimeObj2 = DateFormat('yyyy-MM-dd').parse(transportationDetail['CBS_Date_Receive']);
+        //dateFormate = DateFormat("dd-MM-yyyy").format(DateTime.parse("2019-09-30"));
+        dateFormat.format(newDateTimeObj2);
+        print(DateFormat("dd-MM-yyyy").format(DateFormat('yyyy-MM-dd').parse(transportationDetail['CBS_Date_Receive'])));
+        //print(DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive']));
+        //var newDateTimeObj2 = new DateFormat("dd/MM/yyyy HH:mm:ss").parse("10/02/2000 15:13:09")
+      }
+
+    }
+
+    /*if(overdueStatus > 0) {
+      this.showDialogOverdue();
+    }*/
+
+    //return overdueBillAllDetail;
+
+  }
 
   getOrderAll() async{
 
@@ -55,7 +102,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
     print(resFree);
     print(res);
-    print('User${userCredit}');
+    print('User$userCredit');
 
     res.forEach((order) {
 
@@ -81,9 +128,9 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
           sumAmount = sumAmount + ((priceCredit * unitQty1) * order['amount']);
           priceNow = priceCredit*unitQty1;
-
           priceNowAll.add(priceNow);
-          print('----${priceNow}');
+
+          print('----$priceNow');
 
         }
 
@@ -91,9 +138,9 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
           sumAmount = sumAmount + ((priceCredit * unitQty2) * order['amount']);
           priceNow = priceCredit*unitQty2;
-
           priceNowAll.add(priceNow);
-          print('----${priceNow}');
+
+          print('----$priceNow');
 
         }
 
@@ -102,7 +149,8 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
           sumAmount = sumAmount + ((priceCredit * unitQty3) * order['amount']);
           priceNow = priceCredit*unitQty3;
           priceNowAll.add(priceNow);
-          print('----${priceNow}');
+
+          print('----$priceNow');
 
         }
 
