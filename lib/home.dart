@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,6 +47,8 @@ import 'package:wang_shop/overdue_model.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
+import 'package:in_app_update/in_app_update.dart';
+
 class Home extends StatefulWidget {
 
   //Home({Key key}) : super(key: key);
@@ -61,6 +64,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  AppUpdateInfo _updateInfo;
 
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -246,12 +251,41 @@ class _HomeState extends State<Home> {
     }
   }
 
+  _checkUpdateApp() async{
+    if(Platform.isAndroid){
+        print('Device is Android check for Update');
+        checkForUpdate();
+    }
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> checkForUpdate() async {
+    InAppUpdate.checkForUpdate().then((info) {
+      setState(() {
+        _updateInfo = info;
+      });
+
+      if(_updateInfo?.updateAvailable == true){
+
+        InAppUpdate.startFlexibleUpdate().then((_) {
+          print('Now StartUpdate');
+        }).catchError((e) => print(e));
+
+      }else{
+        print('no update');
+      }
+
+    }).catchError((e) => print(e));
+  }
+
   @override
   void initState(){
     super.initState();
     getUser();
     setupNotif();
     initializeDateFormatting();
+
+    _checkUpdateApp();
 
     dateFormat = new DateFormat.yMMMMd('th');
     //timeFormat = new DateFormat.Hms('cs');
