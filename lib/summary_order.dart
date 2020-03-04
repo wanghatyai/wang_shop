@@ -146,6 +146,17 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   children: <Widget>[
                     Expanded(
                       child: RaisedButton(
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        child: Text('กลับ', style: TextStyle(fontSize: 16),),
+                        onPressed: (){
+                          //print('freeProductAdd');
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RaisedButton(
                         color: Colors.blue,
                         textColor: Colors.white,
                         child: Text('ดูสินค้าแถมที่เลือก', style: TextStyle(fontSize: 16),),
@@ -153,17 +164,6 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                           print('viewProductAdd');
                           Navigator.pop(context);
                           viewFreeProductSelect();
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: RaisedButton(
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        child: Text('กลับ', style: TextStyle(fontSize: 16),),
-                        onPressed: (){
-                          //print('freeProductAdd');
-                          Navigator.pop(context);
                         },
                       ),
                     ),
@@ -199,6 +199,17 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   children: <Widget>[
                     Expanded(
                       child: RaisedButton(
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        child: Text('กลับ', style: TextStyle(fontSize: 16),),
+                        onPressed: (){
+                          //print('freeProductAdd');
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RaisedButton(
                         color: Colors.deepPurple,
                         textColor: Colors.white,
                         child: Text('เลือกสินค้าแถมเพิ่ม', style: TextStyle(fontSize: 16),),
@@ -206,17 +217,6 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                           print('freeProductAdd');
                           Navigator.pop(context);
                           getFreeProductSelect();
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: RaisedButton(
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        child: Text('กลับ', style: TextStyle(fontSize: 16),),
-                        onPressed: (){
-                          //print('freeProductAdd');
-                          Navigator.pop(context);
                         },
                       ),
                     ),
