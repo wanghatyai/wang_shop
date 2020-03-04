@@ -20,11 +20,9 @@ import 'package:wang_shop/product_category.dart';
 
 import 'package:wang_shop/product_model.dart';
 
-import 'package:wang_shop/history.dart';
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/order.dart';
-import 'package:wang_shop/search.dart';
-import 'package:wang_shop/search_auto.dart';
+
 import 'package:wang_shop/search_auto_out.dart';
 
 import 'package:wang_shop/news.dart';
@@ -41,8 +39,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wang_shop/order_bill_temps_model.dart';
 import 'package:background_fetch/background_fetch.dart';
-
-import 'package:wang_shop/overdue_model.dart';
 
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
@@ -118,15 +114,15 @@ class _HomeState extends State<Home> {
   }
 
   getOverdue() async {
-    final res_overdue = await http.get('https://wangpharma.com/API/overduePopup.php?act=Overdue&userCode=$userCode');
+    final resOverdue = await http.get('https://wangpharma.com/API/overduePopup.php?act=Overdue&userCode=$userCode');
 
     //print('https://wangpharma.com/API/overduePopup.php?act=Overdue&userCode=$userCode');
 
-    if(res_overdue.statusCode == 200){
+    if(resOverdue.statusCode == 200){
 
-        //print(res_overdue);
+        //print(resOverdue);
 
-        var jsonData = json.decode(res_overdue.body);
+        var jsonData = json.decode(resOverdue.body);
 
         //print('getOverdue-----$jsonData');
 
@@ -242,14 +238,14 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _launchURL() async {
+  /*_launchURL() async {
     const urlHelp = "https://www.youtube.com/watch?v=CQni6VdSdTs";
     if (await canLaunch(urlHelp)) {
       await launch(urlHelp);
     } else {
       throw 'Could not launch $urlHelp';
     }
-  }
+  }*/
 
   _checkUpdateApp() async{
     if(Platform.isAndroid){
@@ -637,9 +633,9 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-  _clearOrderTempsDB()async{
+  /*_clearOrderTempsDB()async{
     await databaseHelper.removeAllOrderTemps();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -683,7 +679,7 @@ class _HomeState extends State<Home> {
 
     //username = _readData('name');
 
-    Widget drawer = Drawer(
+    /*Widget drawer = Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -749,7 +745,7 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-    );
+    );*/
 
     return Scaffold(
       appBar: AppBar(
