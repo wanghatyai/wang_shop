@@ -251,6 +251,8 @@ class _HomeState extends State<Home> {
     if(Platform.isAndroid){
         print('Device is Android check for Update');
         checkForUpdate();
+    }else{
+      print('Device is IOS check for Update');
     }
   }
 
@@ -265,6 +267,12 @@ class _HomeState extends State<Home> {
 
         InAppUpdate.startFlexibleUpdate().then((_) {
           print('Now StartUpdate');
+
+          databaseHelper.dropTableOrder();
+          databaseHelper.dropTableOrderFree();
+          databaseHelper.dropTableMembers();
+          databaseHelper.dropTableShipAndPay();
+
         }).catchError((e) => print(e));
 
       }else{
