@@ -18,7 +18,8 @@ class DatabaseHelper {
     idUser TEXT,
     code TEXT, 
     name TEXT,
-    credit TEXT NULL)
+    credit TEXT NULL,
+    route TEXT NULL)
   ''';
 
   String sqlCreateOrder = '''
@@ -434,8 +435,8 @@ class DatabaseHelper {
     var dbClient = await getDb();
 
     String sql = '''
-    INSERT INTO members(idUser, code, name, credit)
-    VALUES(?, ?, ?, ?)
+    INSERT INTO members(idUser, code, name, credit, route)
+    VALUES(?, ?, ?, ?, ?)
     ''';
 
     await dbClient.rawQuery(sql, [
@@ -443,6 +444,7 @@ class DatabaseHelper {
       member['code'],
       member['name'],
       member['credit'],
+      member['route'],
     ]);
 
     print('Saved!');
@@ -555,21 +557,23 @@ class DatabaseHelper {
     print('Updated!');
   }
 
-  Future updateDataCredit(Map member) async {
+  Future updateDataCreditAndRoute(Map member) async {
     var dbClient = await getDb();
 
     String sql = '''
-    UPDATE members SET credit=?
+    UPDATE members SET credit=?, route=? 
     WHERE idUser=?
     ''';
 
     await dbClient.rawQuery(sql, [
       member['credit'],
+      member['route'],
       member['idUser'],
     ]);
 
     print('Updated! Credit');
   }
+
 
   Future updateOrderTemps(Map statusOrderTemps) async {
     var dbClient = await getDbOrderTemps();

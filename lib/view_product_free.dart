@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wang_shop/database_helper.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class viewProductFreePage extends StatefulWidget {
   @override
