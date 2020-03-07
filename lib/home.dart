@@ -289,8 +289,6 @@ class _HomeState extends State<Home> {
     setupNotif();
     initializeDateFormatting();
 
-    _checkUpdateApp();
-
     dateFormat = new DateFormat.yMMMMd('th');
     //timeFormat = new DateFormat.Hms('cs');
     //getOverdue();
@@ -303,6 +301,10 @@ class _HomeState extends State<Home> {
           getOverdue();
         //}
       });
+
+    Future.delayed(Duration(seconds: 6), () {
+      _checkUpdateApp();
+    });
 
     setupNotificationPlugin();
 
