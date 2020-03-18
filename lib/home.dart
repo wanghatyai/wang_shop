@@ -330,7 +330,7 @@ class _HomeState extends State<Home> {
         requiresCharging: false,
         requiresStorageNotLow: false,
         requiresDeviceIdle: false,
-        requiredNetworkType: BackgroundFetchConfig.NETWORK_TYPE_NONE
+        requiredNetworkType: NetworkType.NONE
     ), () async {
       // This is the fetch-event callback.
       print('[BackgroundFetch] Event received');
