@@ -332,7 +332,7 @@ class _HomeState extends State<Home> {
         requiresCharging: false,
         requiresStorageNotLow: false,
         requiresDeviceIdle: false,
-        requiredNetworkType: BackgroundFetchConfig.NETWORK_TYPE_NONE
+        requiredNetworkType: NetworkType.NONE
     ), () async {
       // This is the fetch-event callback.
       print('[BackgroundFetch] Event received');
@@ -941,7 +941,7 @@ class _HomeState extends State<Home> {
         msg: "เพิ่มรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 
