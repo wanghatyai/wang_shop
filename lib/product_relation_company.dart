@@ -76,7 +76,7 @@ class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage>
         msg: "เพิ่มรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 

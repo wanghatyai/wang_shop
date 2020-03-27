@@ -159,7 +159,7 @@ class _OrderPageState extends State<OrderPage> {
         msg: "ลบรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 
@@ -458,7 +458,7 @@ class _OrderPageState extends State<OrderPage> {
         msg: "เพิ่มรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 

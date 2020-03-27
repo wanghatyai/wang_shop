@@ -122,7 +122,7 @@ class _EditDialogPageState extends State<EditDialogPage> {
         msg: "ลบรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 
@@ -131,7 +131,7 @@ class _EditDialogPageState extends State<EditDialogPage> {
         msg: "จำนวนที่เลือกต่ำกว่าจำนวนขั้นต่ำรายการโปร",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 10
+        timeInSecForIosWeb: 10
     );
   }
 

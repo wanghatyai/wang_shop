@@ -91,7 +91,7 @@ class _ProductWishPageState extends State<ProductWishPage> {
         msg: "เพิ่มรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 
