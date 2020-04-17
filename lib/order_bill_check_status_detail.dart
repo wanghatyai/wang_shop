@@ -15,7 +15,8 @@ import 'package:wang_shop/order_bill_TC_temps_model.dart';
 class OrderBillCheckStatusDetailPage extends StatefulWidget {
 
   var OrderBillval;
-  OrderBillCheckStatusDetailPage({Key key, this.OrderBillval}) : super(key: key);
+  var NotificationSent;
+  OrderBillCheckStatusDetailPage({Key key, this.OrderBillval, this.NotificationSent}) : super(key: key);
 
   @override
   _OrderBillCheckStatusDetailPageState createState() => _OrderBillCheckStatusDetailPageState();
@@ -40,7 +41,15 @@ class _OrderBillCheckStatusDetailPageState extends State<OrderBillCheckStatusDet
 
   var priceNowAll = [];
 
+  var orderBillCode;
+
   getOrderBillDetail() async{
+
+    if(widget.NotificationSent == 1){
+      orderBillCode = widget.OrderBillval;
+    }else{
+      orderBillCode = widget.OrderBillval.orderBillCode;
+    }
 
     var resUser = await databaseHelper.getList();
     var userID = resUser[0]['idUser'];
@@ -52,7 +61,7 @@ class _OrderBillCheckStatusDetailPageState extends State<OrderBillCheckStatusDet
     var orderBillType;
     var orderBillProductSelectQty;
 
-    final res = await http.get('https://wangpharma.com/API/orderBill.php?act=CheckStatusOrderBillDetail&orderBillCode=${widget.OrderBillval.orderBillCode}');
+    final res = await http.get('https://wangpharma.com/API/orderBill.php?act=CheckStatusOrderBillDetail&orderBillCode=$orderBillCode');
 
     if(res.statusCode == 200){
 
