@@ -38,6 +38,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wang_shop/order_bill_temps_model.dart';
+
 import 'package:background_fetch/background_fetch.dart';
 
 import 'package:barcode_scan/barcode_scan.dart';
@@ -315,7 +316,7 @@ class _HomeState extends State<Home> {
 
     //timerLoopCheck = Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
     //Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
-    //Future.delayed(Duration(seconds: 15), () => getOrderBillTemps());
+    Future.delayed(Duration(seconds: 10), () => getOrderBillTemps());
 
     //_clearOrderTempsDB();
     orderBillStatusNotificationBG();
@@ -357,6 +358,7 @@ class _HomeState extends State<Home> {
 
   orderBillStatusNotificationBG(){
     BackgroundFetch.start().then((int status) {
+      getOrderBillTemps();
       print('[BackgroundFetch] start success: $status');
     }).catchError((e) {
       print('[BackgroundFetch] start FAILURE: $e');
@@ -473,47 +475,47 @@ class _HomeState extends State<Home> {
 
     for(var index = 0; index < orderBillTempsAll.length; index++){
 
-      //Future.delayed(Duration(seconds: 5), () async{
-      checkCodeOrderTemps = await databaseHelper.getOrderTempsCheckCode(orderBillTempsAll[index].orderBillCode);
+      Future.delayed(Duration(seconds: 2), () async{
+          checkCodeOrderTemps = await databaseHelper.getOrderTempsCheckCode(orderBillTempsAll[index].orderBillCode);
 
-      if(checkCodeOrderTemps.isEmpty){
+          if(checkCodeOrderTemps.isEmpty){
 
-        Map orderTemps = {
-          'code': orderBillTempsAll[index].orderBillCode,
-          'status': orderBillTempsAll[index].orderBillSentStatus,
-          'cusCode': userCode,
-        };
+            Map orderTemps = {
+              'code': orderBillTempsAll[index].orderBillCode,
+              'status': orderBillTempsAll[index].orderBillSentStatus,
+              'cusCode': userCode,
+            };
 
-        await databaseHelper.saveOrderTemps(orderTemps);
+            await databaseHelper.saveOrderTemps(orderTemps);
 
-        setupNotification(index, orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
-
-
-        print('orderBillSendNew');
-      }else{
-
-        checkOrderTemps = await databaseHelper.getOrderTempsCheck(orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
-
-        if(checkOrderTemps.isEmpty){
-
-          Map orderTempsUp = {
-            'code': orderBillTempsAll[index].orderBillCode,
-            'status': orderBillTempsAll[index].orderBillSentStatus,
-          };
-
-          await databaseHelper.updateOrderTemps(orderTempsUp);
+            setupNotification(index, orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
 
 
-          setupNotification(index, orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+            print('orderBillSendNew');
+          }else{
+
+            checkOrderTemps = await databaseHelper.getOrderTempsCheck(orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
+
+            if(checkOrderTemps.isEmpty){
+
+              Map orderTempsUp = {
+                'code': orderBillTempsAll[index].orderBillCode,
+                'status': orderBillTempsAll[index].orderBillSentStatus,
+              };
+
+              await databaseHelper.updateOrderTemps(orderTempsUp);
 
 
-          print('orderBillSendUpdate');
-        }else{
-          print('orderBillStatusSame');
-        }
+              setupNotification(index, orderBillTempsAll[index].orderBillCode, orderBillTempsAll[index].orderBillSentStatus);
 
-      }
-      //});
+
+              print('orderBillSendUpdate');
+            }else{
+              print('orderBillStatusSame');
+            }
+
+          }
+      });
 
     }
   }
