@@ -46,6 +46,8 @@ import 'package:flutter/services.dart';
 
 import 'package:in_app_update/in_app_update.dart';
 
+import 'package:wang_shop/order_bill_check_status_detail.dart';
+
 class Home extends StatefulWidget {
 
   //Home({Key key}) : super(key: key);
@@ -559,7 +561,7 @@ class _HomeState extends State<Home> {
     }
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Home()),
+      MaterialPageRoute(builder: (context) => OrderBillCheckStatusDetailPage(OrderBillval: payload, NotificationSent: 1,)),
     );
   }
 
@@ -591,7 +593,8 @@ class _HomeState extends State<Home> {
         'รายการบิลเลขที่:$orderBillCode',
         'สถานะ:$orderBillStatusText',
         scheduledNotificationDateTime,
-        platformChannelSpecifics);
+        platformChannelSpecifics,
+        payload: '$orderBillCode');
 
     /*var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         'repeating channel id',
