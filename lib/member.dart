@@ -12,6 +12,8 @@ import 'package:wang_shop/order_bill_status.dart';
 import 'package:wang_shop/order_bill_temps_model.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:wang_shop/order_bill_check_status.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
@@ -398,23 +400,47 @@ class _MemberPageState extends State<MemberPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.beenhere, size: 40, color: Colors.grey,),
-                                Text('ยืนยันรายการ')
-                              ],
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:1)),
+                                );
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.beenhere, size: 40, color: Colors.grey,),
+                                  Text('ยืนยันรายการ')
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.check_circle, size: 40, color: Colors.grey,),
-                                Text('เตรียมจัดส่ง')
-                              ],
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:3)),
+                                );
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.check_circle, size: 40, color: Colors.grey,),
+                                  Text('เตรียมจัดส่ง')
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.local_shipping, size: 40, color: Colors.grey,),
-                                Text('ระหว่างขนส่ง')
-                              ],
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:6)),
+                                );
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.local_shipping, size: 40, color: Colors.grey,),
+                                  Text('ระหว่างขนส่ง')
+                                ],
+                              ),
                             ),
                             Column(
                               children: <Widget>[
