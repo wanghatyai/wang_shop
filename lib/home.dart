@@ -155,7 +155,9 @@ class _HomeState extends State<Home> {
     print(overdueStatus);
 
     if(overdueStatus > 0) {
-      this.showDialogOverdue();
+      Future.delayed(Duration(seconds: 2), () {
+        showDialogOverdue();
+      });
     }
 
     //return overdueBillAllDetail;
@@ -453,12 +455,16 @@ class _HomeState extends State<Home> {
 
         var jsonData = json.decode(res.body);
 
-        jsonData.forEach((orderBillTemps) => orderBillTempsAll.add(OrderBillTemps.fromJson(orderBillTemps)));
+        jsonData.forEach((orderBillTemps) {
+          orderBillTempsAll.add(OrderBillTemps.fromJson(orderBillTemps));
+
+        });
 
         print(orderBillTempsAll);
 
-        loopSendOrderBillNotification();
-
+        Future.delayed(Duration(seconds: 3), () async{
+          loopSendOrderBillNotification();
+        });
         //return orderBillTempsAll;
 
       });
@@ -477,7 +483,7 @@ class _HomeState extends State<Home> {
 
     for(var index = 0; index < orderBillTempsAll.length; index++){
 
-      Future.delayed(Duration(seconds: 2), () async{
+      //Future.delayed(Duration(seconds: 2), () async{
           checkCodeOrderTemps = await databaseHelper.getOrderTempsCheckCode(orderBillTempsAll[index].orderBillCode);
 
           if(checkCodeOrderTemps.isEmpty){
@@ -517,7 +523,7 @@ class _HomeState extends State<Home> {
             }
 
           }
-      });
+      //});
 
     }
   }
