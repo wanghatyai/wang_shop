@@ -155,9 +155,9 @@ class _HomeState extends State<Home> {
     print(overdueStatus);
 
     if(overdueStatus > 0) {
-      Future.delayed(Duration(seconds: 2), () {
-        showDialogOverdue();
-      });
+      //Future.delayed(Duration(seconds: 2), () {
+        this.showDialogOverdue();
+      //});
     }
 
     //return overdueBillAllDetail;
@@ -208,11 +208,10 @@ class _HomeState extends State<Home> {
         searchProduct(this.barcode);
 
         Future.delayed(Duration(seconds: 2), () {
-          //if(overdueStatus > 0) {
-          //this.showDialogOverdue();
+
           print(_product[0]);
           addToOrderFast(_product[0]);
-          //}
+
         });
         scanBarcode();
       });
@@ -464,7 +463,7 @@ class _HomeState extends State<Home> {
 
         print(orderBillTempsAll);
 
-        Future.delayed(Duration(seconds: 3), () async{
+        Future.delayed(Duration(seconds: 10), () async{
           loopSendOrderBillNotification();
         });
         //return orderBillTempsAll;
