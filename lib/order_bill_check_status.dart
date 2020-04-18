@@ -32,15 +32,18 @@ class _OrderBillCheckStatusPageState extends State<OrderBillCheckStatusPage> {
 
   getOrderBill() async{
 
-    if(widget.statusVal == 1){
+    if(widget.statusVal == 2){
       act = 'CheckStatusOrderBillConfirm';
       orderStatusText = 'เปิดบิล';
-    }else if(widget.statusVal == 3){
+    }else if(widget.statusVal == 4){
       act = 'CheckStatusOrderBillPicking';
       orderStatusText = 'จัดสินค้า';
     }else if(widget.statusVal == 6){
       act = 'CheckStatusOrderBillShipping';
       orderStatusText = 'กำลังส่ง';
+    }else if(widget.statusVal == 7){
+      act = 'CheckStatusOrderBillComplete';
+      orderStatusText = 'รับสินค้าแล้ว';
     }
 
     var resUser = await databaseHelper.getList();
