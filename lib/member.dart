@@ -404,7 +404,7 @@ class _MemberPageState extends State<MemberPage> {
                               onTap: (){
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:1)),
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:2)),
                                 );
                               },
                               child: Column(
@@ -418,7 +418,7 @@ class _MemberPageState extends State<MemberPage> {
                               onTap: (){
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:3)),
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:4)),
                                 );
                               },
                               child: Column(
@@ -442,12 +442,20 @@ class _MemberPageState extends State<MemberPage> {
                                 ],
                               ),
                             ),
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.add_comment, size: 40, color: Colors.grey,),
-                                Text('รับสินค้าแล้ว')
-                              ],
-                            )
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:7)),
+                                );
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.add_comment, size: 40, color: Colors.grey,),
+                                  Text('รับสินค้าแล้ว')
+                                ],
+                              )
+                            ),
                           ],
                         ),
                       ),
