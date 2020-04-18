@@ -24,8 +24,9 @@ backgroundFetchHeadlessTask() async {
   print('[BackgroundFetch] Headless event received.');
   print('[BackgroundFetch] notification test.');
   //Home().testPrint();
-  Home().createState().testPrint();
-  Home().createState().getOrderBillTemps();
+  Home().createState().orderBillStatusNotificationBG();
+  //Home().createState().testPrint();
+  //Home().createState().getOrderBillTemps();
   //new Home( getOrderBillTemps: getOrderBillTemps );
   //BackgroundFetch.finish();
 }
