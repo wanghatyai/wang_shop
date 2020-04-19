@@ -1,6 +1,6 @@
 buildscript {
 
-    ext.kotlin_version = '1.3.0' // Must use 1.3.0 or higher.
+    ext.kotlin_version = '1.3.71' // Must use 1.3.0 or higher.
     ext {
         compileSdkVersion   = 28                // or higher
         targetSdkVersion    = 28                // or higher
@@ -12,8 +12,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.0'
-        classpath 'com.google.gms:google-services:4.3.0'
+        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'com.google.gms:google-services:4.3.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
