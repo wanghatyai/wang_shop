@@ -41,7 +41,9 @@ import 'package:wang_shop/order_bill_temps_model.dart';
 
 import 'package:background_fetch/background_fetch.dart';
 
-import 'package:barcode_scan/barcode_scan.dart';
+//import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:soundpool/soundpool.dart';
 import 'package:flutter/services.dart';
 
 import 'package:in_app_update/in_app_update.dart';
@@ -69,6 +71,7 @@ class _HomeState extends State<Home> {
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+  // notification order in cart use BLOC
   BlocCountOrder blocCountOrder;
 
   final formatter = new NumberFormat("#,##0.00");
@@ -86,7 +89,7 @@ class _HomeState extends State<Home> {
   List <OrderBillTemps>orderBillTempsAll = [];
 
   List<Product> _product = [];
-  String barcode;
+  //String barcode;
 
   //Timer timerLoopCheck;
   var orderBillStatusText;
@@ -98,7 +101,14 @@ class _HomeState extends State<Home> {
 
   //List<DateTime> _events = [];
 
+  var checkCodeOrderTemps;
+  var checkOrderTemps;
+
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
+
+  //Sound scan barcode
+  Future<int> _soundId;
+  Soundpool _soundpool = Soundpool();
 
   testPrint(){
     print('testestttttt');
@@ -200,12 +210,59 @@ class _HomeState extends State<Home> {
     //print(json.decode(res.body));
   }
 
+  /*playBeepSound() async {
+    Soundpool pool = Soundpool(streamType: StreamType.notification);
+
+    int soundId = await rootBundle.load("assets/sounds/beep.mp3").then((ByteData soundData) {
+      return pool.load(soundData);
+    });
+    int streamId = await pool.play(soundId);
+  }*/
+
+  Future<int> _loadSound() async {
+    var asset = await rootBundle.load("assets/sounds/beep.mp3");
+    return await _soundpool.load(asset);
+  }
+
+  Future<void> _playSound() async {
+    var _alarmSound = await _soundId;
+    await _soundpool.play(_alarmSound);
+  }
+
   scanBarcode() async {
-    try {
-      String barcode = await BarcodeScanner.scan();
-      setState((){
-        this.barcode = barcode;
-        searchProduct(this.barcode);
+    FlutterBarcodeScanner.getBarcodeStreamReceiver("#ff6666", "Cancel", true, ScanMode.DEFAULT)
+        .listen((barcode) {
+
+          if(barcode != '-1'){
+
+            /// barcode to be used
+            print('barcode val $barcode');
+            searchProduct(barcode);
+            Future.delayed(Duration(seconds: 1), () {
+              print(_product[0]);
+              addToOrderFast(_product[0]);
+            });
+
+            //playBeepSound();
+            _playSound();
+
+            //SystemSound.play(SystemSoundType.click);
+            //scanBarcode();
+          }else{
+            showToastVal('ไม่พบสินค้า');
+          }
+
+    });
+
+    /*try {
+
+      var result = await BarcodeScanner.scan();
+
+      setState(() => scanResult = result);
+
+       print(scanResult.rawContent);
+
+        searchProduct(scanResult.rawContent);
 
         Future.delayed(Duration(seconds: 2), () {
 
@@ -214,20 +271,52 @@ class _HomeState extends State<Home> {
 
         });
         scanBarcode();
-      });
+
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      var result = ScanResult(
+        type: ResultType.Error,
+        format: BarcodeFormat.unknown,
+      );
+
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         _showAlertBarcode();
-        print('Camera permission was denied');
+        setState(() {
+          result.rawContent = 'The user did not grant the camera permission!';
+        });
       } else {
-        print('Unknow Error $e');
+        result.rawContent = 'Unknown error: $e';
       }
-    } on FormatException {
-      print('User returned using the "back"-button before scanning anything.');
-    } catch (e) {
-      print('Unknown error.');
-    }
+      setState(() {
+        scanResult = result;
+      });
+    }*/
   }
+
+  /*Future scan() async {
+    try {
+
+      var result = await BarcodeScanner.scan();
+
+      setState(() => scanResult = result);
+      print(scanResult.rawContent);
+    } on PlatformException catch (e) {
+      var result = ScanResult(
+        type: ResultType.Error,
+        format: BarcodeFormat.unknown,
+      );
+
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
+        setState(() {
+          result.rawContent = 'The user did not grant the camera permission!';
+        });
+      } else {
+        result.rawContent = 'Unknown error: $e';
+      }
+      setState(() {
+        scanResult = result;
+      });
+    }
+  }*/
 
   void _showAlertBarcode() async {
     return showDialog<void>(
@@ -293,6 +382,8 @@ class _HomeState extends State<Home> {
     setupNotif();
     initializeDateFormatting();
 
+    _soundId = _loadSound();
+
     dateFormat = new DateFormat.yMMMMd('th');
     //timeFormat = new DateFormat.Hms('cs');
     //getOverdue();
@@ -319,9 +410,10 @@ class _HomeState extends State<Home> {
 
     //timerLoopCheck = Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
     //Timer.periodic(Duration(seconds: 15), (Timer t) => getOrderBillTemps());
-    /*Future.delayed(Duration(seconds: 10), () {
-      getOrderBillTemps();
-    });*/
+
+    //Future.delayed(Duration(seconds: 9), () {
+      //getOrderBillTemps();
+    //});
 
     //_clearOrderTempsDB();
     orderBillStatusNotificationBG();
@@ -343,7 +435,7 @@ class _HomeState extends State<Home> {
       // This is the fetch-event callback.
       print('[BackgroundFetch] Event received');
 
-      getOrderBillTemps();
+      //getOrderBillTemps();
 
       // IMPORTANT:  You must signal completion of your fetch task or the OS can punish your app
       // for taking too long in the background.
@@ -441,6 +533,8 @@ class _HomeState extends State<Home> {
 
     orderBillTempsAll = [];
 
+    var indexOrderBillTemps = 0;
+
     var resUser = await databaseHelper.getList();
     setState(() {
       userCode = resUser[0]['code'];
@@ -456,16 +550,59 @@ class _HomeState extends State<Home> {
 
         var jsonData = json.decode(res.body);
 
-        jsonData.forEach((orderBillTemps) {
+        jsonData.forEach((orderBillTemps) async {
+
           orderBillTempsAll.add(OrderBillTemps.fromJson(orderBillTemps));
+
+          checkCodeOrderTemps = await databaseHelper.getOrderTempsCheckCode(orderBillTempsAll[indexOrderBillTemps].orderBillCode);
+
+          if(checkCodeOrderTemps.isEmpty){
+
+            Map orderTemps = {
+              'code': orderBillTempsAll[indexOrderBillTemps].orderBillCode,
+              'status': orderBillTempsAll[indexOrderBillTemps].orderBillSentStatus,
+              'cusCode': userCode,
+            };
+
+            await databaseHelper.saveOrderTemps(orderTemps);
+
+            setupNotification(indexOrderBillTemps, orderBillTempsAll[indexOrderBillTemps].orderBillCode, orderBillTempsAll[indexOrderBillTemps].orderBillSentStatus);
+
+
+            print('orderBillSendNew');
+          }else{
+
+            checkOrderTemps = await databaseHelper.getOrderTempsCheck(orderBillTempsAll[indexOrderBillTemps].orderBillCode, orderBillTempsAll[indexOrderBillTemps].orderBillSentStatus);
+
+            if(checkOrderTemps.isEmpty){
+
+              Map orderTempsUp = {
+                'code': orderBillTempsAll[indexOrderBillTemps].orderBillCode,
+                'status': orderBillTempsAll[indexOrderBillTemps].orderBillSentStatus,
+              };
+
+              await databaseHelper.updateOrderTemps(orderTempsUp);
+
+
+              setupNotification(indexOrderBillTemps, orderBillTempsAll[indexOrderBillTemps].orderBillCode, orderBillTempsAll[indexOrderBillTemps].orderBillSentStatus);
+
+
+              print('orderBillSendUpdate');
+            }else{
+              print('orderBillStatusSame');
+            }
+
+          }
+
+          indexOrderBillTemps++;
 
         });
 
         print(orderBillTempsAll);
 
-        Future.delayed(Duration(seconds: 10), () async{
-          loopSendOrderBillNotification();
-        });
+        //Future.delayed(Duration(seconds: 10), () async{
+          //loopSendOrderBillNotification();
+        //});
         //return orderBillTempsAll;
 
       });
@@ -477,7 +614,7 @@ class _HomeState extends State<Home> {
     print('check');
   }
 
-  loopSendOrderBillNotification() async{
+  /*loopSendOrderBillNotification() async{
 
     var checkCodeOrderTemps;
     var checkOrderTemps;
@@ -527,7 +664,7 @@ class _HomeState extends State<Home> {
       //});
 
     }
-  }
+  }*/
 
   void setupNotificationPlugin(){
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
@@ -951,6 +1088,15 @@ class _HomeState extends State<Home> {
   showToastAddFast(){
     Fluttertoast.showToast(
         msg: "เพิ่มรายการแล้ว",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3
+    );
+  }
+
+  showToastVal(textVal){
+    Fluttertoast.showToast(
+        msg: textVal,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3
