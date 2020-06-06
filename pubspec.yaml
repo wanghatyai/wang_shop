@@ -7,7 +7,7 @@ description: A new Flutter application for wang
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 2.0.0+85
+version: 2.0.0+86
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -34,7 +34,7 @@ dependencies:
   url_launcher: ^5.4.10
   firebase_messaging: ^6.0.16
   carousel_pro: ^1.0.0
-  flutter_local_notifications: ^1.4.4
+  flutter_local_notifications: ^1.4.4+1
   background_fetch: ^0.5.6
   in_app_update: ^1.1.11
   flutter_bloc: ^4.0.0
