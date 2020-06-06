@@ -7,7 +7,7 @@ description: A new Flutter application for wang
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 2.0.0+80
+version: 2.0.0+85
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -19,25 +19,25 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
-  http: ^0.12.0+4
-  shared_preferences: ^0.5.6+3
-  sqflite: ^1.3.0
-  path_provider: ^1.6.5
+  http: ^0.12.1
+  shared_preferences: ^0.5.7+3
+  sqflite: ^1.3.0+2
+  path_provider: ^1.6.10
   fluttertoast: ^4.0.1
   autocomplete_textfield: ^1.7.3
   intl: ^0.16.1
-  flutter_launcher_icons: ^0.7.4
+  flutter_launcher_icons: ^0.7.5
   #barcode_scan: ^3.0.0
   flutter_barcode_scanner: ^0.1.7
-  soundpool: ^1.0.1
+  soundpool: ^1.1.1
   photo_view: ^0.9.2
-  url_launcher: ^5.4.2
-  firebase_messaging: ^6.0.13
+  url_launcher: ^5.4.10
+  firebase_messaging: ^6.0.16
   carousel_pro: ^1.0.0
-  flutter_local_notifications: ^1.4.1
-  background_fetch: ^0.5.5
-  in_app_update: ^1.1.7
-  flutter_bloc: ^3.2.0
+  flutter_local_notifications: ^1.4.4
+  background_fetch: ^0.5.6
+  in_app_update: ^1.1.11
+  flutter_bloc: ^4.0.0
 
 
 dev_dependencies:
