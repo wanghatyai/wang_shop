@@ -372,8 +372,8 @@ class _MemberPageState extends State<MemberPage> {
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Row(
+                        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        child: Column(
                           children: <Widget>[
                             Icon(Icons.account_circle, size: 60, color: Colors.white,),
                             Text('${memberAll[0].memberName}', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),
