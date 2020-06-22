@@ -14,6 +14,8 @@ import 'package:wang_shop/order_bill_temps_model.dart';
 
 import 'package:wang_shop/order_bill_check_status.dart';
 
+import 'package:package_info/package_info.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
@@ -39,6 +41,19 @@ class _MemberPageState extends State<MemberPage> {
 
   //Timer timerLoopCheck;
   //var orderBillStatusText;
+
+  String appName;
+  String packageName;
+  String version;
+  String buildNumber;
+
+  getInfoApp() async{
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    appName = packageInfo.appName;
+    packageName = packageInfo.packageName;
+    version = packageInfo.version;
+    buildNumber = packageInfo.buildNumber;
+  }
 
   getUser() async{
 
@@ -166,6 +181,7 @@ class _MemberPageState extends State<MemberPage> {
     // TODO: implement initState
     super.initState();
     getUser();
+    getInfoApp();
     //setupNotificationPlugin();
     //getOrderBillTemps();
 
@@ -545,6 +561,7 @@ class _MemberPageState extends State<MemberPage> {
                           //addToOrder();
                         },
                       ),
+                      Text('Version App:$version'),
                     ],
                   ),
                 )
