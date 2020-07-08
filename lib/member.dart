@@ -12,6 +12,10 @@ import 'package:wang_shop/order_bill_status.dart';
 import 'package:wang_shop/order_bill_temps_model.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:wang_shop/order_bill_check_status.dart';
+
+import 'package:package_info/package_info.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
@@ -37,6 +41,19 @@ class _MemberPageState extends State<MemberPage> {
 
   //Timer timerLoopCheck;
   //var orderBillStatusText;
+
+  String appName;
+  String packageName;
+  String version;
+  String buildNumber;
+
+  getInfoApp() async{
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    appName = packageInfo.appName;
+    packageName = packageInfo.packageName;
+    version = packageInfo.version;
+    buildNumber = packageInfo.buildNumber;
+  }
 
   getUser() async{
 
@@ -164,6 +181,7 @@ class _MemberPageState extends State<MemberPage> {
     // TODO: implement initState
     super.initState();
     getUser();
+    getInfoApp();
     //setupNotificationPlugin();
     //getOrderBillTemps();
 
@@ -370,8 +388,8 @@ class _MemberPageState extends State<MemberPage> {
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Row(
+                        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        child: Column(
                           children: <Widget>[
                             Icon(Icons.account_circle, size: 60, color: Colors.white,),
                             Text('${memberAll[0].memberName}', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),
@@ -398,30 +416,62 @@ class _MemberPageState extends State<MemberPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.beenhere, size: 40, color: Colors.grey,),
-                                Text('ยืนยันรายการ')
-                              ],
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:2)),
+                                );
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.beenhere, size: 40, color: Colors.grey,),
+                                  Text('ยืนยันรายการ')
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.check_circle, size: 40, color: Colors.grey,),
-                                Text('เตรียมจัดส่ง')
-                              ],
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:4)),
+                                );
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.check_circle, size: 40, color: Colors.grey,),
+                                  Text('เตรียมจัดส่ง')
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.local_shipping, size: 40, color: Colors.grey,),
-                                Text('ระหว่างขนส่ง')
-                              ],
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:6)),
+                                );
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.local_shipping, size: 40, color: Colors.grey,),
+                                  Text('ระหว่างขนส่ง')
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.add_comment, size: 40, color: Colors.grey,),
-                                Text('รับสินค้าแล้ว')
-                              ],
-                            )
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillCheckStatusPage(statusVal:7)),
+                                );
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.add_comment, size: 40, color: Colors.grey,),
+                                  Text('รับสินค้าแล้ว')
+                                ],
+                              )
+                            ),
                           ],
                         ),
                       ),
@@ -511,6 +561,7 @@ class _MemberPageState extends State<MemberPage> {
                           //addToOrder();
                         },
                       ),
+                      Text('Version App:$version'),
                     ],
                   ),
                 )

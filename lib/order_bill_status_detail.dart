@@ -47,6 +47,8 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
   var priceNowAll = [];
 
+  var orderBillUnitNow;
+
   getOrderBillDetail() async{
 
     var resUser = await databaseHelper.getList();
@@ -57,6 +59,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
     var priceNow;
     var orderBillType;
     var orderBillProductSelectQty;
+
 
     final res = await http.get('https://wangpharma.com/API/orderBill.php?act=$act&orderID=${widget.orderID.orderBillMainId}');
     //print('https://wangpharma.com/API/orderBill.php?act=$act&orderID=${widget.orderID.orderBillMainId}');
@@ -103,6 +106,8 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
             priceNowAll.add(priceNow);
             //print('----$priceNow');
 
+            orderBillUnitNow = orderBillDetailAll[index].orderBillProductUnit1;
+
           }
 
           if(orderBillType == 2){
@@ -113,6 +118,8 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
             priceNowAll.add(priceNow);
             //print('----$priceNow');
 
+            orderBillUnitNow = orderBillDetailAll[index].orderBillProductUnit2;
+
           }
 
           if(orderBillType == 3){
@@ -122,6 +129,8 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
             priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty1);
             priceNowAll.add(priceNow);
             //print('----$priceNow');
+
+            orderBillUnitNow = orderBillDetailAll[index].orderBillProductUnit3;
 
           }
 
@@ -153,7 +162,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
         msg: "เพิ่มรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 
@@ -245,7 +254,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text('${orderBillDetailAll[index].orderBillProductCode}'),
-                              Text('จำนวน ${orderBillDetailAll[index].orderBillProductSelectQty} : ${orderBillDetailAll[index].orderBillProductUnit1}',
+                              Text('จำนวน ${orderBillDetailAll[index].orderBillProductSelectQty} : $orderBillUnitNow',
                                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
                               Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
                             ],

@@ -91,7 +91,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
         msg: "เพิ่มรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 
@@ -491,7 +491,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: "จำนวน",
+                          hintText: (widget.product.productProStatus == '2') ? widget.product.productProLimit : "1",
                           contentPadding: EdgeInsets.all(4),
                         ),
                         keyboardType: TextInputType.number,

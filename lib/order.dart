@@ -159,7 +159,7 @@ class _OrderPageState extends State<OrderPage> {
         msg: "ลบรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 
@@ -293,7 +293,13 @@ class _OrderPageState extends State<OrderPage> {
           Divider(
             color: Colors.black,
           ),
+          SizedBox(
+            height: 30,
+          ),
           PayDialogPage(),
+          SizedBox(
+            height: 30,
+          ),
           Padding(
             padding: EdgeInsets.all(10),
           ),
@@ -452,7 +458,7 @@ class _OrderPageState extends State<OrderPage> {
         msg: "เพิ่มรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
     );
   }
 

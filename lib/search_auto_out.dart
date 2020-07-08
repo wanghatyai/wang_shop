@@ -11,7 +11,9 @@ import 'package:wang_shop/product_detail.dart';
 import 'package:wang_shop/order.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+//import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:soundpool/soundpool.dart';
 import 'package:flutter/services.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
@@ -37,13 +39,52 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
   bool isLoading = true;
 
   var loading = false;
-  String barcode;
+  //String barcode;
+
+  //Sound scan barcode
+  Future<int> _soundId;
+  Soundpool _soundpool = Soundpool();
+
+  Future<int> _loadSound() async {
+    var asset = await rootBundle.load("assets/sounds/beep.mp3");
+    return await _soundpool.load(asset);
+  }
+
+  Future<void> _playSound() async {
+    var _alarmSound = await _soundId;
+    await _soundpool.play(_alarmSound);
+  }
 
   scanBarcode() async {
+    FlutterBarcodeScanner.getBarcodeStreamReceiver("#ff6666", "Cancel", true, ScanMode.DEFAULT)
+        .listen((barcode) {
+          if(barcode != '-1'){
+
+            /// barcode to be used
+            print('barcode val $barcode');
+            searchProduct(barcode);
+            Future.delayed(Duration(seconds: 1), () {
+              print(_product[0]);
+              addToOrderFast(_product[0]);
+            });
+
+            //playBeepSound();
+            _playSound();
+
+            //SystemSound.play(SystemSoundType.click);
+            //scanBarcode();
+          }else{
+            showToastVal('ไม่พบสินค้า');
+          }
+    });
+
+  }
+
+  /*scanBarcode() async {
     try {
-      String barcode = await BarcodeScanner.scan();
+      var barcode = await BarcodeScanner.scan();
       setState((){
-        this.barcode = barcode;
+        this.barcode = barcode.toString();
         searchProduct(this.barcode);
 
         Future.delayed(Duration(seconds: 2), () {
@@ -56,7 +97,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
         scanBarcode();
       });
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         _showAlertBarcode();
         print('Camera permission was denied');
       } else {
@@ -67,7 +108,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
     } catch (e) {
       print('Unknown error.');
     }
-  }
+  }*/
 
   void _showAlertBarcode() async {
     return showDialog<void>(
@@ -172,7 +213,16 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
         msg: "เพิ่มรายการแล้ว",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 3
+        timeInSecForIosWeb: 3
+    );
+  }
+
+  showToastVal(textVal){
+    Fluttertoast.showToast(
+        msg: textVal,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3
     );
   }
 
