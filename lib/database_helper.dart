@@ -1,8 +1,8 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io' as io;
+//import 'package:path_provider/path_provider.dart';
+//import 'dart:io' as io;
 import 'package:synchronized/synchronized.dart';
 
 class DatabaseHelper {
@@ -97,9 +97,10 @@ class DatabaseHelper {
 
   Future<Database> getDb() async {
     if (_db == null) {
-      io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      //io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      var documentDirectory = await getDatabasesPath();
 
-      String path = join(documentDirectory.path, 'members.db');
+      String path = join(documentDirectory, 'members.db');
 
       print(path);
 
@@ -115,9 +116,10 @@ class DatabaseHelper {
 
   Future<Database> getDbOrder() async {
     if (_db == null) {
-      io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      //io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      var documentDirectory = await getDatabasesPath();
 
-      String path = join(documentDirectory.path, 'orders.db');
+      String path = join(documentDirectory, 'orders.db');
 
       print(path);
 
@@ -133,9 +135,10 @@ class DatabaseHelper {
 
   Future<Database> getDbOrderFree() async {
     if (_db == null) {
-      io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      //io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      var documentDirectory = await getDatabasesPath();
 
-      String path = join(documentDirectory.path, 'ordersfree.db');
+      String path = join(documentDirectory, 'ordersfree.db');
 
       print(path);
 
@@ -151,9 +154,10 @@ class DatabaseHelper {
 
   Future<Database> getDbShipAndPay() async {
     if (_db == null) {
-      io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      //io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      var documentDirectory = await getDatabasesPath();
 
-      String path = join(documentDirectory.path, 'shipandpay.db');
+      String path = join(documentDirectory, 'shipandpay.db');
 
       print(path);
 
@@ -169,9 +173,10 @@ class DatabaseHelper {
 
   Future<Database> getDbOrderTemps() async {
     if (_db == null) {
-      io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      //io.Directory documentDirectory = await getApplicationDocumentsDirectory();
+      var documentDirectory = await getDatabasesPath();
 
-      String path = join(documentDirectory.path, 'orderTemps.db');
+      String path = join(documentDirectory, 'orderTemps.db');
 
       print(path);
 
