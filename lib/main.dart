@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wang_shop/home.dart';
 import 'package:http/http.dart' as http;
-//import 'dart:io';
-//import 'dart:async';
+import 'dart:io';
+import 'dart:async';
 import 'dart:convert';
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wang_shop/database_helper.dart';
 
 import 'package:wang_shop/order.dart';
