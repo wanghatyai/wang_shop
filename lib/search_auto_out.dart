@@ -13,7 +13,7 @@ import 'package:wang_shop/order.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:soundpool/soundpool.dart';
+//import 'package:soundpool/soundpool.dart';
 import 'package:flutter/services.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
@@ -42,18 +42,18 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
   //String barcode;
 
   //Sound scan barcode
-  Future<int> _soundId;
-  Soundpool _soundpool = Soundpool();
+  //Future<int> _soundId;
+  //Soundpool _soundpool = Soundpool();
 
-  Future<int> _loadSound() async {
+  /*Future<int> _loadSound() async {
     var asset = await rootBundle.load("assets/sounds/beep.mp3");
     return await _soundpool.load(asset);
-  }
+  }*/
 
-  Future<void> _playSound() async {
+  /*Future<void> _playSound() async {
     var _alarmSound = await _soundId;
     await _soundpool.play(_alarmSound);
-  }
+  }*/
 
   scanBarcode() async {
     FlutterBarcodeScanner.getBarcodeStreamReceiver("#ff6666", "Cancel", true, ScanMode.DEFAULT)
@@ -69,7 +69,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
             });
 
             //playBeepSound();
-            _playSound();
+            //_playSound();
 
             //SystemSound.play(SystemSoundType.click);
             //scanBarcode();
