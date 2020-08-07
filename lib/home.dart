@@ -43,7 +43,7 @@ import 'package:background_fetch/background_fetch.dart';
 
 //import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:soundpool/soundpool.dart';
+//import 'package:soundpool/soundpool.dart';
 import 'package:flutter/services.dart';
 
 import 'package:in_app_update/in_app_update.dart';
@@ -107,8 +107,8 @@ class _HomeState extends State<Home> {
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   //Sound scan barcode
-  Future<int> _soundId;
-  Soundpool _soundpool = Soundpool();
+  //Future<int> _soundId;
+  //Soundpool _soundpool = Soundpool();
 
   testPrint(){
     print('testestttttt');
@@ -219,15 +219,15 @@ class _HomeState extends State<Home> {
     int streamId = await pool.play(soundId);
   }*/
 
-  Future<int> _loadSound() async {
+  /*Future<int> _loadSound() async {
     var asset = await rootBundle.load("assets/sounds/beep.mp3");
     return await _soundpool.load(asset);
-  }
+  }*/
 
-  Future<void> _playSound() async {
+  /*Future<void> _playSound() async {
     var _alarmSound = await _soundId;
     await _soundpool.play(_alarmSound);
-  }
+  }*/
 
   scanBarcode() async {
     FlutterBarcodeScanner.getBarcodeStreamReceiver("#ff6666", "Cancel", true, ScanMode.DEFAULT)
@@ -244,7 +244,7 @@ class _HomeState extends State<Home> {
             });
 
             //playBeepSound();
-            _playSound();
+            //_playSound();
 
             //SystemSound.play(SystemSoundType.click);
             //scanBarcode();
@@ -382,7 +382,7 @@ class _HomeState extends State<Home> {
     setupNotif();
     initializeDateFormatting();
 
-    _soundId = _loadSound();
+    //_soundId = _loadSound();
 
     dateFormat = new DateFormat.yMMMMd('th');
     //timeFormat = new DateFormat.Hms('cs');
