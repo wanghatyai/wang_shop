@@ -184,6 +184,12 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     getTransportation();
   }
 
+  Future<bool> _onWillPop() async {
+    await databaseHelper.removeAllOrderFree();
+    Navigator.pop(context);
+    print('testBack');
+  }
+
   getFreeProductSelect(){
     return showDialog(context: context, builder: (context) {
       return SimpleDialog(
@@ -431,136 +437,139 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     blocCountOrder = BlocProvider.of(context);
 
     if(freeLimit.toInt() >= 30){
-      return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        appBar: AppBar(
-          title: Text('สรุปรายการสั่งจอง'),
-          actions: <Widget>[
-            /*IconButton(
+      return WillPopScope(
+        child: Scaffold(
+          resizeToAvoidBottomPadding: false,
+          appBar: AppBar(
+            title: Text('สรุปรายการสั่งจอง'),
+            actions: <Widget>[
+              /*IconButton(
                 icon: Icon(Icons.list,size: 40,),
                 onPressed: (){
 
                 }
             )*/
-          ],
-        ),
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
-              ),
-              Row(
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton(
-                    onPressed: (){
-                      getFreeProductSelect();
-                    },
-                    textColor: Colors.white,
-                    color: Colors.purple,
-                    padding: const EdgeInsets.all(5.0),
-                    child: new Text(
-                      "เลือกสินค้าแถม",
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(3),
-                  ),
-                  RaisedButton(
-                    onPressed: (){
-                      viewFreeProductSelect();
-                    },
-                    textColor: Colors.white,
-                    color: Colors.blue,
-                    padding: const EdgeInsets.all(5.0),
-                    child: new Text(
-                      "ดูสินค้าแถมที่เลือก",
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                  ),
-                  RaisedButton(
-                    onPressed: (){
-                        _confirmCheckFreeShowAlert();
-                    },
-                    textColor: Colors.white,
-                    color: Colors.green,
-                    padding: const EdgeInsets.all(5.0),
-                    child: new Text(
-                      "ยืนยันการสั่งจอง",
-                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
-                    ),
-                  ),
-                ],
-              ),
-              Center(
-                child: Text('คุณมี แต้มสมนาคุณ ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 18, color: Colors.purple)),
-              ),
-              (transportationDetail.isNotEmpty)
-                  ? Container(
-                      color: Colors.red,
-                      child: Center(
-                        child: Text('วันที่จัดส่งสินค้า ${DateFormat("dd/MM/yyyy").format(DateFormat('yyyy-MM-dd').parse(transportationDetail['Start_In_calendar']))} เวลาเดินทาง ${transportationDetail['Time_Out']}',
-                          style: TextStyle(fontSize: 16, color: Colors.white), ),
-                      ),
-                    )
-                  : Container(),
-              Divider(
-                color: Colors.black,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  //separatorBuilder: (context, index) => Divider(
-                  //color: Colors.black,
-                  //),
-                  itemBuilder: (context, int index){
-                    return ListTile(
-                      contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                      leading: Stack(
-                        children: <Widget>[
-                          Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                          (orders[index]['proStatus'] == 2)?
-                          Container(
-                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                            width: 30,
-                            height: 20,
-                            color: Colors.red,
-                            child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                          ) : Container(
-                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                            width: 30,
-                            height: 20,
-                          )
-                        ],
-                      ),
-                      title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('${orders[index]['code']}'),
-                          Text('จำนวนที่สั่ง ${orders[index]['amount']} : ${orders[index]['unit']}',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
-                          Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
-                        ],
-                      ),
-                      trailing: Column(
-                        children: <Widget>[
-                          Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
-                        ],
-                      ),
-                    );
-                  },
-                  itemCount: orders != null ? orders.length : 0,
-                ),
-              ),
             ],
           ),
+          body: Container(
+            child: Column(
+              children: <Widget>[
+                Center(
+                  child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
+                ),
+                Row(
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: (){
+                        getFreeProductSelect();
+                      },
+                      textColor: Colors.white,
+                      color: Colors.purple,
+                      padding: const EdgeInsets.all(5.0),
+                      child: new Text(
+                          "เลือกสินค้าแถม",
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(3),
+                    ),
+                    RaisedButton(
+                      onPressed: (){
+                        viewFreeProductSelect();
+                      },
+                      textColor: Colors.white,
+                      color: Colors.blue,
+                      padding: const EdgeInsets.all(5.0),
+                      child: new Text(
+                          "ดูสินค้าแถมที่เลือก",
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                    ),
+                    RaisedButton(
+                      onPressed: (){
+                        _confirmCheckFreeShowAlert();
+                      },
+                      textColor: Colors.white,
+                      color: Colors.green,
+                      padding: const EdgeInsets.all(5.0),
+                      child: new Text(
+                          "ยืนยันการสั่งจอง",
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
+                      ),
+                    ),
+                  ],
+                ),
+                Center(
+                  child: Text('คุณมี แต้มสมนาคุณ ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 18, color: Colors.purple)),
+                ),
+                (transportationDetail.isNotEmpty)
+                    ? Container(
+                  color: Colors.red,
+                  child: Center(
+                    child: Text('วันที่จัดส่งสินค้า ${DateFormat("dd/MM/yyyy").format(DateFormat('yyyy-MM-dd').parse(transportationDetail['Start_In_calendar']))} เวลาเดินทาง ${transportationDetail['Time_Out']}',
+                      style: TextStyle(fontSize: 16, color: Colors.white), ),
+                  ),
+                )
+                    : Container(),
+                Divider(
+                  color: Colors.black,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    //separatorBuilder: (context, index) => Divider(
+                    //color: Colors.black,
+                    //),
+                    itemBuilder: (context, int index){
+                      return ListTile(
+                        contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                        leading: Stack(
+                          children: <Widget>[
+                            Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                            (orders[index]['proStatus'] == 2)?
+                            Container(
+                              padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                              width: 30,
+                              height: 20,
+                              color: Colors.red,
+                              child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                            ) : Container(
+                              padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                              width: 30,
+                              height: 20,
+                            )
+                          ],
+                        ),
+                        title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('${orders[index]['code']}'),
+                            Text('จำนวนที่สั่ง ${orders[index]['amount']} : ${orders[index]['unit']}',
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
+                            Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
+                          ],
+                        ),
+                        trailing: Column(
+                          children: <Widget>[
+                            Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                          ],
+                        ),
+                      );
+                    },
+                    itemCount: orders != null ? orders.length : 0,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
+        onWillPop: _onWillPop,
       );
     }else{
       return Scaffold(
