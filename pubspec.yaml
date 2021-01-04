@@ -40,14 +40,19 @@ dependencies:
   flutter_barcode_scanner: ^1.0.1
   #soundpool: ^1.1.1
   photo_view: ^0.9.2
-  url_launcher: ^5.5.0
+  url_launcher: ^5.7.10
   firebase_messaging: ^6.0.16
   carousel_pro: ^1.0.0
   flutter_local_notifications: ^1.4.4+4
   background_fetch: ^0.6.0
   in_app_update: ^1.1.11
   flutter_bloc: ^6.0.1
-  package_info: ^0.4.3
+  package_info: ^0.4.3+2
+
+  webfeed: ^0.6.0
+  cached_network_image: ^2.5.0
+
+
 
 dev_dependencies:
   flutter_test:
