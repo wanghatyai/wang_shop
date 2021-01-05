@@ -34,7 +34,7 @@ class _NewsPageState extends State<NewsPage> {
 
   GlobalKey<RefreshIndicatorState> _refreshKey;
   RssFeed _feed;
-  static const String FEED_URL = 'https://news.google.com/rss?hl=th&gl=TH&ceid=TH:th';
+  static const String FEED_URL = 'https://news.google.com/rss/topics/CAAqIQgKIhtDQkFTRGdvSUwyMHZNR3QwTlRFU0FuUm9LQUFQAQ?hl=th&gl=TH&ceid=TH:th';
 
   Future<RssFeed> loadFeed() async {
     try{
