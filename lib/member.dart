@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:wang_shop/database_helper.dart';
 import 'package:wang_shop/home.dart';
@@ -46,6 +47,24 @@ class _MemberPageState extends State<MemberPage> {
   String packageName;
   String version;
   String buildNumber;
+
+  _launchURL() async {
+    const urlHelp = "https://www.youtube.com/watch?v=5S_HSAEfKic";
+    if (await canLaunch(urlHelp)) {
+      await launch(urlHelp);
+    } else {
+      throw 'Could not launch $urlHelp';
+    }
+  }
+
+  _urlSupportApp() async {
+    const urlHelp = "https://line.me/R/ti/g/HvYpu6C7ka";
+    if (await canLaunch(urlHelp)) {
+      await launch(urlHelp);
+    } else {
+      throw 'Could not launch $urlHelp';
+    }
+  }
 
   getInfoApp() async{
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -507,17 +526,27 @@ class _MemberPageState extends State<MemberPage> {
                                 Text('สินค้าสั่งประจำ')
                               ],
                             ),
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.comment, size: 40, color: Colors.grey,),
-                                Text('ข้อเสนอแนะ')
-                              ],
+                            InkWell(
+                              onTap: (){
+                                _urlSupportApp();
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.comment, size: 40, color: Colors.grey,),
+                                  Text('ข้อเสนอแนะ')
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.help, size: 40, color: Colors.grey,),
-                                Text('คู่มือการใช้งาน')
-                              ],
+                            InkWell(
+                              onTap: (){
+                                _launchURL();
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.help, size: 40, color: Colors.grey,),
+                                  Text('คู่มือการใช้งาน')
+                                ],
+                              ),
                             )
                           ],
                         ),
