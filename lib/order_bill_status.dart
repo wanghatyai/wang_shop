@@ -20,7 +20,7 @@ class OrderBillStatusPage extends StatefulWidget {
 
 class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -37,7 +37,7 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
   DateTime _date = DateTime.now();
 
   selectDate()async{
-    DateTime picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
         context: context,
         initialDate: _date,
         firstDate: DateTime(2000),
@@ -60,7 +60,8 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
     var userID = resUser[0]['idUser'];
     userName = resUser[0]['name'];
 
-    final res = await http.get('https://wangpharma.com/API/orderBill.php?PerPage=$perPage&act=$act&userID=$userID');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/orderBill.php', {'PerPage': perPage.toString(), 'act': 'All', 'userID': userID}));
+
 
     if(res.statusCode == 200){
 
@@ -75,9 +76,10 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
         print(orderBillAll);
         print(orderBillAll.length);
 
-        return orderBillAll;
 
       });
+
+      return orderBillAll;
 
     }else{
       throw Exception('Failed load Json');
@@ -92,8 +94,7 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
     var userID = resUser[0]['idUser'];
     userName = resUser[0]['name'];
 
-    final res = await http.get('https://wangpharma.com/API/orderBill.php?PerPage=$perPage&act=AllByDate&userID=$userID&DateSelect=$dateSelect');
-    //print('https://wangpharma.com/API/orderBill.php?PerPage=$perPage&act=AllByDate&userID=$userID&DateSelect=$dateSelect');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/orderBill.php', {'PerPage': perPage.toString(), 'act': 'AllByDate', 'DateSelect': dateSelect, 'userID': userID}));
 
     if(res.statusCode == 200){
 
@@ -108,9 +109,9 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
         print(orderBillAll);
         print(orderBillAll.length);
 
-        return orderBillAll;
-
       });
+
+      return orderBillAll;
 
     }else{
       throw Exception('Failed load Json');
@@ -166,8 +167,8 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
                         minHeight: 20,
                       ),
                       child: StreamBuilder(
-                        initialData: blocCountOrder.countOrder,
-                        stream: blocCountOrder.counterStream,
+                        initialData: blocCountOrder!.countOrder,
+                        stream: blocCountOrder!.counterStream,
                         builder: (BuildContext context, snapshot) => Text(
                           '${snapshot.data}',
                           style: TextStyle(
@@ -234,7 +235,7 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
                             Text('วันที่สั่ง ${orderBillAll[index].orderBillDate} : ${orderBillAll[index].orderBillTime}'),
                             orderBillAll[index].orderBillStatus == null
                                 ? Text("สถานะ")
-                                : Text('สถานะ ${statusOrderBill[int.parse(orderBillAll[index].orderBillStatus)]}', style: TextStyle(color: Colors.blue)),
+                                : Text('สถานะ ${statusOrderBill[int.parse(orderBillAll[index].orderBillStatus!)]}', style: TextStyle(color: Colors.blue)),
                             Text('วันที่ดำเนินการ ${orderBillAll[index].orderBillDateST} : ${orderBillAll[index].orderBillTimeST}', style: TextStyle(color: Colors.red)),
                           ],
                         ),

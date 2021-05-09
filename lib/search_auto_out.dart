@@ -26,7 +26,7 @@ class searchAutoOutPage extends StatefulWidget {
 
 class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -125,7 +125,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
   getProductTop() async{
 
-    final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=Top');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'PerPage': perPage.toString(), 'act':'Top'}));
 
     if(res.statusCode == 200){
 
@@ -140,9 +140,9 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
         print(productTop);
         print(productTop.length);
 
-        return productTop;
-
       });
+
+      return productTop;
 
     }else{
       throw Exception('Failed load Json');
@@ -158,7 +158,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
     //productAll = [];
 
-    final res = await http.get('https://wangpharma.com/API/product.php?SearchVal=$searchVal&act=Search');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'SearchVal': searchVal, 'act':'Search'}));
 
     if(res.statusCode == 200){
 
@@ -179,9 +179,10 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
           print(product['nproductMain']);
         });*/
         print(_product);
-        return _product;
 
       });
+
+      return _product;
 
     }else{
       throw Exception('Failed load Json');
@@ -202,7 +203,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
     searchProduct(text);
     
     _product.forEach((f){
-      if(f.productName.contains(text)) _search.add(f);
+      if(f.productName!.contains(text)) _search.add(f);
     });
 
     setState(() {});
@@ -261,8 +262,8 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                         minHeight: 20,
                       ),
                       child: StreamBuilder(
-                        initialData: blocCountOrder.countOrder,
-                        stream: blocCountOrder.counterStream,
+                        initialData: blocCountOrder!.countOrder,
+                        stream: blocCountOrder!.counterStream,
                         builder: (BuildContext context, snapshot) => Text(
                           '${snapshot.data}',
                           style: TextStyle(
@@ -281,7 +282,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
               })
         ],
       ),
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: CustomScrollView(
         slivers: <Widget>[
           SliverPersistentHeader(
@@ -331,46 +332,57 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                itemCount: _product.length,
                itemBuilder: (context, i){
                  final a = _product[i];
-                 return ListTile(
-                   contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
-                   onTap: (){
-                     Navigator.push(
-                         context,
-                         MaterialPageRoute(builder: (context) => productDetailPage(product: a)));
-                   },
-                   leading: Stack(
-                     children: <Widget>[
-                       Image.network('https://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                       (a.productProStatus == '2')?
-                       Container(
-                         padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                         width: 30,
-                         height: 20,
-                         color: Colors.red,
-                         child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                       ) : Container(
-                         padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                         width: 30,
-                         height: 20,
-                       )
-                     ],
-                   ),
-                   title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                   subtitle: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: <Widget>[
-                       Text('${a.productCode}'),
-                       Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
-                       (a.productProLimit != "" && a.productProStatus == '2')
-                           ? Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red))
-                           : Text(''),
-                     ],
-                   ),
-                   trailing: IconButton(
-                       icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
-                       onPressed: (){
-                         addToOrderFast(a);
-                       }
+                 return Card(
+                   elevation: 8.0,
+                   margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
+                   child: ListTile(
+                     contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
+                     onTap: (){
+                       Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => productDetailPage(product: a)));
+                     },
+                     leading: Stack(
+                       children: <Widget>[
+                         Image.network('https://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
+                         (a.productProStatus == '2')?
+                         Container(
+                           padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                           width: 30,
+                           height: 20,
+                           color: Colors.red,
+                           child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                         ) : Container(
+                           padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                           width: 30,
+                           height: 20,
+                         )
+                       ],
+                     ),
+                     title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                     subtitle: Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: <Widget>[
+                         Text('${a.productCode}'),
+                         Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                         (a.productProLimit != "" && a.productProStatus == '2')
+                             ? Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red))
+                             : Text(''),
+                       ],
+                     ),
+                     trailing: (a.productSize != "ไม่มี")
+                     ? IconButton(
+                         icon: Icon(Icons.add_circle, color: Colors.deepOrange, size: 40,),
+                         onPressed: (){
+                           addToOrderFast(a);
+                         }
+                      )
+                     : IconButton(
+                         icon: Icon(Icons.close, color: Colors.red, size: 40,),
+                         onPressed: (){
+
+                         }
+                      ),
                    ),
                  );
                },
@@ -378,63 +390,69 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
              SizedBox(
                height: 100,
              ),
-             Divider(
-               color: Colors.black,
-             ),
-             Center(
-               child: Text('*** 10 อันดับสินค้าขายดีประจำเดือน ***', style: TextStyle(fontSize: 18, color: Colors.deepOrange, fontWeight: FontWeight.bold,) ),
-             ),
-             Divider(
-               color: Colors.black,
+             Container(
+               color: Colors.red,
+               child: Text('*** 10 อันดับสินค้าขายดีประจำเดือน ***', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold,) ),
              ),
              ListView.builder(
                shrinkWrap: true,
                physics: ClampingScrollPhysics(),
                //controller: _scrollController,
                itemBuilder: (context, int index){
-                 return ListTile(
-                   contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
-                   onTap: (){
-                     Navigator.push(
-                         context,
-                         MaterialPageRoute(builder: (context) => productDetailPage(product: productTop[index])));
-                   },
-                   leading: Stack(
-                     children: <Widget>[
-                       Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
-                       (productTop[index].productProStatus == '2')?
-                       Container(
-                         padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                         width: 30,
-                         height: 20,
-                         color: Colors.red,
-                         child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                       ) : Container(
-                         padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                         width: 30,
-                         height: 20,
-                       )
-                     ],
-                   ),
-                   title: Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                   subtitle: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: <Widget>[
-                       Text('${productTop[index].productCode}'),
-                       Text('${productTop[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
-                       (productTop[index].productProLimit != "" && productTop[index].productProStatus == '2')
-                           ? Text('สั่งขั้นต่ำ ${productTop[index].productProLimit} : ${productTop[index].productUnit1}', style: TextStyle(color: Colors.red))
-                           : Text(''),
-                     ],
-                   ),
-                   trailing: IconButton(
-                       icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
-                       onPressed: (){
-                         //setState(() {
-                         addToOrderFast(productTop[index]);
-                         //getOrderAll();
-                         //});
-                       }
+                 return Card(
+                   elevation: 8.0,
+                   margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
+                   child: ListTile(
+                     contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
+                     onTap: (){
+                       Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => productDetailPage(product: productTop[index])));
+                     },
+                     leading: Stack(
+                       children: <Widget>[
+                         Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
+                         (productTop[index].productProStatus == '2')?
+                         Container(
+                           padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                           width: 30,
+                           height: 20,
+                           color: Colors.red,
+                           child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                         ) : Container(
+                           padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                           width: 30,
+                           height: 20,
+                         )
+                       ],
+                     ),
+                     title: Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                     subtitle: Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: <Widget>[
+                         Text('${productTop[index].productCode}'),
+                         Text('${productTop[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                         (productTop[index].productProLimit != "" && productTop[index].productProStatus == '2')
+                             ? Text('สั่งขั้นต่ำ ${productTop[index].productProLimit} : ${productTop[index].productUnit1}', style: TextStyle(color: Colors.red))
+                             : Text(''),
+                       ],
+                     ),
+                     trailing: (productTop[index].productSize != "ไม่มี")
+                     ? IconButton(
+                         icon: Icon(Icons.add_circle, color: Colors.deepOrange, size: 40,),
+                         onPressed: (){
+                           //setState(() {
+                           addToOrderFast(productTop[index]);
+                           //getOrderAll();
+                           //});
+                         }
+                      )
+                    : IconButton(
+                         icon: Icon(Icons.close, color: Colors.red, size: 40,),
+                         onPressed: (){
+
+                         }
+                      ),
                    ),
                  );
                },
@@ -517,7 +535,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }else{
 
@@ -535,7 +553,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }
 
@@ -546,23 +564,23 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  final PreferredSize child;
+  final PreferredSize? child;
 
   _SliverAppBarDelegate({ this.child });
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     // TODO: implement build
-    return child;
+    return child!;
   }
 
   @override
   // TODO: implement maxExtent
-  double get maxExtent => child.preferredSize.height;
+  double get maxExtent => child!.preferredSize.height;
 
   @override
   // TODO: implement minExtent
-  double get minExtent => child.preferredSize.height;
+  double get minExtent => child!.preferredSize.height;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {

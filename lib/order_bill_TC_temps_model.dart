@@ -1,15 +1,15 @@
 class OrderBillTCTemps{
-  final String orderBillTCID;
-  final String orderBillTCCode;
-  final String orderBillTCCus;
-  final String orderBillTCPpic;
-  final String orderBillTCPcode;
-  final String orderBillTCPname;
-  final String orderBillTCPq;
-  final String orderBillTCPunit;
-  final String orderBillTCPprice;
-  final String orderBillTCPsumPrice;
-  final String orderBillTCDateAdd;
+  final String? orderBillTCID;
+  final String? orderBillTCCode;
+  final String? orderBillTCCus;
+  final String? orderBillTCPpic;
+  final String? orderBillTCPcode;
+  final String? orderBillTCPname;
+  final String? orderBillTCPq;
+  final String? orderBillTCPunit;
+  final String? orderBillTCPprice;
+  final String? orderBillTCPsumPrice;
+  final String? orderBillTCDateAdd;
 
   OrderBillTCTemps({
     this.orderBillTCID,

@@ -9,13 +9,13 @@ class ShipDialogPage extends StatefulWidget {
 
 class _ShipDialogPageState extends State<ShipDialogPage> {
 
-  int selectedRadioTileShip;
+  int? selectedRadioTileShip;
   //int selectedRadioTilePay;
-  String codeUser;
+  String? codeUser;
   List user = [];
   List statusShip = [];
-  int idStatusShip;
-  int initalStatusShip;
+  int? idStatusShip;
+  int? initalStatusShip;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -80,8 +80,8 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             value: 1,
             groupValue: selectedRadioTileShip,
             //selected: true,
-            onChanged: (val){
-              setSelectRadioTileShip(val);
+            onChanged: (int? val){
+              setSelectRadioTileShip(val!);
             },
           ),
           RadioListTile(
@@ -90,9 +90,9 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             value: 3,
             groupValue: selectedRadioTileShip,
             //selected: false,
-            onChanged: (val){
+            onChanged: (int? val){
 
-              setSelectRadioTileShip(val);
+              setSelectRadioTileShip(val!);
             },
           ),
           RadioListTile(
@@ -101,8 +101,8 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             value: 4,
             groupValue: selectedRadioTileShip,
             //selected: false,
-            onChanged: (val){
-              setSelectRadioTileShip(val);
+            onChanged: (int? val){
+              setSelectRadioTileShip(val!);
             },
           ),
           RadioListTile(
@@ -111,8 +111,8 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             value: 2,
             groupValue: selectedRadioTileShip,
             //selected: false,
-            onChanged: (val){
-              setSelectRadioTileShip(val);
+            onChanged: (int? val){
+              setSelectRadioTileShip(val!);
             },
           ),
           RadioListTile(
@@ -121,8 +121,8 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             value: 5,
             groupValue: selectedRadioTileShip,
             //selected: false,
-            onChanged: (val){
-              setSelectRadioTileShip(val);
+            onChanged: (int? val){
+              setSelectRadioTileShip(val!);
             },
           ),
           RadioListTile(
@@ -131,8 +131,8 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
             value: 6,
             groupValue: selectedRadioTileShip,
             //selected: false,
-            onChanged: (val){
-              setSelectRadioTileShip(val);
+            onChanged: (int? val){
+              setSelectRadioTileShip(val!);
             },
           ),
         ],

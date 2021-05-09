@@ -16,7 +16,7 @@ import 'package:wang_shop/bloc_count_order.dart';
 class ProductRelationCompanyPage extends StatefulWidget {
 
   var product;
-  ProductRelationCompanyPage({Key key, this.product}) : super(key: key);
+  ProductRelationCompanyPage({Key? key, this.product}) : super(key: key);
 
   @override
   _ProductRelationCompanyPageState createState() => _ProductRelationCompanyPageState();
@@ -24,7 +24,7 @@ class ProductRelationCompanyPage extends StatefulWidget {
 
 class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -35,8 +35,7 @@ class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage>
 
   getProductRelationCompany() async{
 
-    final res = await http.get('https://wangpharma.com/API/product.php?company=${widget.product.productCompany}&act=Rcompany');
-    print('https://wangpharma.com/API/product.php?company=${widget.product.productCompany}&act=Rcompany');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'company': widget.product.productCompany, 'act':'Rcompany'}));
 
     if(res.statusCode == 200){
 
@@ -49,9 +48,9 @@ class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage>
 
         print(productRelationCompany);
 
-        return productRelationCompany;
-
       });
+
+      return productRelationCompany;
 
     }else{
       throw Exception('Failed load Json');
@@ -113,18 +112,17 @@ class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage>
                       child: Stack(
                         children: <Widget>[
                           Image.network('https://www.wangpharma.com/cms/product/${productRelationCompany[index].productPic}', fit: BoxFit.cover, width: 200,),
-                          (productRelationCompany[index].productProStatus == '2')?
-                          Container(
-                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                            width: 30,
-                            height: 20,
-                            color: Colors.red,
-                            child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                          ) : Container(
-                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                            width: 30,
-                            height: 20,
-                          )
+                          (productRelationCompany[index].productProStatus == '2')
+                              ? Container(
+                                  padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                  width: 35,
+                                  height: 25,
+                                  color: Colors.red,
+                                  child: Text('Pro', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),),)
+                              : Container(
+                                  padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                  width: 30,
+                                  height: 20,)
                         ],
                       )
                     ),
@@ -139,14 +137,30 @@ class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage>
                             children: <Widget>[
                               Expanded(
                                 flex: 4,
-                                child: Text('${productRelationCompany[index].productName}', style: TextStyle(fontSize: 14), overflow: TextOverflow.ellipsis),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${productRelationCompany[index].productName}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                                    Text('${productRelationCompany[index].productNameENG}', style: TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis),
+                                  ],
+                                )
                               ),
-                              Expanded(
+                              (productRelationCompany[index].productSize != "ไม่มี")
+                              ? Expanded(
                                 flex: 1,
                                 child: IconButton(
-                                    icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 30,),
+                                    icon: Icon(Icons.add_circle, color: Colors.deepOrange, size: 35,),
                                     onPressed: (){
                                       addToOrderFast(productRelationCompany[index]);
+                                    }
+                                ),
+                              )
+                              : Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                    icon: Icon(Icons.close, color: Colors.red, size: 35,),
+                                    onPressed: (){
+                                      //addToOrderFast(productTop[index]);
                                     }
                                 ),
                               )
@@ -240,7 +254,7 @@ class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage>
       showToastAddFast();
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }else{
 
@@ -258,7 +272,7 @@ class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage>
 
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }
 

@@ -29,6 +29,7 @@ class _CategorySlidePageState extends State<CategorySlidePage> {
     }
 
     return Container(
+      color: Colors.white,
       //margin: EdgeInsets.symmetric(horizontal: marginValForDevice),
       height: heightCategorySlide,
       child: ListView(

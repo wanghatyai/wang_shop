@@ -1,9 +1,9 @@
 class Member{
-  final String memberId;
-  final String memberCode;
-  final String memberName;
-  final String memberCredit;
-  final String memberAddress;
+  final String? memberId;
+  final String? memberCode;
+  final String? memberName;
+  final String? memberCredit;
+  final String? memberAddress;
 
   Member({
     this.memberId,

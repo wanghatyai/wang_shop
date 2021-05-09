@@ -15,7 +15,7 @@ class _MainSlidePageState extends State<MainSlidePage> {
   double heightValForDevice = 150;
 
   getSlideAll() async{
-    final res = await http.get('http://wangpharma.com/API/slides.php?position=P0&act=Slide');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/slides.php', {'position': 'P0', 'act': 'Slide'}));
 
     if(res.statusCode == 200){
 
@@ -28,11 +28,13 @@ class _MainSlidePageState extends State<MainSlidePage> {
           //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
           jsonData.forEach((slide) =>
               slides.add((NetworkImage(
-                  'http://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));
+                  'https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));
 
           print(slides);
-          return slides;
         });
+
+        return slides;
+
       }
 
     }else{

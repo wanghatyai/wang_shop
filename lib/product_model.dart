@@ -1,28 +1,29 @@
 class Product{
-  final String productId;
-  final String productName;
-  final String productCode;
-  final String productBarcode;
-  final String productNameENG;
-  final String productPic;
-  final String productCategory;
-  final String productCompany;
-  final String productUnit1;
-  final String productUnitQty1;
-  final String productUnit2;
-  final String productUnitQty2;
-  final String productUnit3;
-  final String productUnitQty3;
-  final String productPriceA;
-  final String productPriceB;
-  final String productPriceC;
-  final String productFreePrice;
-  final String productProStatus;
-  final String productNewStatus;
-  final String productProperties;
-  final String productDetail;
-  final String productHowTo;
-  final String productProLimit;//add comment limit order
+  final String? productId;
+  final String? productName;
+  final String? productCode;
+  final String? productBarcode;
+  final String? productNameENG;
+  final String? productPic;
+  final String? productCategory;
+  final String? productCompany;
+  final String? productUnit1;
+  final String? productUnitQty1;
+  final String? productUnit2;
+  final String? productUnitQty2;
+  final String? productUnit3;
+  final String? productUnitQty3;
+  final String? productPriceA;
+  final String? productPriceB;
+  final String? productPriceC;
+  final String? productFreePrice;
+  final String? productProStatus;
+  final String? productNewStatus;
+  final String? productProperties;
+  final String? productDetail;
+  final String? productHowTo;
+  final String? productSize;
+  final String? productProLimit;//add comment limit order
 
 
   Product({
@@ -49,6 +50,7 @@ class Product{
     this.productProperties,
     this.productDetail,
     this.productHowTo,
+    this.productSize,
     this.productProLimit
   });
 
@@ -77,6 +79,7 @@ class Product{
       productProperties: json['properties'],
       productDetail: json['detail'],
       productHowTo: json['howTo'],
+      productSize: json['size'],
       productProLimit: json['limit1'],
     );
   }

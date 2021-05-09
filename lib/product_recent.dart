@@ -22,7 +22,7 @@ class ProductRecentPage extends StatefulWidget {
 
 class _ProductRecomPageState extends State<ProductRecentPage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -45,7 +45,7 @@ class _ProductRecomPageState extends State<ProductRecentPage> {
     var userID = resUser[0]['idUser'];
     userName = resUser[0]['name'];
 
-    final res = await http.get('https://wangpharma.com/API/product.php?PerPage=$perPage&act=RC&userCode=$userCode');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'PerPage': perPage.toString(), 'act':'RC', 'userCode':userCode}));
 
     if(res.statusCode == 200){
 
@@ -60,9 +60,9 @@ class _ProductRecomPageState extends State<ProductRecentPage> {
         print(productAll);
         print(productAll.length);
 
-        return productAll;
-
       });
+
+      return productAll;
 
     }else{
       throw Exception('Failed load Json');
@@ -139,8 +139,8 @@ class _ProductRecomPageState extends State<ProductRecentPage> {
                         minHeight: 20,
                       ),
                       child: StreamBuilder(
-                        initialData: blocCountOrder.countOrder,
-                        stream: blocCountOrder.counterStream,
+                        initialData: blocCountOrder!.countOrder,
+                        stream: blocCountOrder!.counterStream,
                         builder: (BuildContext context, snapshot) => Text(
                           '${snapshot.data}',
                           style: TextStyle(
@@ -285,7 +285,7 @@ class _ProductRecomPageState extends State<ProductRecentPage> {
       showToastAddFast();
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }else{
 
@@ -302,7 +302,7 @@ class _ProductRecomPageState extends State<ProductRecentPage> {
       showToastAddFast();
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }
 

@@ -9,9 +9,9 @@ import 'package:wang_shop/order.dart';
 
 class EditDialogPage extends StatefulWidget {
 
-  EditDialogPage({Key key, this.units, this.orderE}): super(key: key);
+  EditDialogPage({Key? key, this.units, this.orderE}): super(key: key);
 
-  final List units;
+  final List? units;
   var orderE;
 
   @override
@@ -24,10 +24,10 @@ class _EditDialogPageState extends State<EditDialogPage> {
 
   TextEditingController editAmount = TextEditingController();
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
 
-  String _currentUnit;
+  String? _currentUnit;
   var unitStatus;
 
   void initState(){
@@ -113,7 +113,7 @@ class _EditDialogPageState extends State<EditDialogPage> {
     showToastRemove();
 
     //add notify order
-    blocCountOrder.getOrderCount();
+    blocCountOrder!.getOrderCount();
 
   }
 
@@ -186,14 +186,14 @@ class _EditDialogPageState extends State<EditDialogPage> {
                 child: DropdownButton(
                   isExpanded: true,
                   hint: Text("เลือกหน่วยสินค้า",style: TextStyle(fontSize: 18)),
-                  items: widget.units.map((dropDownStringItem){
+                  items: widget.units!.map((dropDownStringItem){
                     return DropdownMenuItem<String>(
                       value: dropDownStringItem,
                       child: Text(dropDownStringItem, style: TextStyle(fontSize: 18)),
                     );
                   }).toList(),
                   onChanged: (newValueSelected){
-                    var tempIndex = widget.units.indexOf(newValueSelected)+1;
+                    var tempIndex = widget.units!.indexOf(newValueSelected)+1;
                     _onDropDownItemSelected(newValueSelected, tempIndex);
                     print(this._currentUnit);
                     print(tempIndex);

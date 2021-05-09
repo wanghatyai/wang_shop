@@ -6,7 +6,7 @@ import 'dart:convert';
 class newsDetailPage extends StatefulWidget {
 
   var news;
-  newsDetailPage({Key key, this.news}) : super(key: key);
+  newsDetailPage({Key? key, this.news}) : super(key: key);
 
   @override
   _newsDetailPageState createState() => _newsDetailPageState();

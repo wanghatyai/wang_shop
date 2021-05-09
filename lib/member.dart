@@ -43,13 +43,13 @@ class _MemberPageState extends State<MemberPage> {
   //Timer timerLoopCheck;
   //var orderBillStatusText;
 
-  String appName;
-  String packageName;
-  String version;
-  String buildNumber;
+  String? appName;
+  String? packageName;
+  String? version;
+  String? buildNumber;
 
   _launchURL() async {
-    const urlHelp = "https://www.youtube.com/watch?v=5S_HSAEfKic";
+    const urlHelp = "https://www.youtube.com/watch?v=YFo2mB1kMko";
     if (await canLaunch(urlHelp)) {
       await launch(urlHelp);
     } else {
@@ -83,7 +83,8 @@ class _MemberPageState extends State<MemberPage> {
 
     print(userID);
 
-    final res = await http.get('https://wangpharma.com/API/member.php?userID=$userID&act=$act');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/member.php', {'userID': userID, 'act': 'Member'}));
+
 
     if(res.statusCode == 200){
 
@@ -96,9 +97,9 @@ class _MemberPageState extends State<MemberPage> {
 
         print(memberAll);
 
-        return memberAll;
-
       });
+
+      return memberAll;
 
 
     }else{
@@ -444,7 +445,7 @@ class _MemberPageState extends State<MemberPage> {
                               },
                               child: Column(
                                 children: <Widget>[
-                                  Icon(Icons.beenhere, size: 40, color: Colors.grey,),
+                                  Icon(Icons.assignment_turned_in_outlined, size: 40, color: Colors.red[400],),
                                   Text('ยืนยันรายการ')
                                 ],
                               ),
@@ -458,7 +459,7 @@ class _MemberPageState extends State<MemberPage> {
                               },
                               child: Column(
                                 children: <Widget>[
-                                  Icon(Icons.check_circle, size: 40, color: Colors.grey,),
+                                  Icon(Icons.inventory, size: 40, color: Colors.red[400],),
                                   Text('เตรียมจัดส่ง')
                                 ],
                               ),
@@ -472,7 +473,7 @@ class _MemberPageState extends State<MemberPage> {
                               },
                               child: Column(
                                 children: <Widget>[
-                                  Icon(Icons.local_shipping, size: 40, color: Colors.grey,),
+                                  Icon(Icons.local_shipping_outlined, size: 40, color: Colors.red[400],),
                                   Text('ระหว่างขนส่ง')
                                 ],
                               ),
@@ -486,7 +487,7 @@ class _MemberPageState extends State<MemberPage> {
                               },
                               child: Column(
                                 children: <Widget>[
-                                  Icon(Icons.add_comment, size: 40, color: Colors.grey,),
+                                  Icon(Icons.shopping_bag_outlined, size: 40, color: Colors.red[400],),
                                   Text('รับสินค้าแล้ว')
                                 ],
                               )

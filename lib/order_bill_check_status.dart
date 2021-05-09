@@ -11,7 +11,7 @@ import 'package:wang_shop/order_bill_check_status_detail.dart';
 class OrderBillCheckStatusPage extends StatefulWidget {
 
   var statusVal;
-  OrderBillCheckStatusPage({Key key, this.statusVal}) : super(key: key);
+  OrderBillCheckStatusPage({Key? key, this.statusVal}) : super(key: key);
 
   @override
   _OrderBillCheckStatusPageState createState() => _OrderBillCheckStatusPageState();
@@ -51,7 +51,8 @@ class _OrderBillCheckStatusPageState extends State<OrderBillCheckStatusPage> {
     var userCode = resUser[0]['code'];
     userName = resUser[0]['name'];
 
-    final res = await http.get('https://wangpharma.com/API/orderBill.php?PerPage=$perPage&act=$act&userCode=$userCode');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/orderBill.php', {'PerPage': perPage.toString(), 'act': act, 'userCode': userCode}));
+
 
     if(res.statusCode == 200){
 
@@ -66,9 +67,10 @@ class _OrderBillCheckStatusPageState extends State<OrderBillCheckStatusPage> {
         print(orderBillTempsAll);
         print(orderBillTempsAll.length);
 
-        return orderBillTempsAll;
 
       });
+
+      return orderBillTempsAll;
 
     }else{
       throw Exception('Failed load Json');

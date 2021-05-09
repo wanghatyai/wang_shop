@@ -1,9 +1,9 @@
 class OrderBillTemps{
-  final String orderBillID;
-  final String orderBillCode;
-  final String orderBillCus;
-  final String orderBillDateAdd;
-  final String orderBillSentStatus;
+  final String? orderBillID;
+  final String? orderBillCode;
+  final String? orderBillCus;
+  final String? orderBillDateAdd;
+  final String? orderBillSentStatus;
 
   OrderBillTemps({
     this.orderBillID,

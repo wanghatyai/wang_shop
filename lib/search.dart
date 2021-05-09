@@ -39,7 +39,7 @@ class DataSearch extends SearchDelegate<String> {
 
     //products = [];
 
-    final res = await http.get('https://wangpharma.com/API/product.php?SearchVal=$searchVal&act=Search');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'SearchVal': searchVal, 'act':'Search'}));
 
     if(res.statusCode == 200){
 
@@ -92,7 +92,7 @@ class DataSearch extends SearchDelegate<String> {
             progress: transitionAnimation,
         ),
         onPressed: (){
-          close(context, null);
+          close(context, '');
         });
   }
 
