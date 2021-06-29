@@ -131,16 +131,16 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
 
     units = [];
 
-    if(widget.product.productUnit1.toString() != "null"){
+    if(widget.product.productUnit1.toString() != "null" && widget.product.productUnit1.toString().isNotEmpty){
       units.add(widget.product.productUnit1.toString());
       //setState(() {
       //_currentUnit = widget.product['unit1'].toString();
       //});
     }
-    if(widget.product.productUnit2.toString() != "null"){
+    if(widget.product.productUnit2.toString() != "null" && widget.product.productUnit2.toString().isNotEmpty){
       units.add(widget.product.productUnit2.toString());
     }
-    if(widget.product.productUnit3.toString() != "null"){
+    if(widget.product.productUnit3.toString() != "null" && widget.product.productUnit3.toString().isNotEmpty){
       units.add(widget.product.productUnit3.toString());
     }
 
@@ -578,17 +578,17 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
     var unit3;
     //var unitStatus;
 
-    if(widget.product.productUnit1.toString() != "null"){
+    if(widget.product.productUnit1.toString() != "null" && widget.product.productUnit1.toString().isNotEmpty){
       unit1 = widget.product.productUnit1.toString();
     }else{
       unit1 = 'NULL';
     }
-    if(widget.product.productUnit2.toString() != "null"){
+    if(widget.product.productUnit2.toString() != "null" && widget.product.productUnit2.toString().isNotEmpty){
       unit2 = widget.product.productUnit2.toString();
     }else{
       unit2 = 'NULL';
     }
-    if(widget.product.productUnit3.toString() != "null"){
+    if(widget.product.productUnit3.toString() != "null" && widget.product.productUnit3.toString().isNotEmpty){
       unit3 = widget.product.productUnit3.toString();
     }else{
       unit3 = 'NULL';

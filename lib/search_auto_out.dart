@@ -42,15 +42,15 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
   //String barcode;
 
   //Sound scan barcode
-  Future<int> _soundId;
+  //Future<int> _soundId;
   //Soundpool _soundpool = Soundpool();
 
   /*Future<int> _loadSound() async {
     var asset = await rootBundle.load("assets/sounds/beep.mp3");
     return await _soundpool.load(asset);
-  }
+  }*/
 
-  Future<void> _playSound() async {
+  /*Future<void> _playSound() async {
     var _alarmSound = await _soundId;
     await _soundpool.play(_alarmSound);
   }*/
@@ -455,17 +455,17 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
     int amount;
 
-    if(productFast.productUnit1.toString() != "null"){
+    if(productFast.productUnit1.toString() != "null" && productFast.productUnit1.toString().isNotEmpty){
       unit1 = productFast.productUnit1.toString();
     }else{
       unit1 = 'NULL';
     }
-    if(productFast.productUnit2.toString() != "null"){
+    if(productFast.productUnit2.toString() != "null" && productFast.productUnit2.toString().isNotEmpty){
       unit2 = productFast.productUnit2.toString();
     }else{
       unit2 = 'NULL';
     }
-    if(productFast.productUnit3.toString() != "null"){
+    if(productFast.productUnit3.toString() != "null" && productFast.productUnit3.toString().isNotEmpty){
       unit3 = productFast.productUnit3.toString();
     }else{
       unit3 = 'NULL';

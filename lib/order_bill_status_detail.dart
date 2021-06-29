@@ -300,17 +300,17 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
     int amount;
 
-    if(productFast.productUnit1.toString() != "null"){
+    if(productFast.productUnit1.toString() != "null" && productFast.productUnit1.toString().isNotEmpty){
       unit1 = productFast.productUnit1.toString();
     }else{
       unit1 = 'NULL';
     }
-    if(productFast.productUnit2.toString() != "null"){
+    if(productFast.productUnit2.toString() != "null" && productFast.productUnit2.toString().isNotEmpty){
       unit2 = productFast.productUnit2.toString();
     }else{
       unit2 = 'NULL';
     }
-    if(productFast.productUnit3.toString() != "null"){
+    if(productFast.productUnit3.toString() != "null" && productFast.productUnit3.toString().isNotEmpty){
       unit3 = productFast.productUnit3.toString();
     }else{
       unit3 = 'NULL';
