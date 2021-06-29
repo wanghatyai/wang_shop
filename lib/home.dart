@@ -914,7 +914,7 @@ class _HomeState extends State<Home> {
             padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
             icon: Column(
               children: <Widget>[
-                Icon(Icons.crop_free, color: Colors.white, size: 40,),
+                Icon(Icons.crop_free, color: Colors.white, size: 35,),
                 Text('สแกน', style: TextStyle(fontSize: 12),)
               ],
             ),
