@@ -21,7 +21,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 class productDetailPage extends StatefulWidget {
 
   var product;
-  productDetailPage({Key key, this.product}) : super(key: key);
+  productDetailPage({Key? key, this.product}) : super(key: key);
 
   @override
   _productDetailPageState createState() => _productDetailPageState();
@@ -29,16 +29,16 @@ class productDetailPage extends StatefulWidget {
 
 class _productDetailPageState extends State<productDetailPage> with SingleTickerProviderStateMixin {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
   @override
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
-  TabController _RelationProductTab;
+  TabController? _RelationProductTab;
 
   //List<DropdownMenuItem<String>> units = [];
   List units = [];
-  String _currentUnit;
+  String? _currentUnit;
   var unitStatus;
 
   var imgList = [];
@@ -55,10 +55,9 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
 
   getProductImg()async{
 
-    final res = await http.get('https://wangpharma.com/API/getImgAll.php?proCodeImg=${widget.product.productCode}');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/getImgAll.php', {'proCodeImg': widget.product.productCode}));
 
     //var defaultImg = {'src': 'http://www.wangpharma.com/cms/product/${widget.product.productPic}'};
-
     //imgList.add(defaultImg);
 
     print(imgList);
@@ -76,9 +75,10 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
 
         print(imgList);
 
-        return imgList;
 
       });
+
+      return imgList;
 
 
     }else{
@@ -100,7 +100,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
     var countOrder = await databaseHelper.countOrder();
     print(countOrder[0]['countOrderAll']);
 
-    OverlayState overlayState = Overlay.of(context);
+    OverlayState overlayState = Overlay.of(context)!;
     OverlayEntry overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
           top: 25,
@@ -154,7 +154,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
     //print(_units);
 
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         //title: Text(widget.product.productName.toString()),
         title: Text("รายละเอียดสินค้า"),
@@ -195,8 +195,8 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                         minHeight: 20,
                       ),
                       child: StreamBuilder(
-                        initialData: blocCountOrder.countOrder,
-                        stream: blocCountOrder.counterStream,
+                        initialData: blocCountOrder!.countOrder,
+                        stream: blocCountOrder!.counterStream,
                         builder: (BuildContext context, snapshot) => Text(
                           '${snapshot.data}',
                           style: TextStyle(
@@ -242,8 +242,16 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                           backgroundDecoration: BoxDecoration(
                             color: Theme.of(context).canvasColor,
                           ),
-                          loadingChild: Center(
-                            child: CircularProgressIndicator(),
+                          loadingBuilder: (context, event) => Center(
+                            child: Container(
+                              width: 20.0,
+                              height: 20.0,
+                              child: CircularProgressIndicator(
+                                value: event == null
+                                    ? 0
+                                    : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+                              ),
+                            ),
                           ),
                           //imageProvider: NetworkImage('http://www.wangpharma.com/cms/product/${widget.product.productPic}'),
 
@@ -263,50 +271,167 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                           ),
                         )
                       : Text(''),
-                    Text("รหัสสินค้า : ${widget.product.productCode}",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold
-                      ),
+                    Divider(
+                      color: Colors.grey,
+                      height: 5,
                     ),
-                    Text("ชื่อไทย : ${widget.product.productName}",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold
-                      ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 85,
+                          child: Text("Code : ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        Text("${widget.product.productCode}",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
                     ),
-
-                    Text("Barcode : ${widget.product.productBarcode}",
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold
-                      ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 85,
+                          child: Text("ชื่อไทย : ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text("${widget.product.productName}",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold
+                              ),
+                          ),
+                        ),
+                      ],
                     ),
-
-                    Text("ชื่ออังกฤษ : ${widget.product.productNameENG}",
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.blue
-                      ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 85,
+                          child: Text("Barcode : ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        Text("${widget.product.productBarcode}",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.red
+                              //fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
                     ),
-                    Text("รายละเอียด : ${widget.product.productDetail}",
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.blueGrey
-                      ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 85,
+                          child: Text("ชื่ออังกฤษ : ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text("${widget.product.productNameENG}",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text("สรรพคุณ : ${widget.product.productProperties}",
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.deepPurple
-                      ),
+                    Divider(
+                      color: Colors.grey,
+                      height: 5,
                     ),
-                    Text("วิธีใช้ : ${widget.product.productHowTo}",
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.teal
-                      ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 85,
+                          child: Text("รายละเอียด : ",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text("${widget.product.productDetail}",
+                            style: TextStyle(
+                              fontSize: 15,
+                              //color: Colors.blue
+                              //fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey,
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 85,
+                          child: Text("สรรพคุณ : ",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text("${widget.product.productProperties}",
+                            style: TextStyle(
+                              fontSize: 15,
+                              //fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey,
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 85,
+                          child: Text("วิธีใช้ : ",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text("${widget.product.productHowTo}",
+                            style: TextStyle(
+                              fontSize: 15,
+                              //fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Divider(
                       color: Colors.deepOrange,
@@ -415,7 +540,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                 child: ProductRelationTypePage(product: widget.product,),
               ),*/
               Container(
-                decoration: BoxDecoration(color: Colors.blueAccent),
+                decoration: BoxDecoration(color: Colors.blueGrey),
                 child: TabBar(
                   controller: _RelationProductTab,
                   tabs: <Widget>[
@@ -496,7 +621,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                         ),
                         keyboardType: TextInputType.number,
                         validator: (val){
-                          if(val.isEmpty){
+                          if(val!.isEmpty){
                             return 'กรุณากรอกข้อมูล';
                           }
                           return null;
@@ -535,14 +660,34 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                 ],
               ),
             ),
-            Container(
+            (widget.product.productSize != "ไม่มี")
+            ? Container(
+                child: MaterialButton(
+                  color: Colors.deepOrange,
+                  textColor: Colors.white,
+                  minWidth: double.infinity,
+                  height: 50,
+                  child: Text(
+                    "หยิบใส่ตะกร้า",
+                    style: new TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
+                  onPressed: () {
+                    addToOrder();
+                  },
+                ),
+              )
+            : Container(
               child: MaterialButton(
-                color: Colors.deepOrange,
+                color: Colors.green,
                 textColor: Colors.white,
                 minWidth: double.infinity,
                 height: 50,
                 child: Text(
-                  "หยิบใส่ตะกร้า",
+                  "กรุณาติดต่อฝ่ายขาย",
                   style: new TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold
@@ -550,7 +695,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                 ),
                 //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
                 onPressed: () {
-                  addToOrder();
+                  //addToOrder();
                 },
               ),
             )
@@ -657,7 +802,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
 
       Navigator.pop(context);
       showToastAddFast();
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
       //showOverlay();
 
     }else{
@@ -674,7 +819,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
 
       Navigator.pop(context);
       showToastAddFast();
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
       //showOverlay();
 
     }

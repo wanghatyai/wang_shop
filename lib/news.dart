@@ -11,7 +11,8 @@ import 'package:wang_shop/news_detail.dart';
 
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
-import 'package:webfeed/domain/rss_feed.dart';
+//import 'package:webfeed/domain/rss_feed.dart';
+import 'package:dart_rss/dart_rss.dart';
 
 
 
@@ -22,7 +23,7 @@ class NewsPage extends StatefulWidget {
 
 class _NewsPageState extends State<NewsPage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   ScrollController _scrollController = new ScrollController();
 
@@ -32,14 +33,14 @@ class _NewsPageState extends State<NewsPage> {
   int perPage = 30;
   String act = "News";
 
-  GlobalKey<RefreshIndicatorState> _refreshKey;
-  RssFeed _feed;
+  GlobalKey<RefreshIndicatorState>? _refreshKey;
+  RssFeed? _feed;
   static const String FEED_URL = 'https://news.google.com/rss/topics/CAAqIQgKIhtDQkFTRGdvSUwyMHZNR3QwTlRFU0FuUm9LQUFQAQ?hl=th&gl=TH&ceid=TH:th';
 
-  Future<RssFeed> loadFeed() async {
+  Future<RssFeed?> loadFeed() async {
     try{
       final client = http.Client();
-      final response = await client.get(FEED_URL);
+      final response = await client.get(Uri.https('news.google.com', '/rss/topics/CAAqIQgKIhtDQkFTRGdvSUwyMHZNR3QwTlRFU0FuUm9LQUFQAQ', {'hl': 'th', 'gl': 'TH', 'ceid':'TH:th'}));
       return RssFeed.parse(response.body);
     }catch(e){
 
@@ -74,33 +75,37 @@ class _NewsPageState extends State<NewsPage> {
 
   listRss(){
     return ListView.builder(
-        itemCount: _feed.items.length,
+        itemCount: _feed!.items.length,
         itemBuilder: (BuildContext context, int index){
-          final item = _feed.items[index];
-          return ListTile(
-            title: Text(
-              item.title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            subtitle: Text(
-              item.pubDate.toString(),
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.green),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            trailing: Icon(Icons.format_list_bulleted, color: Colors.teal, size: 40,),
-            contentPadding: EdgeInsets.all(5),
-            onTap: () => openFeed(item.link),
+          final item = _feed!.items[index];
+          return Card(
+            elevation: 8.0,
+            margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
+            child: ListTile(
+              title: Text(
+                item.title!,
+                style: TextStyle(fontWeight: FontWeight.w500),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(
+                item.pubDate.toString(),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.green),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: Icon(Icons.mark_chat_unread, color: Colors.red, size: 40,),
+              contentPadding: EdgeInsets.all(5),
+              onTap: () => openFeed(item.link!),
 
+            ),
           );
         },
     );
   }
 
   isFeedEmpty(){
-    return null == _feed || null == _feed.items;
+    return null == _feed || null == _feed!.items;
   }
 
   bodyRss(){
@@ -124,7 +129,7 @@ class _NewsPageState extends State<NewsPage> {
     }
   }
 
-  getNews() async{
+  /*getNews() async{
 
     final res = await http.get('https://wangpharma.com/API/news.php?PerPage=$perPage&act=$act');
 
@@ -149,22 +154,22 @@ class _NewsPageState extends State<NewsPage> {
     }else{
       throw Exception('Failed load Json');
     }
-  }
+  }*/
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getNews();
+    //getNews();
     load();
     _refreshKey = GlobalKey<RefreshIndicatorState>();
 
-    _scrollController.addListener((){
+    /*_scrollController.addListener((){
       //print(_scrollController.position.pixels);
       if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
         getNews();
       }
-    });
+    });*/
   }
 
   @override

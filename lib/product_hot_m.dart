@@ -20,7 +20,7 @@ class ProductHotMonthPage extends StatefulWidget {
 
 class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -34,7 +34,7 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
 
   getProductTop() async{
 
-    final res = await http.get('http://wangpharma.com/API/product.php?PerPage=$perPage&act=$act');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'PerPage': perPage.toString(), 'act':'Top'}));
 
     if(res.statusCode == 200){
 
@@ -51,8 +51,10 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
           print(productTop);
           print(productTop.length);
 
-          return productTop;
+
         });
+
+        return productTop;
       }
 
     }else{
@@ -108,26 +110,26 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
                   MaterialPageRoute(builder: (context) => productDetailPage(product: productTop[index])));
             },
             child: Card(
+                elevation: 8.0,
                 child: Column(
                   children: <Widget>[
                     Expanded(
                       child: Stack(
                         alignment: Alignment.topRight,
                         children: <Widget>[
-                          Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.cover, width: 200,),
-                          (productTop[index].productProStatus == '2')?
-                            Container(
-                              padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                              width: 30,
-                              height: 20,
-                              color: Colors.red,
-                              child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                            ) : Container(
+                          Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.contain, width: 200,),
+                          (productTop[index].productProStatus == '2')
+                              ? Container(
+                                  padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                  width: 35,
+                                  height: 25,
+                                  color: Colors.red,
+                                  child: Text('Pro', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)))
+                              : Container(
                                   padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
                                   width: 30,
-                                  height: 20,
-                                )
-                        ],
+                                  height: 20)
+                        ]
                       )
                     ),
                     Container(
@@ -141,17 +143,34 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
                             children: <Widget>[
                               Expanded(
                                 flex: 4,
-                                child: Text('${productTop[index].productName}', style: TextStyle(fontSize: 14), overflow: TextOverflow.ellipsis),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${productTop[index].productName}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                                    Text('${productTop[index].productNameENG}', style: TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis),
+                                  ],
+                                )
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                    icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 30,),
-                                    onPressed: (){
-                                      addToOrderFast(productTop[index]);
-                                    }
-                                ),
-                              )
+
+                              (productTop[index].productSize != "ไม่มี")
+                              ? Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                      icon: Icon(Icons.add_circle, color: Colors.deepOrange, size: 30,),
+                                      onPressed: (){
+                                        addToOrderFast(productTop[index]);
+                                      }
+                                  ),
+                                )
+                              : Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                      icon: Icon(Icons.close, color: Colors.red, size: 30,),
+                                      onPressed: (){
+                                        //addToOrderFast(productTop[index]);
+                                      }
+                                  ),
+                                )
                             ],
                           )
 
@@ -243,7 +262,7 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
       showToastAddFast();
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }else{
 
@@ -261,7 +280,7 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
 
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }
 

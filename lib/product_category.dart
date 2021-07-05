@@ -23,7 +23,7 @@ class ProductCategoryPage extends StatefulWidget {
 
 class _ProductCategoryPageState extends State<ProductCategoryPage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -41,7 +41,7 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
     var resUser = await databaseHelper.getList();
     userName = resUser[0]['name'];
 
-    final res = await http.get('https://wangpharma.com/API/product.php?act=Cat');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'act': 'Cat'}));
 
     if(res.statusCode == 200){
 
@@ -57,9 +57,10 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
         });
 
         print(categoryCodeAll);
-        return categoryAll;
 
       });
+
+      return categoryAll;
 
     }else{
       throw Exception('Failed load Json');
@@ -103,8 +104,8 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
                         minHeight: 20,
                       ),
                       child: StreamBuilder(
-                        initialData: blocCountOrder.countOrder,
-                        stream: blocCountOrder.counterStream,
+                        initialData: blocCountOrder!.countOrder,
+                        stream: blocCountOrder!.counterStream,
                         builder: (BuildContext context, snapshot) => Text(
                           '${snapshot.data}',
                           style: TextStyle(
@@ -123,7 +124,7 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
               })
         ],
       ),
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -136,18 +137,22 @@ class _ProductCategoryPageState extends State<ProductCategoryPage> {
                 itemCount: categoryAll.length,
                 itemBuilder: (context, i){
                   final a = categoryAll[i];
-                  return ListTile(
-                    contentPadding: EdgeInsets.fromLTRB(10, 7, 10, 7),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCategoryDetailPage(catValue: a['code'], catName: a['name'])));
-                    },
-                    //leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                    title: Text('${a['name']}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                    trailing: IconButton(
-                        icon: Icon(Icons.view_list, color: Colors.teal, size: 40,),
-                        onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCategoryDetailPage(catValue: a['code'], catName: a['name'],)));
-                        }
+                  return Card(
+                    elevation: 8.0,
+                    margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.fromLTRB(10, 7, 10, 7),
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCategoryDetailPage(catValue: a['code'], catName: a['name'])));
+                      },
+                      //leading: Image.network('http://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
+                      title: Text('${a['name']}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                      trailing: IconButton(
+                          icon: Icon(Icons.view_list, color: Colors.deepOrange, size: 40,),
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductCategoryDetailPage(catValue: a['code'], catName: a['name'],)));
+                          }
+                      ),
                     ),
                   );
                 },

@@ -8,9 +8,9 @@ class PayDialogPage extends StatefulWidget {
 
 class _PayDialogPageState extends State<PayDialogPage> {
 
-  int selectedRadioTilePay;
-  String codeUser;
-  int idStatusShip;
+  int? selectedRadioTilePay;
+  String? codeUser;
+  int? idStatusShip;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -58,8 +58,8 @@ class _PayDialogPageState extends State<PayDialogPage> {
             activeColor: Colors.green,
             value: 1,
             groupValue: selectedRadioTilePay,
-            onChanged: (val){
-              setSelectRadioTilePay(val);
+            onChanged: (int? val){
+              setSelectRadioTilePay(val!);
             },
           ),
           RadioListTile(
@@ -67,8 +67,8 @@ class _PayDialogPageState extends State<PayDialogPage> {
             activeColor: Colors.green,
             value: 2,
             groupValue: selectedRadioTilePay,
-            onChanged: (val){
-              setSelectRadioTilePay(val);
+            onChanged: (int? val){
+              setSelectRadioTilePay(val!);
             },
           ),
           RadioListTile(
@@ -76,8 +76,8 @@ class _PayDialogPageState extends State<PayDialogPage> {
             activeColor: Colors.green,
             value: 3,
             groupValue: selectedRadioTilePay,
-            onChanged: (val){
-              setSelectRadioTilePay(val);
+            onChanged: (int? val){
+              setSelectRadioTilePay(val!);
             },
           ),
           RadioListTile(
@@ -85,8 +85,8 @@ class _PayDialogPageState extends State<PayDialogPage> {
             activeColor: Colors.green,
             value: 4,
             groupValue: selectedRadioTilePay,
-            onChanged: (val){
-              setSelectRadioTilePay(val);
+            onChanged: (int? val){
+              setSelectRadioTilePay(val!);
             },
           ),
         ],

@@ -16,7 +16,7 @@ import 'package:wang_shop/bloc_count_order.dart';
 class ProductRelationTypePage extends StatefulWidget {
 
   var product;
-  ProductRelationTypePage({Key key, this.product}) : super(key: key);
+  ProductRelationTypePage({Key? key, this.product}) : super(key: key);
 
   @override
   _ProductRelationTypePageState createState() => _ProductRelationTypePageState();
@@ -24,7 +24,7 @@ class ProductRelationTypePage extends StatefulWidget {
 
 class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -35,7 +35,7 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
 
   getProductRelationType() async{
 
-    final res = await http.get('https://wangpharma.com/API/product.php?ptype=${widget.product.productCategory}&act=Rtype');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'ptype': widget.product.productCategory, 'act':'Rtype'}));
 
     if(res.statusCode == 200){
 
@@ -48,9 +48,9 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
 
         print(productRelationType);
 
-        return productRelationType;
-
       });
+
+      return productRelationType;
 
     }else{
       throw Exception('Failed load Json');
@@ -111,18 +111,17 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
                       child: Stack(
                         children: <Widget>[
                           Image.network('https://www.wangpharma.com/cms/product/${productRelationType[index].productPic}', fit: BoxFit.cover, width: 200,),
-                          (productRelationType[index].productProStatus == '2')?
-                          Container(
-                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                            width: 30,
-                            height: 20,
-                            color: Colors.red,
-                            child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                          ) : Container(
-                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                            width: 30,
-                            height: 20,
-                          )
+                          (productRelationType[index].productProStatus == '2')
+                              ? Container(
+                                  padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                  width: 35,
+                                  height: 25,
+                                  color: Colors.red,
+                                  child: Text('Pro', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),),)
+                              : Container(
+                                  padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                  width: 30,
+                                  height: 20,)
                         ],
                       )
                     ),
@@ -137,14 +136,30 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
                             children: <Widget>[
                               Expanded(
                                 flex: 4,
-                                child: Text('${productRelationType[index].productName}', style: TextStyle(fontSize: 14), overflow: TextOverflow.ellipsis),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${productRelationType[index].productName}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                                    Text('${productRelationType[index].productNameENG}', style: TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis),
+                                  ],
+                                )
                               ),
-                              Expanded(
+                              (productRelationType[index].productSize != "ไม่มี")
+                              ? Expanded(
                                 flex: 1,
                                 child: IconButton(
-                                    icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 30,),
+                                    icon: Icon(Icons.add_circle, color: Colors.deepOrange, size: 35,),
                                     onPressed: (){
                                       addToOrderFast(productRelationType[index]);
+                                    }
+                                ),
+                              )
+                              : Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                    icon: Icon(Icons.close, color: Colors.red, size: 35,),
+                                    onPressed: (){
+                                      //addToOrderFast(productTop[index]);
                                     }
                                 ),
                               )
@@ -238,7 +253,7 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
       showToastAddFast();
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }else{
 
@@ -256,7 +271,7 @@ class _ProductRelationTypePageState extends State<ProductRelationTypePage> {
 
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }
 

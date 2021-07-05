@@ -16,7 +16,7 @@ class OrderBillCheckStatusDetailPage extends StatefulWidget {
 
   var OrderBillval;
   var NotificationSent;
-  OrderBillCheckStatusDetailPage({Key key, this.OrderBillval, this.NotificationSent}) : super(key: key);
+  OrderBillCheckStatusDetailPage({Key? key, this.OrderBillval, this.NotificationSent}) : super(key: key);
 
   @override
   _OrderBillCheckStatusDetailPageState createState() => _OrderBillCheckStatusDetailPageState();
@@ -26,7 +26,7 @@ class _OrderBillCheckStatusDetailPageState extends State<OrderBillCheckStatusDet
 
   final formatter = new NumberFormat("#,##0.00");
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -61,7 +61,8 @@ class _OrderBillCheckStatusDetailPageState extends State<OrderBillCheckStatusDet
     var orderBillType;
     var orderBillProductSelectQty;
 
-    final res = await http.get('https://wangpharma.com/API/orderBill.php?act=CheckStatusOrderBillDetail&orderBillCode=$orderBillCode');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/orderBill.php', {'PerPage': perPage.toString(), 'act': 'CheckStatusOrderBillDetail', 'orderBillCode': orderBillCode}));
+
 
     if(res.statusCode == 200){
 
@@ -74,15 +75,15 @@ class _OrderBillCheckStatusDetailPageState extends State<OrderBillCheckStatusDet
 
         for(var index = 0; index < orderBillDetailAll.length; index++){
 
-          orderBill_TC_PsumPrice = double.parse(orderBillDetailAll[index].orderBillTCPsumPrice);
+          orderBill_TC_PsumPrice = double.parse(orderBillDetailAll[index].orderBillTCPsumPrice!);
 
           sumAmount = sumAmount + orderBill_TC_PsumPrice;
 
         }
 
-        return orderBillDetailAll;
-
       });
+
+      return orderBillDetailAll;
 
     }else{
       throw Exception('Failed load Json');

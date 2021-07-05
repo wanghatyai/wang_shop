@@ -11,7 +11,7 @@ import 'package:wang_shop/database_helper.dart';
 class getProductFreePage extends StatefulWidget {
 
   var score;
-  getProductFreePage({Key key, this.score}) : super (key: key);
+  getProductFreePage({Key? key, this.score}) : super (key: key);
 
   @override
   _getProductFreePageState createState() => _getProductFreePageState();
@@ -26,7 +26,7 @@ class _getProductFreePageState extends State<getProductFreePage> {
 
   getProduct() async{
 
-    final res = await http.get('https://wangpharma.com/API/product.php?Score=${widget.score}&act=Free');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'Score': widget.score.toString(), 'act': 'Free'}));
 
     if(res.statusCode == 200){
 
@@ -41,9 +41,9 @@ class _getProductFreePageState extends State<getProductFreePage> {
         print(productFree);
         print(productFree.length);
 
-        return productFree;
-
       });
+
+      return productFree;
 
 
     }else{

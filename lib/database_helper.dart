@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:synchronized/synchronized.dart';
 
 class DatabaseHelper {
-  static Database _db;
+  static Database? _db;
 
   DatabaseHelper.internal();
 
@@ -111,7 +111,7 @@ class DatabaseHelper {
       });
     }
 
-    return _db;
+    return _db!;
   }
 
   Future<Database> getDbOrder() async {
@@ -130,7 +130,7 @@ class DatabaseHelper {
       });
     }
 
-    return _db;
+    return _db!;
   }
 
   Future<Database> getDbOrderFree() async {
@@ -149,7 +149,7 @@ class DatabaseHelper {
       });
     }
 
-    return _db;
+    return _db!;
   }
 
   Future<Database> getDbShipAndPay() async {
@@ -168,7 +168,7 @@ class DatabaseHelper {
       });
     }
 
-    return _db;
+    return _db!;
   }
 
   Future<Database> getDbOrderTemps() async {
@@ -187,7 +187,7 @@ class DatabaseHelper {
       });
     }
 
-    return _db;
+    return _db!;
   }
 
   Future initDatabase() async {

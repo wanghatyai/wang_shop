@@ -20,7 +20,7 @@ import 'package:wang_shop/bloc_count_order.dart';
 class OrderBillStatusDetailPage extends StatefulWidget {
 
   var orderID;
-  OrderBillStatusDetailPage({Key key, this.orderID}) : super(key: key);
+  OrderBillStatusDetailPage({Key? key, this.orderID}) : super(key: key);
 
   @override
   _OrderBillStatusDetailPageState createState() => _OrderBillStatusDetailPageState();
@@ -30,7 +30,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
   final formatter = new NumberFormat("#,##0.00");
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -61,8 +61,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
     var orderBillProductSelectQty;
 
 
-    final res = await http.get('https://wangpharma.com/API/orderBill.php?act=$act&orderID=${widget.orderID.orderBillMainId}');
-    //print('https://wangpharma.com/API/orderBill.php?act=$act&orderID=${widget.orderID.orderBillMainId}');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/orderBill.php', {'PerPage': perPage.toString(), 'act': 'Detail', 'orderID': widget.orderID.orderBillMainId}));
 
     if(res.statusCode == 200){
 
@@ -94,15 +93,15 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
           print('product ID ${productAll[index].productId}');
 
-          priceCredit = double.parse(orderBillDetailAll[index].orderBillProductSelectPrice);
-          orderBillType = int.parse(orderBillDetailAll[index].orderBillProductSelectUnit);
-          orderBillProductSelectQty = int.parse(orderBillDetailAll[index].orderBillProductSelectQty);
+          priceCredit = double.parse(orderBillDetailAll[index].orderBillProductSelectPrice!);
+          orderBillType = int.parse(orderBillDetailAll[index].orderBillProductSelectUnit!);
+          orderBillProductSelectQty = int.parse(orderBillDetailAll[index].orderBillProductSelectQty!);
 
           if(orderBillType == 1){
 
             //sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty3)) * orderBillProductSelectQty);
             sumAmount = sumAmount + (priceCredit * orderBillProductSelectQty);
-            priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty3);
+            priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty3!);
             priceNowAll.add(priceNow);
             //print('----$priceNow');
 
@@ -114,7 +113,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
             //sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty2)) * orderBillProductSelectQty);
             sumAmount = sumAmount + (priceCredit * orderBillProductSelectQty);
-            priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty2);
+            priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty2!);
             priceNowAll.add(priceNow);
             //print('----$priceNow');
 
@@ -126,7 +125,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
             //sumAmount = sumAmount + ((priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty1)) * orderBillProductSelectQty);
             sumAmount = sumAmount + (priceCredit * orderBillProductSelectQty);
-            priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty1);
+            priceNow = priceCredit * int.parse(orderBillDetailAll[index].orderBillProductUnitQty1!);
             priceNowAll.add(priceNow);
             //print('----$priceNow');
 
@@ -141,9 +140,9 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
         //print(sumAmount);
         //print(orderBillDetailAll.length);
 
-        return orderBillDetailAll;
-
       });
+
+      return orderBillDetailAll;
 
     }else{
       throw Exception('Failed load Json');
@@ -194,8 +193,8 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
                         minHeight: 20,
                       ),
                       child: StreamBuilder(
-                        initialData: blocCountOrder.countOrder,
-                        stream: blocCountOrder.counterStream,
+                        initialData: blocCountOrder!.countOrder,
+                        stream: blocCountOrder!.counterStream,
                         builder: (BuildContext context, snapshot) => Text(
                           '${snapshot.data}',
                           style: TextStyle(
@@ -365,7 +364,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
       showToastAddFast();
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }else{
 
@@ -383,7 +382,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }
 

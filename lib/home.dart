@@ -50,6 +50,8 @@ import 'package:in_app_update/in_app_update.dart';
 
 import 'package:wang_shop/order_bill_check_status_detail.dart';
 
+import 'Widgets/drawer_file.dart';
+
 class Home extends StatefulWidget {
 
   //Home({Key key}) : super(key: key);
@@ -66,24 +68,24 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  AppUpdateInfo _updateInfo;
+  AppUpdateInfo? _updateInfo;
 
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   // notification order in cart use BLOC
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   final formatter = new NumberFormat("#,##0.00");
 
   List user = [];
-  String name;
-  String value;
-  String userCode;
+  String? name;
+  String? value;
+  String? userCode;
   var overdueStatus = 0;
   var overdueValue = 0.0;
   var overdueNewDate;
-  String overdueBillCode;
+  String? overdueBillCode;
   Map<String, dynamic> overdueBillAllDetail = {};
 
   List <OrderBillTemps>orderBillTempsAll = [];
@@ -94,7 +96,7 @@ class _HomeState extends State<Home> {
   //Timer timerLoopCheck;
   var orderBillStatusText;
 
-  DateFormat dateFormat;
+  DateFormat? dateFormat;
   //DateFormat timeFormat;
 
   var countOrderAll;
@@ -127,7 +129,8 @@ class _HomeState extends State<Home> {
   }
 
   getOverdue() async {
-    final resOverdue = await http.get('https://wangpharma.com/API/overduePopup.php?act=Overdue&userCode=$userCode');
+    final resOverdue = await http.get(Uri.https('wangpharma.com', '/API/overduePopup.php', {'userCode': userCode, 'act': 'Overdue'}));
+
 
     //print('https://wangpharma.com/API/overduePopup.php?act=Overdue&userCode=$userCode');
 
@@ -154,7 +157,7 @@ class _HomeState extends State<Home> {
           print('overdue--${jsonData.length}');
           var newDateTimeObj2 = DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive']);
           //dateFormate = DateFormat("dd-MM-yyyy").format(DateTime.parse("2019-09-30"));
-          dateFormat.format(newDateTimeObj2);
+          dateFormat!.format(newDateTimeObj2);
           print(DateFormat("dd-MM-yyyy").format(DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive'])));
           //print(DateFormat('yyyy-MM-dd').parse(overdueBillAllDetail['CBS_Date_Receive']));
           //var newDateTimeObj2 = new DateFormat("dd/MM/yyyy HH:mm:ss").parse("10/02/2000 15:13:09")
@@ -180,7 +183,8 @@ class _HomeState extends State<Home> {
 
     //productAll = [];
 
-    final res = await http.get('https://wangpharma.com/API/product.php?SearchVal=$searchVal&act=Search');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'SearchVal': searchVal, 'act': 'Search'}));
+
 
     if(res.statusCode == 200){
 
@@ -199,9 +203,10 @@ class _HomeState extends State<Home> {
           print(product['nproductMain']);
         });*/
         print(_product);
-        return _product;
 
       });
+
+      return _product;
 
     }else{
       throw Exception('Failed load Json');
@@ -356,7 +361,7 @@ class _HomeState extends State<Home> {
         _updateInfo = info;
       });
 
-      if(_updateInfo?.updateAvailable == true){
+      if(_updateInfo?.updateAvailability == UpdateAvailability.updateAvailable){
 
         InAppUpdate.startFlexibleUpdate().then((_) {
           print('Now StartUpdate');
@@ -379,7 +384,7 @@ class _HomeState extends State<Home> {
   void initState(){
     super.initState();
     getUser();
-    setupNotif();
+    //setupNotif();
     initializeDateFormatting();
 
     //_soundId = _loadSound();
@@ -390,7 +395,7 @@ class _HomeState extends State<Home> {
 
       Future.delayed(Duration(seconds: 3), () {
         //add notify order
-        blocCountOrder.getOrderCount();
+        blocCountOrder!.getOrderCount();
         //if(overdueStatus > 0) {
           //this.showDialogOverdue();
           getOverdue();
@@ -542,7 +547,8 @@ class _HomeState extends State<Home> {
 
     print(userCode);
 
-    final res = await http.get('https://wangpharma.com/API/orderBill.php?orderBillCus=$userCode&act=CheckStatusOrderBill');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/orderBill.php', {'orderBillCus': userCode, 'act': 'CheckStatusOrderBill'}));
+
     if(res.statusCode == 200){
 
       setState(() {
@@ -566,7 +572,7 @@ class _HomeState extends State<Home> {
 
             await databaseHelper.saveOrderTemps(orderTemps);
 
-            setupNotification(indexOrderBillTemps, orderBillTempsAll[indexOrderBillTemps].orderBillCode, orderBillTempsAll[indexOrderBillTemps].orderBillSentStatus);
+            await setupNotification(indexOrderBillTemps, orderBillTempsAll[indexOrderBillTemps].orderBillCode, orderBillTempsAll[indexOrderBillTemps].orderBillSentStatus);
 
 
             print('orderBillSendNew');
@@ -584,7 +590,7 @@ class _HomeState extends State<Home> {
               await databaseHelper.updateOrderTemps(orderTempsUp);
 
 
-              setupNotification(indexOrderBillTemps, orderBillTempsAll[indexOrderBillTemps].orderBillCode, orderBillTempsAll[indexOrderBillTemps].orderBillSentStatus);
+              await setupNotification(indexOrderBillTemps, orderBillTempsAll[indexOrderBillTemps].orderBillCode, orderBillTempsAll[indexOrderBillTemps].orderBillSentStatus);
 
 
               print('orderBillSendUpdate');
@@ -672,16 +678,17 @@ class _HomeState extends State<Home> {
     var initializationSettingsIOS = IOSInitializationSettings(
         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     var initializationSettings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        /*onSelectNotification: onSelectNotification).then((init){
-    setupNotification();
-  });*/
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(
+        initializationSettings,
         onSelectNotification: onSelectNotification);
+        /*onSelectNotification: onSelectNotification).then((init){
+            setupNotification();
+          });*/
   }
 
-  Future onDidReceiveLocalNotification(
-      int id, String title, String body, String payload) async {
+  Future onDidReceiveLocalNotification(int? id, String? title, String? body, String? payload) async {
     // display a dialog with the notification details, tap ok to go to another page
     showDialog(
         context: context,
@@ -699,7 +706,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Future onSelectNotification(String payload) async {
+  Future onSelectNotification(String? payload) async {
     if (payload != null) {
       debugPrint('notification payload: ' + payload);
     }
@@ -709,7 +716,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  setupNotification(index, orderBillCode, orderBillStatus)async{
+  Future setupNotification(index, orderBillCode, orderBillStatus)async{
 
     if(orderBillStatus == '1'){
       orderBillStatusText = 'เปิดบิล';
@@ -728,15 +735,14 @@ class _HomeState extends State<Home> {
     print(orderBillStatusText);
 
     var scheduledNotificationDateTime = new DateTime.now().add(new Duration(seconds: 5));
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails('your other channel id', 'your other channel name', 'your other channel description');
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails('statusOrder', 'แจ้งเตือนสถานะสินค้า', 'แจ้งเตือนสถานะสินค้าในแต่ละขั้นตอน');
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    NotificationDetails platformChannelSpecifics = new NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.schedule(
+    NotificationDetails platformChannelSpecifics = new NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
         index,
         'รายการบิลเลขที่:$orderBillCode',
         'สถานะ:$orderBillStatusText',
-        scheduledNotificationDateTime,
+        //scheduledNotificationDateTime,
         platformChannelSpecifics,
         payload: '$orderBillCode');
 
@@ -757,7 +763,7 @@ class _HomeState extends State<Home> {
         platformChannelSpecifics);*/
   }
 
-  setupNotif() async {
+  /*setupNotif() async {
     _firebaseMessaging.getToken().then((token){
       print(token);
     });
@@ -772,19 +778,19 @@ class _HomeState extends State<Home> {
       onLaunch: (Map<String, dynamic> msg) async {
         print(msg);
       },
-
     );
+
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
     _firebaseMessaging.onIosSettingsRegistered
         .listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
     });
-  }
+  }*/
 
   int currentIndex = 0;
   //List pages = [HomeNewPage(), ProductHotPage(), ProductNewPage(), ProductRecomPage(), MemberPage()];
-  List pages = [HomeNewPage(), NewsPage(), ProductWishPage(), MemberPage()];
+  List pages = [HomeNewPage(), NewsPage(), HomeNewPage(), ProductWishPage(), MemberPage()];
 
   @override
   void dispose() {
@@ -808,22 +814,32 @@ class _HomeState extends State<Home> {
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         onTap: (int index){
-          setState(() {
-            currentIndex = index;
-          });
+          if(index == 2){
+            print(index);
+            scanBarcode();
+          }else{
+            setState(() {
+              currentIndex = index;
+            });
+          }
         },
+        selectedLabelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('หน้าหลัก', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+            label: 'หน้าหลัก'
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.rss_feed),
-            title: Text('ข่าวสาร', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+            label: 'ข่าวสาร'
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.qr_code_scanner),
+            label: 'ค้นหา'
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.playlist_add_check),
-            title: Text('เคยสั่ง', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+            label: 'เคยสั่ง'
           ),
           /*BottomNavigationBarItem(
             icon: Icon(Icons.thumb_up),
@@ -831,7 +847,7 @@ class _HomeState extends State<Home> {
           ),*/
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
-              title: Text('ลูกค้า', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+              label: 'ลูกค้า'
           ),
         ]
     );
@@ -908,9 +924,11 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text('Home',style: TextStyle(color: Colors.deepOrange,fontSize: 18,fontWeight: FontWeight.bold),),
         //title: Text("${name}"),
-        leading: IconButton(
+        /*leading: IconButton(
             padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
             icon: Column(
               children: <Widget>[
@@ -924,6 +942,7 @@ class _HomeState extends State<Home> {
             }
         ),
         title: Container(
+          alignment: Alignment.center,
           height: 40,
           color: Colors.green,
           child: TextField(
@@ -942,13 +961,18 @@ class _HomeState extends State<Home> {
               Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
             },
           ),
-        ),
+        ),*/
         actions: <Widget>[
+          Icon(
+            Icons.notifications,
+            size: 30,
+            color: Colors.red[400],
+          ),
           IconButton(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
             icon: Stack(
               children: <Widget>[
-                Icon(Icons.shopping_cart, size: 40,),
+                Icon(Icons.shopping_cart, size: 30, color: Colors.black12,),
                 Positioned(
                   right: 0,
                   child: Container(
@@ -958,12 +982,12 @@ class _HomeState extends State<Home> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       constraints: BoxConstraints(
-                        minWidth: 20,
-                        minHeight: 20,
+                        minWidth: 15,
+                        minHeight: 15,
                       ),
                       child: StreamBuilder(
-                        initialData: blocCountOrder.countOrder,
-                        stream: blocCountOrder.counterStream,
+                        initialData: blocCountOrder!.countOrder,
+                        stream: blocCountOrder!.counterStream,
                         builder: (BuildContext context, snapshot) => Text(
                         '${snapshot.data}',
                         style: TextStyle(
@@ -983,7 +1007,9 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      //drawer: drawer,
+      drawer: Drawer(
+        child: Drawerfile(),
+      ),
       body: pages[currentIndex],
       bottomNavigationBar: bottomNavBar,
     );
@@ -1059,7 +1085,7 @@ class _HomeState extends State<Home> {
 
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }else{
 
@@ -1077,7 +1103,7 @@ class _HomeState extends State<Home> {
 
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }
 

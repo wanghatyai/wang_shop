@@ -1,5 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wang_shop/home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
@@ -31,10 +34,53 @@ backgroundFetchHeadlessTask() async {
   //BackgroundFetch.finish();
 }
 
-void main() {
+/// Define a top-level named handler which background/terminated messages will
+/// call.
+///
+/// To verify things are working, check out the native platform logs.
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
 
+/// Create a [AndroidNotificationChannel] for heads up notifications
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'Promotion', // id
+  'แจ้งเตือนโปรโมชั่น', // title
+  'แจ้งเตือนโปรโมชั่นและข่าวด่วนสุดพิเศษ', // description
+  importance: Importance.high,
+);
+
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  /// Create an Android Notification Channel.
+  ///
+  /// We use this channel in the `AndroidManifest.xml` file to override the
+  /// default FCM channel to enable heads up notifications.
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  /// Update the iOS foreground notification presentation options to allow
+  /// heads up notifications.
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
   databaseHelper.initDatabase();
@@ -142,8 +188,8 @@ class LoginPageState extends State<LoginPage>{
     //SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final response = await http.post(
-      'https://wangpharma.com/API/login.php',
-      body: {'usr': ctrlUser.text, 'pss': ctrlPass.text});
+        Uri.parse('https://wangpharma.com/API/login.php'),
+        body: {'usr': ctrlUser.text, 'pss': ctrlPass.text});
 
     if(response.statusCode == 200){
       var jsonResponse = json.decode(response.body);

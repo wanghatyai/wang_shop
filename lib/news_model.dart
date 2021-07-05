@@ -1,13 +1,13 @@
 class News{
-  final String newsId;
-  final String newsAdd;
-  final String newsDateAdd;
-  final String newsTopic;
-  final String newsDetail;
-  final String newsImages;
-  final String newsStatus;
-  final String newsNote;
-  final String newsMode;
+  final String? newsId;
+  final String? newsAdd;
+  final String? newsDateAdd;
+  final String? newsTopic;
+  final String? newsDetail;
+  final String? newsImages;
+  final String? newsStatus;
+  final String? newsNote;
+  final String? newsMode;
 
   News({
     this.newsId,

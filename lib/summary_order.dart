@@ -21,18 +21,18 @@ class SummaryOrderPage extends StatefulWidget {
 
 class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   final formatter = new NumberFormat("#,##0.00");
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   List user = [];
-  String name;
-  String value;
-  String userCode;
-  String userRoute;
-  DateFormat dateFormat;
+  String? name;
+  String? value;
+  String? userCode;
+  String? userRoute;
+  DateFormat? dateFormat;
   Map<String, dynamic> transportationDetail = {};
 
   List ordersFree = [];
@@ -54,8 +54,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
       userRoute = user[0]['route'];
     });
 
-    final resTransportation = await http.get('https://wangpharma.com/API/transportation.php?act=TransportationDate&userRoute=$userRoute');
-    print('https://wangpharma.com/API/transportation.php?act=TransportationDate&userRoute=$userRoute');
+    final resTransportation = await http.get(Uri.https('wangpharma.com', '/API/transportation.php', {'userRoute': userRoute, 'act':'TransportationDate'}));
 
     if(resTransportation.statusCode == 200){
 
@@ -188,6 +187,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     await databaseHelper.removeAllOrderFree();
     Navigator.pop(context);
     print('testBack');
+    return true;
   }
 
   getFreeProductSelect(){
@@ -390,7 +390,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
 
     userID = resUser[0]['idUser'];
 
-    var url = 'https://wangpharma.com/API/confirm.php';
+    var url = Uri.parse('https://wangpharma.com/API/confirmNew.php');
 
     Map<String, dynamic> data = {
       'pIDc': pID,
@@ -408,6 +408,11 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     var response = await http.post(url,
         headers: {"Content-Type": "application/json"},
         body: body);
+
+    //var respStr = await response.bodyBytes.toString();
+    //final Map<String, dynamic> responseMap = json.decode(response.body);
+    //print(json.decode(response.body));
+    print(response.body.toString());
 
     if(response.statusCode == 200){
 
@@ -428,7 +433,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     print("${response.statusCode}");
     //print("${response.body}");
 
-    blocCountOrder.clearOrderCount();
+    blocCountOrder!.clearOrderCount();
   }
 
   @override
@@ -439,7 +444,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
     if(freeLimit.toInt() >= 30){
       return WillPopScope(
         child: Scaffold(
-          resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text('สรุปรายการสั่งจอง'),
             actions: <Widget>[
@@ -526,39 +531,43 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     //color: Colors.black,
                     //),
                     itemBuilder: (context, int index){
-                      return ListTile(
-                        contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                        leading: Stack(
-                          children: <Widget>[
-                            Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                            (orders[index]['proStatus'] == 2)?
-                            Container(
-                              padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                              width: 30,
-                              height: 20,
-                              color: Colors.red,
-                              child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                            ) : Container(
-                              padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                              width: 30,
-                              height: 20,
-                            )
-                          ],
-                        ),
-                        title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text('${orders[index]['code']}'),
-                            Text('จำนวนที่สั่ง ${orders[index]['amount']} : ${orders[index]['unit']}',
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
-                            Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
-                          ],
-                        ),
-                        trailing: Column(
-                          children: <Widget>[
-                            Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
-                          ],
+                      return Card(
+                        elevation: 8.0,
+                        margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                          leading: Stack(
+                            children: <Widget>[
+                              Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                              (orders[index]['proStatus'] == 2)?
+                              Container(
+                                padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                width: 30,
+                                height: 20,
+                                color: Colors.red,
+                                child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                              ) : Container(
+                                padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                width: 30,
+                                height: 20,
+                              )
+                            ],
+                          ),
+                          title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('${orders[index]['code']}'),
+                              Text('จำนวนที่สั่ง ${orders[index]['amount']} : ${orders[index]['unit']}',
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
+                              Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
+                            ],
+                          ),
+                          trailing: Column(
+                            children: <Widget>[
+                              Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -573,7 +582,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
       );
     }else{
       return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('สรุปรายการสั่งจอง'),
           actions: <Widget>[
@@ -621,36 +630,40 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   //color: Colors.black,
                   //),
                   itemBuilder: (context, int index){
-                    return ListTile(
-                      contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                      leading: Stack(
-                        children: <Widget>[
-                          Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
-                          (orders[index]['proStatus'] == 2)?
-                          Container(
-                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                            width: 30,
-                            height: 20,
-                            color: Colors.red,
-                            child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                          ) : Container(
-                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                            width: 30,
-                            height: 20,
-                          )
-                        ],
+                    return Card(
+                      elevation: 8.0,
+                      margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                        leading: Stack(
+                          children: <Widget>[
+                            Image.network('https://www.wangpharma.com/cms/product/${orders[index]['pic']}',fit: BoxFit.cover, width: 70, height: 70,),
+                            (orders[index]['proStatus'] == 2)?
+                            Container(
+                              padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                              width: 30,
+                              height: 20,
+                              color: Colors.red,
+                              child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                            ) : Container(
+                              padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                              width: 30,
+                              height: 20,
+                            )
+                          ],
+                        ),
+                        title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('${orders[index]['code']}'),
+                            Text('จำนวนที่สั่ง ${orders[index]['amount']} : ${orders[index]['unit']}',
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
+                            Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
+                          ],
+                        ),
+                        trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
                       ),
-                      title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('${orders[index]['code']}'),
-                          Text('จำนวนที่สั่ง ${orders[index]['amount']} : ${orders[index]['unit']}',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.teal),),
-                          Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
-                        ],
-                      ),
-                      trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,

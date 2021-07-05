@@ -17,10 +17,10 @@ import 'package:wang_shop/bloc_count_order.dart';
 
 class ProductCategoryDetailPage extends StatefulWidget {
 
-  final String catValue;
-  final String catName;
+  final String? catValue;
+  final String? catName;
 
-  ProductCategoryDetailPage({Key key, this.catValue, this.catName}) : super (key: key);
+  ProductCategoryDetailPage({Key? key, this.catValue, this.catName}) : super (key: key);
 
   @override
   _ProductCategoryDetailPageState createState() => _ProductCategoryDetailPageState();
@@ -28,7 +28,7 @@ class ProductCategoryDetailPage extends StatefulWidget {
 
 class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
 
-  BlocCountOrder blocCountOrder;
+  BlocCountOrder? blocCountOrder;
 
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
@@ -49,7 +49,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
 
     //_product.clear();
 
-    final res = await http.get('https://wangpharma.com/API/product.php?PerPage=$perPage&SearchVal=${widget.catValue}&act=SearchCat');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'PerPage': perPage.toString(), 'SearchVal':widget.catValue, 'act': 'SearchCat'}));
 
     if(res.statusCode == 200){
 
@@ -63,9 +63,10 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
         perPage = perPage + 30;
 
         print(_product);
-        return _product;
 
       });
+
+      return _product;
 
     }else{
       throw Exception('Failed load Json');
@@ -133,8 +134,8 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
                         minHeight: 20,
                       ),
                       child: StreamBuilder(
-                        initialData: blocCountOrder.countOrder,
-                        stream: blocCountOrder.counterStream,
+                        initialData: blocCountOrder!.countOrder,
+                        stream: blocCountOrder!.counterStream,
                         builder: (BuildContext context, snapshot) => Text(
                           '${snapshot.data}',
                           style: TextStyle(
@@ -153,7 +154,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
               })
         ],
       ),
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -167,28 +168,34 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
                 itemCount: _product.length,
                 itemBuilder: (context, i){
                   final a = _product[i];
-                  return ListTile(
-                    contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
-                    onTap: (){
-
-                    },
-                    leading: Image.network('https://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                    title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('${a.productCode}'),
-                        Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
-                        (a.productProLimit != "" && a.productProStatus == '2')
-                            ? Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red))
-                            : Text(''),
-                      ],
-                    ),
-                    trailing: IconButton(
-                        icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
-                        onPressed: (){
-                          addToOrderFast(a);
-                        }
+                  return Card(
+                    elevation: 8.0,
+                    margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.fromLTRB(10, 1, 10, 1),
+                      onTap: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => productDetailPage(product: _product[i])));
+                      },
+                      leading: Image.network('https://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
+                      title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('${a.productCode}'),
+                          Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                          (a.productProLimit != "" && a.productProStatus == '2')
+                              ? Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red))
+                              : Text(''),
+                        ],
+                      ),
+                      trailing: IconButton(
+                          icon: Icon(Icons.add_circle, color: Colors.deepOrange, size: 40,),
+                          onPressed: (){
+                            addToOrderFast(a);
+                          }
+                      ),
                     ),
                   );
                 },
@@ -269,7 +276,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
       showToastAddFast();
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }else{
 
@@ -286,7 +293,7 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
       showToastAddFast();
 
       //add notify order
-      blocCountOrder.getOrderCount();
+      blocCountOrder!.getOrderCount();
 
     }
 

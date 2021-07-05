@@ -12,8 +12,8 @@ class searchAutoPage extends StatefulWidget {
 
 class _searchAutoPageState extends State<searchAutoPage> {
 
-  AutoCompleteTextField searchTextField;
-  GlobalKey key;
+  AutoCompleteTextField? searchTextField;
+  GlobalKey? key;
 
 
   bool loading = true;
@@ -23,7 +23,7 @@ class _searchAutoPageState extends State<searchAutoPage> {
 
     //productAll = [];
 
-    final res = await http.get('https://wangpharma.com/API/product.php?SearchVal=$searchVal&act=Search');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/product.php', {'SearchVal': searchVal, 'act':'Search'}));
 
     if(res.statusCode == 200){
 
@@ -46,9 +46,9 @@ class _searchAutoPageState extends State<searchAutoPage> {
 
         print(productAll);
 
-        return productAll;
-
       });
+
+      return productAll;
 
     }else{
       throw Exception('Failed load Json');
@@ -70,13 +70,13 @@ class _searchAutoPageState extends State<searchAutoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           //loading ? CircularProgressIndicator():
           searchTextField = AutoCompleteTextField(
-            key: key,
+            //key: key,
             clearOnSubmit: false,
             suggestions: productAll,
             decoration: InputDecoration(
@@ -91,7 +91,7 @@ class _searchAutoPageState extends State<searchAutoPage> {
             },
             itemSubmitted: (item){
               setState(() {
-                searchTextField.textField.controller.text = item.nproductMain;
+                searchTextField!.textField.controller!.text = item.nproductMain;
               });
             },
             itemBuilder: (context, item){

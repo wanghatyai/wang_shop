@@ -19,7 +19,8 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
   double sizePromotionSlidePic = 200;
 
   getSlideProP1() async{
-    final res = await http.get('http://wangpharma.com/API/slides.php?position=P1&act=Slide');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/slides.php', {'position': 'P1', 'act':'Slide'}));
+
 
     if(res.statusCode == 200){
 
@@ -35,8 +36,9 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
                   'https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'));
 
           print(slidesPro1);
-          return slidesPro1;
+
         });
+        return slidesPro1;
       }
 
     }else{
@@ -45,7 +47,7 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
   }
 
   getSlideProP2() async{
-    final res = await http.get('http://wangpharma.com/API/slides.php?position=P2&act=Slide');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/slides.php', {'position': 'P2', 'act':'Slide'}));
 
     if(res.statusCode == 200){
 
@@ -61,8 +63,10 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
                   'https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'));
 
           print(slidesPro2);
-          return slidesPro2;
+
         });
+
+        return slidesPro2;
       }
 
     }else{
@@ -71,7 +75,8 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
   }
 
   getSlideProP3() async{
-    final res = await http.get('http://wangpharma.com/API/slides.php?position=P3&act=Slide');
+    final res = await http.get(Uri.https('wangpharma.com', '/API/slides.php', {'position': 'P3', 'act':'Slide'}));
+
 
     if(res.statusCode == 200){
 
@@ -87,8 +92,10 @@ class _PromotionSlidePageState extends State<PromotionSlidePage> {
                   'https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'));
 
           print(slidesPro3);
-          return slidesPro3;
+
         });
+
+        return slidesPro3;
       }
 
     }else{
