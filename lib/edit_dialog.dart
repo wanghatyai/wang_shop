@@ -241,7 +241,13 @@ class _EditDialogPageState extends State<EditDialogPage> {
           },
           child: Container(
               padding: EdgeInsets.fromLTRB(1, 10, 1, 10),
-              color: Colors.green,
+              //color: Colors.green,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                gradient: LinearGradient(
+                  colors: [Colors.red.shade400,Colors.orange.shade600],
+                ),
+              ),
               alignment: Alignment.center,
               child: Row(
                 children: <Widget>[
