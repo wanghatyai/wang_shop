@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:carousel_pro/carousel_pro.dart';
+//import 'package:carousel_pro/carousel_pro.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class MainSlidePage extends StatefulWidget {
   @override
@@ -26,9 +27,11 @@ class _MainSlidePageState extends State<MainSlidePage> {
           var jsonData = json.decode(res.body);
 
           //jsonData.forEach((products) => productTop.add(Product.fromJson(products)));
-          jsonData.forEach((slide) =>
+          /*jsonData.forEach((slide) =>
               slides.add((NetworkImage(
-                  'https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));
+                  'https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'))));*/
+          jsonData.forEach((slide) =>
+              slides.add('https://wangpharma.com/wang/images/post-shopping/thumbnail/${slide['pws_images']}'));
 
           print(slides);
         });
@@ -67,7 +70,16 @@ class _MainSlidePageState extends State<MainSlidePage> {
 
     return slides.isEmpty ? CircularProgressIndicator() : Container(
       height: heightValForDevice,
-      child: Carousel(
+      child: CarouselSlider(
+        options: CarouselOptions(
+          autoPlay: true,
+        ),
+        items: slides.map((item) => Container(
+          child: Center(
+            child: Image.network(item, fit: BoxFit.cover,)),
+        )).toList(),
+      ),
+      /*child: Carousel(
         overlayShadow: false,
         borderRadius: true,
         boxFit: BoxFit.contain,
@@ -77,7 +89,7 @@ class _MainSlidePageState extends State<MainSlidePage> {
         images: slides,
         animationCurve: Curves.fastOutSlowIn,
         animationDuration: Duration(microseconds: 30000),
-      ),
+      ),*/
     );
   }
 }

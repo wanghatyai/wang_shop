@@ -115,7 +115,7 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
                   children: <Widget>[
                     Expanded(
                       child: Stack(
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.topLeft,
                         children: <Widget>[
                           Image.network('https://www.wangpharma.com/cms/product/${productTop[index].productPic}', fit: BoxFit.contain, width: 200,),
                           (productTop[index].productProStatus == '2')
@@ -123,7 +123,14 @@ class _ProductHotMonthPageState extends State<ProductHotMonthPage> {
                                   padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
                                   width: 35,
                                   height: 25,
-                                  color: Colors.red,
+                                  //color: Colors.red,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(5)),
+                                    gradient: LinearGradient(
+                                      colors: [Colors.pink[400]!.withOpacity(0.95),Colors.orange[600]!.withOpacity(0.95)],
+                                    ),
+                                  ),
                                   child: Text('Pro', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)))
                               : Container(
                                   padding: EdgeInsets.fromLTRB(2, 2, 2, 2),

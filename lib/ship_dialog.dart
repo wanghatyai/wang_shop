@@ -73,9 +73,31 @@ class _ShipDialogPageState extends State<ShipDialogPage> {
     //return showDialog(context: context, builder: (context) {
      return Column(
         children: <Widget>[
+          RadioListTile(
+            title: Row(
+              children: [
+                Text('Wang Delivery',style: TextStyle(fontSize: 14),),
+                Icon(Icons.directions_bus,color: Colors.teal,),
+                Text('FREE',style: TextStyle(fontSize: 10,color: Colors.teal),),
+              ],
+            ),
+            subtitle: Text('บริการขนส่งโดยรถวังเภสัช | Free Delivery',style: TextStyle(fontSize: 14),),
+            activeColor: Colors.tealAccent.shade400,
+            value: 6,
+            groupValue: selectedRadioTileShip,
+            //selected: false,
+            onChanged: (int? val){
+              setSelectRadioTileShip(val!);
+            },
+          ),
           //Text('จำนวน'),
           RadioListTile(
-            title: Text('คุณลูกค้ามารับสินค้าด้วยตัวเอง'),
+            title: Row(
+              children: [
+                Text('คุณลูกค้ามารับสินค้าด้วยตัวเอง',style: TextStyle(fontSize: 14),),
+                Text('FREE',style: TextStyle(fontSize: 10,color: Colors.teal),),
+              ],
+            ),
             activeColor: Colors.green,
             value: 1,
             groupValue: selectedRadioTileShip,
