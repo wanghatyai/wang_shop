@@ -55,6 +55,24 @@ class _HomeNewPageState extends State<HomeNewPage> {
             delegate: SliverChildListDelegate([
               MainSlidePage(),
               //SlideCompany(),
+              Container(
+                  padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
+                  //color: Colors.red,
+                  decoration: BoxDecoration(
+                    //borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [Colors.pink[400]!.withOpacity(0.95),Colors.orange[600]!.withOpacity(0.95)],
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.apps_outlined,
+                        color: Colors.white,
+                      ),
+                      Text('หมวดหมู่สินค้า', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),),
+                    ],
+                  )
+              ),
               CategorySlidePage(),
               Container(
                   padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
