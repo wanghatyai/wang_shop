@@ -235,7 +235,7 @@ class _HomeState extends State<Home> {
   }*/
 
   scanBarcode() async {
-    FlutterBarcodeScanner.getBarcodeStreamReceiver("#ff6666", "Cancel", true, ScanMode.DEFAULT)
+    FlutterBarcodeScanner.getBarcodeStreamReceiver("#ff6666", "Cancel", true, ScanMode.DEFAULT)!
         .listen((barcode) {
 
           if(barcode != '-1'){
@@ -809,7 +809,7 @@ class _HomeState extends State<Home> {
 
     Widget bottomNavBar = BottomNavigationBar(
         backgroundColor: Colors.white,
-        fixedColor: Colors.green,
+        fixedColor: Colors.red[600],
         unselectedItemColor: Colors.blueGrey,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
@@ -926,7 +926,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
-        title: Text('Home',style: TextStyle(color: Colors.deepOrange,fontSize: 18,fontWeight: FontWeight.bold),),
+        //title: Text('Home',style: TextStyle(color: Colors.deepOrange,fontSize: 18,fontWeight: FontWeight.bold),),
         //title: Text("${name}"),
         /*leading: IconButton(
             padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
@@ -962,12 +962,69 @@ class _HomeState extends State<Home> {
             },
           ),
         ),*/
+        title: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: Colors.red.shade400,width: 1.8,
+                  ),
+                  color: Colors.white),
+              child: Row(
+                children: <Widget>[
+                  //Padding(padding: const EdgeInsets.only(left: 4),),
+                  Expanded(
+                    flex: 2,
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+                      },
+                      child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            gradient: LinearGradient(
+                              colors: [Colors.red.shade400,Colors.orange.shade600],
+                            ),
+                          ),
+                          child: Icon(Icons.search,size: 25, color: Colors.white),
+                        ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+                        },
+                        child: Text(
+                          'ค้นหา',
+                          style: TextStyle(color: Colors.black,fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: (){
+                        Home().createState().scanBarcode();
+                      },
+                      child: Container(
+                        child: Icon(Icons.camera_alt_outlined,size: 25, color: Colors.red[400]),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+        ),
         actions: <Widget>[
-          Icon(
+          /*Icon(
             Icons.notifications,
             size: 30,
             color: Colors.red[400],
-          ),
+          ),*/
           IconButton(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
             icon: Stack(
@@ -1007,9 +1064,9 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      drawer: Drawer(
+      /*drawer: Drawer(
         child: Drawerfile(),
-      ),
+      ),*/
       body: pages[currentIndex],
       bottomNavigationBar: bottomNavBar,
     );
