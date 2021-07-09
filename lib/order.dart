@@ -742,7 +742,23 @@ class _OrderPageState extends State<OrderPage> {
             ),*/
             SliverList(
               delegate: SliverChildListDelegate([
-
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                  decoration: BoxDecoration(
+                    //borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [Colors.green[400]!.withOpacity(0.95),Colors.blue[600]!.withOpacity(0.95)],
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.shopping_basket_rounded,
+                        color: Colors.white,
+                      ),
+                      Text(' รายการสินค้าที่เลือก', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
+                    ],
+                  ),
+                ),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
@@ -867,12 +883,12 @@ class _OrderPageState extends State<OrderPage> {
                             )
                           ],
                         ),
-                        title: Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                        title: Text('${productTop[index].productCode}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('${productTop[index].productCode}'),
-                            Text('${productTop[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                            Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black), overflow: TextOverflow.ellipsis),
+                            Text('${productTop[index].productNameENG}', overflow: TextOverflow.ellipsis),
                             (productTop[index].productProLimit != "" && productTop[index].productProStatus == '2')
                                 ? Text('สั่งขั้นต่ำ ${productTop[index].productProLimit} : ${productTop[index].productUnit1}', style: TextStyle(color: Colors.red))
                                 : Text(''),
