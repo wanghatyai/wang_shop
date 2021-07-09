@@ -403,7 +403,13 @@ class _MemberPageState extends State<MemberPage> {
                   width: MediaQuery.of(context).size.width,
                   height: 150,
                   decoration: BoxDecoration(
-                    color: Colors.green
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    gradient: LinearGradient(
+                      colors: [Colors.red[400]!.withOpacity(0.95),Colors.orange[600]!.withOpacity(0.95)],
+                    ),
                   ),
                   child: Column(
                     children: <Widget>[
@@ -516,14 +522,14 @@ class _MemberPageState extends State<MemberPage> {
                               },
                               child: Column(
                                 children: <Widget>[
-                                  Icon(Icons.description, size: 40, color: Colors.grey,),
+                                  Icon(Icons.description, size: 40, color: Colors.teal,),
                                   Text('บิลรายการสั่งซื้อ')
                                 ],
                               ),
                             ),
                             Column(
                               children: <Widget>[
-                                Icon(Icons.playlist_add_check, size: 40, color: Colors.grey,),
+                                Icon(Icons.playlist_add_check, size: 40, color: Colors.teal,),
                                 Text('สินค้าสั่งประจำ')
                               ],
                             ),
@@ -533,7 +539,7 @@ class _MemberPageState extends State<MemberPage> {
                               },
                               child: Column(
                                 children: <Widget>[
-                                  Icon(Icons.comment, size: 40, color: Colors.grey,),
+                                  Icon(Icons.comment, size: 40, color: Colors.teal,),
                                   Text('ข้อเสนอแนะ')
                                 ],
                               ),
@@ -544,7 +550,7 @@ class _MemberPageState extends State<MemberPage> {
                               },
                               child: Column(
                                 children: <Widget>[
-                                  Icon(Icons.help, size: 40, color: Colors.grey,),
+                                  Icon(Icons.help, size: 40, color: Colors.teal,),
                                   Text('คู่มือการใช้งาน')
                                 ],
                               ),
@@ -553,7 +559,7 @@ class _MemberPageState extends State<MemberPage> {
                         ),
                       ),
                       MaterialButton(
-                        color: Colors.amber,
+                        color: Colors.white,
                         textColor: Colors.black,
                         minWidth: double.infinity,
                         height: 50,
@@ -561,7 +567,7 @@ class _MemberPageState extends State<MemberPage> {
                           "อัปเดตฐานข้อมูล",
                           style: new TextStyle(
                               fontSize: 20,
-                              fontWeight: FontWeight.bold
+                              fontWeight: FontWeight.bold, color: Colors.red[600]
                           ),
                         ),
                         //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
