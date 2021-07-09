@@ -56,7 +56,7 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
   }*/
 
   scanBarcode() async {
-    FlutterBarcodeScanner.getBarcodeStreamReceiver("#ff6666", "Cancel", true, ScanMode.DEFAULT)
+    FlutterBarcodeScanner.getBarcodeStreamReceiver("#ff6666", "Cancel", true, ScanMode.DEFAULT)!
         .listen((barcode) {
           if(barcode != '-1'){
 
