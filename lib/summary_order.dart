@@ -198,7 +198,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.9,
+            height: MediaQuery.of(context).size.height * 0.85,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -446,74 +446,39 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: Text('สรุปรายการสั่งจอง'),
-            actions: <Widget>[
-              /*IconButton(
-                icon: Icon(Icons.list,size: 40,),
-                onPressed: (){
-
-                }
-            )*/
-            ],
+            iconTheme: IconThemeData(color: Colors.deepOrange),
+            backgroundColor: Colors.white,
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            title: Text(
+              "สรุปรายการสั่งจอง",
+              style: TextStyle(color: Colors.deepOrange, fontSize: 16),
+            ),
           ),
           body: Container(
             child: Column(
               children: <Widget>[
-                Center(
-                  child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
-                ),
-                Row(
+                //Center(
+                //child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
+                //),
+                /*Row(
                   //crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    RaisedButton(
-                      onPressed: (){
-                        getFreeProductSelect();
-                      },
-                      textColor: Colors.white,
-                      color: Colors.purple,
-                      padding: const EdgeInsets.all(5.0),
-                      child: new Text(
-                          "เลือกสินค้าแถม",
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.all(3),
                     ),
-                    RaisedButton(
-                      onPressed: (){
-                        viewFreeProductSelect();
-                      },
-                      textColor: Colors.white,
-                      color: Colors.blue,
-                      padding: const EdgeInsets.all(5.0),
-                      child: new Text(
-                          "ดูสินค้าแถมที่เลือก",
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
-                      ),
-                    ),
+
                     Padding(
                       padding: EdgeInsets.all(10),
                     ),
-                    RaisedButton(
-                      onPressed: (){
-                        _confirmCheckFreeShowAlert();
-                      },
-                      textColor: Colors.white,
-                      color: Colors.green,
-                      padding: const EdgeInsets.all(5.0),
-                      child: new Text(
-                          "ยืนยันการสั่งจอง",
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
-                      ),
-                    ),
+
                   ],
-                ),
-                Center(
-                  child: Text('คุณมี แต้มสมนาคุณ ${freeLimit.toInt()} แต้ม', style: TextStyle(fontSize: 18, color: Colors.purple)),
-                ),
-                (transportationDetail.isNotEmpty)
+                ),*/
+                /*(transportationDetail.isNotEmpty)
                     ? Container(
                   color: Colors.red,
                   child: Center(
@@ -524,7 +489,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     : Container(),
                 Divider(
                   color: Colors.black,
-                ),
+                ),*/
                 Expanded(
                   child: ListView.builder(
                     //separatorBuilder: (context, index) => Divider(
@@ -532,7 +497,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     //),
                     itemBuilder: (context, int index){
                       return Card(
-                        elevation: 8.0,
+                        elevation: 4.0,
                         margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
                         child: ListTile(
                           contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
@@ -553,7 +518,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                               )
                             ],
                           ),
-                          title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                          title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 15), overflow: TextOverflow.ellipsis),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -574,6 +539,123 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                     itemCount: orders != null ? orders.length : 0,
                   ),
                 ),
+                Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        border: Border.all(color: Colors.grey.shade200)),
+                    padding: EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 4),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Icon(Icons.wallet_giftcard_outlined,color: Colors.red[600],),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                  "ของแถม",style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Text(
+                                    'เลือก',style: TextStyle(fontSize: 14,color: Colors.red[600])),
+                                IconButton(
+                                  icon: Icon(Icons.arrow_forward_ios,size: 16,),
+                                  onPressed: (){
+                                    getFreeProductSelect();
+                                  },),
+                              ],
+                            ),
+
+                          ],
+                        ),
+
+                      ],
+                    ),
+
+                  ),
+                ),
+                viewProductFreePage(),
+                Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        border: Border.all(color: Colors.grey.shade200)),
+                    padding: EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "ยอดชำระทั้งหมด",style: TextStyle(fontSize: 16),
+                            ),
+                            Text(
+                                '฿${formatter.format(sumAmount)}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 0.5,
+                          margin: EdgeInsets.symmetric(vertical: 4),
+                          color: Colors.grey.shade400,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "แต้มสะสม",
+                            ),
+                            Text(
+                              '${freeLimit.toInt()} แต้ม',style: TextStyle(color: Colors.deepOrange[500],fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  height: 70,
+                  color: Colors.white,
+                  child: RaisedButton(
+                    onPressed: (){
+
+                      _confirmCheckFreeShowAlert();
+                    },
+                    child: Text(
+                      "ยืนยันการสั่งจอง",
+                    ),
+                    color: Colors.red[600],
+                    textColor: Colors.white,
+                  ),
+                ),
+
               ],
             ),
           ),
@@ -584,46 +666,50 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
       return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('สรุปรายการสั่งจอง'),
-          actions: <Widget>[
-            /*IconButton(
-                icon: Icon(Icons.list,size: 30,),
-                onPressed: (){
-
-                }
-            )*/
-          ],
+          iconTheme: IconThemeData(color: Colors.deepOrange),
+          backgroundColor: Colors.white,
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          title: Text(
+            "สรุปรายการสั่งจอง",
+            style: TextStyle(color: Colors.deepOrange, fontSize: 16),
+          ),
         ),
         body: Container(
           child: Column(
             children: <Widget>[
-              Center(
-                child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
-              ),
-              RaisedButton(
-                onPressed: (){
-                  confirmOrder();
-                },
-                textColor: Colors.white,
-                color: Colors.green,
-                padding: const EdgeInsets.all(8.0),
-                child: new Text(
-                  "ยืนยันการสั่งจอง",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
-                ),
-              ),
-              (transportationDetail.isNotEmpty)
-                  ? Container(
-                      color: Colors.red,
-                      child: Center(
-                        child: Text('วันที่จัดส่งสินค้า ${DateFormat("dd/MM/yyyy").format(DateFormat('yyyy-MM-dd').parse(transportationDetail['Start_In_calendar']))} เวลาเดินทาง ${transportationDetail['Time_Out']}',
-                          style: TextStyle(fontSize: 16, color: Colors.white), ),
-                      ),
-                    )
-                  : Container(),
-              Divider(
-                color: Colors.black,
-              ),
+              //Center(
+              //child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30), ),
+              //),
+              /*Row(
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(3),
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                    ),
+
+                  ],
+                ),*/
+              /*(transportationDetail.isNotEmpty)
+                    ? Container(
+                  color: Colors.red,
+                  child: Center(
+                    child: Text('วันที่จัดส่งสินค้า ${DateFormat("dd/MM/yyyy").format(DateFormat('yyyy-MM-dd').parse(transportationDetail['Start_In_calendar']))} เวลาเดินทาง ${transportationDetail['Time_Out']}',
+                      style: TextStyle(fontSize: 16, color: Colors.white), ),
+                  ),
+                )
+                    : Container(),
+                Divider(
+                  color: Colors.black,
+                ),*/
               Expanded(
                 child: ListView.builder(
                   //separatorBuilder: (context, index) => Divider(
@@ -631,7 +717,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                   //),
                   itemBuilder: (context, int index){
                     return Card(
-                      elevation: 8.0,
+                      elevation: 4.0,
                       margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),
                       child: ListTile(
                         contentPadding: EdgeInsets.fromLTRB(10, 3, 10, 3),
@@ -652,7 +738,7 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                             )
                           ],
                         ),
-                        title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                        title: Text('${orders[index]['name']}', style: TextStyle(fontSize: 15), overflow: TextOverflow.ellipsis),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -662,19 +748,87 @@ class _SummaryOrderPageState extends State<SummaryOrderPage> {
                             Text("ราคาต่อหน่วย ฿${priceNowAll[index]}", style: TextStyle(color: Colors.blueGrey),),
                           ],
                         ),
-                        trailing: Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                        trailing: Column(
+                          children: <Widget>[
+                            Text('฿${formatter.format(priceNowAll[index]*orders[index]['amount'])}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                          ],
+                        ),
                       ),
                     );
                   },
                   itemCount: orders != null ? orders.length : 0,
                 ),
               ),
+
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                      border: Border.all(color: Colors.grey.shade200)),
+                  padding: EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "ยอดชำระทั้งหมด",style: TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                              '฿${formatter.format(sumAmount)}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 0.5,
+                        margin: EdgeInsets.symmetric(vertical: 4),
+                        color: Colors.grey.shade400,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "แต้มสะสม",
+                          ),
+                          Text(
+                            '${freeLimit.toInt()} แต้ม',style: TextStyle(color: Colors.deepOrange[500],fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(10),
+                height: 70,
+                color: Colors.white,
+                child: RaisedButton(
+                  onPressed: (){
+
+                    _confirmCheckFreeShowAlert();
+                  },
+                  child: Text(
+                    "ยืนยันการสั่งจอง",
+                  ),
+                  color: Colors.red[600],
+                  textColor: Colors.white,
+                ),
+              ),
+
             ],
           ),
         ),
       );
     }
-    
-
   }
 }
