@@ -22,6 +22,10 @@ import 'package:wang_shop/edit_dialog.dart';
 import 'package:wang_shop/bloc_provider.dart';
 import 'package:wang_shop/bloc_count_order.dart';
 
+import 'package:wang_shop/CheckoutPage.dart';
+
+import 'home.dart';
+
 class OrderPage extends StatefulWidget {
   @override
   _OrderPageState createState() => _OrderPageState();
@@ -574,10 +578,69 @@ class _OrderPageState extends State<OrderPage> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: Text('ตะกร้า'),
+          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
+          //title: Text('ตะกร้า'),
+          title: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                      color: Colors.red.shade400,width: 1.8,
+                    ),
+                    color: Colors.white),
+                child: Row(
+                  children: <Widget>[
+                    //Padding(padding: const EdgeInsets.only(left: 4),),
+                    Expanded(
+                      flex: 2,
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              gradient: LinearGradient(
+                                colors: [Colors.red.shade400,Colors.orange.shade600],
+                              ),
+                            ),
+                            child: Icon(Icons.search,size: 25, color: Colors.white),
+                          ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 7,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => searchAutoOutPage()));
+                          },
+                          child: Text(
+                            'ค้นหา',
+                            style: TextStyle(color: Colors.black,fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: (){
+                          Home().createState().scanBarcode();
+                        },
+                        child: Container(
+                              child: Icon(Icons.camera_alt_outlined,size: 25,
+                                  color: Colors.red[400]),
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+          ),
           actions: <Widget>[
-            IconButton(
+            /*IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               icon: Column(
                 children: <Widget>[
@@ -591,20 +654,20 @@ class _OrderPageState extends State<OrderPage> {
             ),
             SizedBox(
               width: 20,
-            ),
+            ),*/
             IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               icon: Column(
                 children: <Widget>[
-                  Icon(Icons.star, size: 40,),
-                  Text('สั่งล่าสุด', style: TextStyle(fontSize: 12),),
+                  Icon(Icons.restore, size: 35,color: Colors.red.shade600),
+                  Text('สั่งล่าสุด', style: TextStyle(fontSize: 12, color: Colors.red[600]),),
                 ],
               ),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ProductRecentPage()));
               },
             ),
-            SizedBox(
+            /*SizedBox(
               width: 20,
             ),
             IconButton(
@@ -654,12 +717,12 @@ class _OrderPageState extends State<OrderPage> {
 
                   //Navigator.pushReplacementNamed(context, '/Order');
                 }
-            )
+            )*/
           ],
         ),
         body: CustomScrollView(
           slivers: <Widget>[
-            SliverPersistentHeader(
+            /*SliverPersistentHeader(
               pinned: true,
               delegate: _SliverAppBarDelegate(
                   child: PreferredSize(
@@ -676,7 +739,7 @@ class _OrderPageState extends State<OrderPage> {
                     ),
                   )
               ),
-            ),
+            ),*/
             SliverList(
               delegate: SliverChildListDelegate([
 
@@ -703,7 +766,14 @@ class _OrderPageState extends State<OrderPage> {
                               padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
                               width: 30,
                               height: 20,
-                              color: Colors.red,
+                              //color: Colors.red,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(5)),
+                                gradient: LinearGradient(
+                                  colors: [Colors.pink[400]!.withOpacity(0.95),Colors.orange[600]!.withOpacity(0.95)],
+                                ),
+                              ),
                               child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                             ) : Container(
                               padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
@@ -725,7 +795,7 @@ class _OrderPageState extends State<OrderPage> {
                           ],
                         ),
                         trailing: IconButton(
-                            icon: Icon(Icons.list, size: 40,),
+                            icon: Icon(Icons.app_registration, size: 40, color: Colors.deepOrange),
                             onPressed: (){
                               //_confirmDelShowAlert(orders[index]['id'], orders[index]);
                               editOrderDialog(orders[index], 0);
@@ -736,9 +806,23 @@ class _OrderPageState extends State<OrderPage> {
                   },
                   itemCount: orders != null ? orders.length : 0,
                 ),
+                SizedBox(height: 20,),
                 Container(
-                    color: Colors.red,
-                    child: Text('*** 10 อันดับสินค้าขายดีประจำเดือน ***', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold,) )
+                  padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+                  decoration: BoxDecoration(
+                    //borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [Colors.pink[400]!.withOpacity(0.95),Colors.orange[600]!.withOpacity(0.95)],
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.flash_on_outlined,
+                        color: Colors.white,
+                      ),
+                      Text(' 10 อันดับขายดีประจำเดือน', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
+                    ],
+                  ),
                 ),
                 ListView.builder(
                   shrinkWrap: true,
@@ -767,7 +851,14 @@ class _OrderPageState extends State<OrderPage> {
                               padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
                               width: 30,
                               height: 20,
-                              color: Colors.red,
+                              //color: Colors.red,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(5)),
+                                gradient: LinearGradient(
+                                  colors: [Colors.pink[400]!.withOpacity(0.95),Colors.orange[600]!.withOpacity(0.95)],
+                                ),
+                              ),
                               child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                             ) : Container(
                               padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
@@ -811,7 +902,110 @@ class _OrderPageState extends State<OrderPage> {
               ]),
             )
           ],
-        )
+        ),
+        bottomNavigationBar: Container(
+          height: 90,
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.local_activity_rounded,color: Colors.orange,),
+                  Text('คุณมี แต้มสมนาคุณ ',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blueGrey)),
+                  Text('${freeLimit.toInt()} ',
+                      style: TextStyle(
+                          fontSize: 17,fontWeight: FontWeight.bold,
+                          color: Colors.orange)),
+                  Text('แต้ม ',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blueGrey)),
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                    colors: [Colors.red[600]!.withOpacity(0.95),Colors.red[300]!.withOpacity(0.95)],
+                  ),
+                ),
+                child: MaterialButton(
+                  //color: Colors.red[400],
+                  textColor: Colors.white,
+                  minWidth: double.infinity,
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "จองสินค้า",
+                        style: new TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      SizedBox(width: 5,),
+                      Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 20,
+                          minHeight: 20,
+                        ),
+                        child: StreamBuilder(
+                          initialData: blocCountOrder!.countOrder,
+                          stream: blocCountOrder!.counterStream,
+                          builder: (BuildContext context, snapshot) => Text(
+                            '${snapshot.data}',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 15
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+
+                      ),
+                      SizedBox(width: 5,),
+                      Text(
+                        "รายการ",
+                        style: new TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
+                  onPressed: () {
+                    if(orders.length == 0){
+                      _showAlertCheckOrder();
+                    }else{
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CheckOutPage()));
+                    }
+
+                    //Navigator.push(context, MaterialPageRoute(builder: (context) => CheckOutPage()));
+
+                  },
+                ),
+              )
+
+            ],
+          ),
+      ),
     );
   }
 }
