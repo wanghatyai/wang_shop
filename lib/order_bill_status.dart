@@ -146,8 +146,9 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("บิลรายการที่เคยสั่งทั้งหมด"),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text("บิลรายการที่เคยสั่งทั้งหมด", style: TextStyle(color: Colors.deepOrange),),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -240,9 +241,12 @@ class _OrderBillStatusPageState extends State<OrderBillStatusPage> {
                           ],
                         ),
                         trailing: IconButton(
-                            icon: Icon(Icons.view_list, color: Colors.purple, size: 40,),
+                            icon: Icon(Icons.view_list, color: Colors.deepOrange, size: 40,),
                             onPressed: (){
                               //addToOrderFast(productAll[index]);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OrderBillStatusDetailPage(orderID: orderBillAll[index])));
                             }
                         ),
                       );

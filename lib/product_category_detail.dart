@@ -113,8 +113,9 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('${widget.catName}'),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text('${widget.catName}', style: TextStyle(color: Colors.deepOrange),),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -178,13 +179,29 @@ class _ProductCategoryDetailPageState extends State<ProductCategoryDetailPage> {
                             context,
                             MaterialPageRoute(builder: (context) => productDetailPage(product: _product[i])));
                       },
-                      leading: Image.network('https://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70),
-                      title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                      leading: Stack(
+                        children: <Widget>[
+                          Image.network('https://www.wangpharma.com/cms/product/${a.productPic}', fit: BoxFit.cover, width: 70, height: 70,),
+                          (a.productProStatus == '2')?
+                          Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                            color: Colors.red,
+                            child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                          ) : Container(
+                            padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                            width: 30,
+                            height: 20,
+                          )
+                        ],
+                      ),
+                      title: Text('${a.productCode}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('${a.productCode}'),
-                          Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                          Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black), overflow: TextOverflow.ellipsis),
+                          Text('${a.productNameENG}', overflow: TextOverflow.ellipsis),
                           (a.productProLimit != "" && a.productProStatus == '2')
                               ? Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red))
                               : Text(''),

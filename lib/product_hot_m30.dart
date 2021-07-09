@@ -154,6 +154,7 @@ class _ProductHotMonth30PageState extends State<ProductHotMonth30Page> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Text('${productTop[index].productCode}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),),
                                     Text('${productTop[index].productName}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                                     Text('${productTop[index].productNameENG}', style: TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis),
                                   ],

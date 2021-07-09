@@ -112,8 +112,9 @@ class _OrderBillCheckStatusDetailPageState extends State<OrderBillCheckStatusDet
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("รายละเอียดรายการในบิล"),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text("รายละเอียดรายการในบิล", style: TextStyle(color: Colors.deepOrange),),
         /*actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -166,8 +167,7 @@ class _OrderBillCheckStatusDetailPageState extends State<OrderBillCheckStatusDet
                         child: Text('ยอดรวม ${formatter.format(sumAmount)} บาท', style: TextStyle(fontSize: 30, color: Colors.white), ),
                       ),
                     ),
-                    isLoading ? CircularProgressIndicator()
-                        :ListView.separated(
+                    isLoading ? CircularProgressIndicator() :ListView.separated(
                       shrinkWrap: true,
                       physics: ClampingScrollPhysics(),
                       separatorBuilder: (context, index) {

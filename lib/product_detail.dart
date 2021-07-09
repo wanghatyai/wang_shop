@@ -18,6 +18,8 @@ import 'package:wang_shop/bloc_count_order.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
+import 'package:syncfusion_flutter_barcodes/barcodes.dart';
+
 class productDetailPage extends StatefulWidget {
 
   var product;
@@ -157,7 +159,9 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         //title: Text(widget.product.productName.toString()),
-        title: Text("รายละเอียดสินค้า"),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text("รายละเอียดสินค้า", style: TextStyle(color: Colors.deepOrange,fontSize: 18,fontWeight: FontWeight.bold),),
         actions: <Widget>[
           /*IconButton(
               icon: Icon(Icons.shopping_cart),
@@ -169,7 +173,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               icon: Stack(
                 children: <Widget>[
-                  Icon(Icons.search, size: 40,),
+                  Icon(Icons.search, size: 40, color: Colors.red[600]),
                 ],
               ),
               onPressed: (){
@@ -181,7 +185,7 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               icon: Stack(
                 children: <Widget>[
-                  Icon(Icons.shopping_cart, size: 40,),
+                  Icon(Icons.shopping_cart, size: 40, color: Colors.black12),
                   Positioned(
                     right: 0,
                     child: Container(
@@ -275,163 +279,228 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                       color: Colors.grey,
                       height: 5,
                     ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 85,
-                          child: Text("Code : ",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                        Text("${widget.product.productCode}",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 85,
-                          child: Text("ชื่อไทย : ",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text("${widget.product.productName}",
+                    Container(
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                      color: Colors.white,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("รหัสสินค้า".toUpperCase(),
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black)),
+                          Text("${widget.product.productCode}",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFFfd0100))),
+                          SizedBox(width: 50,)
+                          /*FlatButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) =>  LeafletPage()),
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                    color: Colors.red.shade400,width: 0.8,
+                                  ),
+                                  color: Colors.white),
+                              child: Text("ฉลากยา >",
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      //fontWeight: FontWeight.w700,
+                                      color: Color(0xFFfd0100))),
+                            ),
+                          ),*/
+                          //Icon(
+                          //Icons.arrow_forward_ios,
+                          //color: Color(0xFF999999),
+                          //)
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                      height: 90,
+                      color: Colors.white,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          //Text("Barcode".toUpperCase(),
+                          //style: TextStyle(
+                          //fontSize: 14,
+                          //fontWeight: FontWeight.w700,
+                          //color: Colors.black)),
+                          SfBarcodeGenerator(value:'${widget.product.productBarcode}',
+                            showValue : true
+                            ,textStyle: TextStyle(fontSize: 15),),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 85,
+                            child: Text("ชื่อไทย : ",
+                              style: TextStyle(
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold
                               ),
+                            ),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: Text("${widget.product.productName}",
+                              style: TextStyle(
+                                fontSize: 14,
+                                //fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 85,
-                          child: Text("Barcode : ",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold
+                    Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 85,
+                            child: Text("ชื่ออังกฤษ : ",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold
+                              ),
                             ),
                           ),
-                        ),
-                        Text("${widget.product.productBarcode}",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.red
-                              //fontWeight: FontWeight.bold
+                          Expanded(
+                            child: Text("${widget.product.productNameENG}",
+                              style: TextStyle(
+                                fontSize: 14,
+                                //fontWeight: FontWeight.bold
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 85,
-                          child: Text("ชื่ออังกฤษ : ",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold
-                            ),
+                    Container(
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                      color: Color(0xFFFFFFFF),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              Text("Sticker Price".toUpperCase(),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black)),
+                              Text("Non Sticker Price".toUpperCase(),
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.grey.withOpacity(0.6))),
+                            ],
                           ),
-                        ),
-                        Expanded(
-                          child: Text("${widget.product.productNameENG}",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ],
+                          Text(
+                              "xxx.00"
+                                  .toUpperCase(),
+                              style: TextStyle(
+                                  color: Color(0xFFf67426),
+                                  fontFamily: 'Roboto-Light.ttf',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500)),
+                        ],
+                      ),
                     ),
-                    Divider(
-                      color: Colors.grey,
-                      height: 5,
+                    Container(
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("รายละเอียดสินค้า :",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black)),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                              "${widget.product.productDetail}",
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  //fontWeight: FontWeight.w400,
+                                  color: Color(0xFF4c4c4c))),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 85,
-                          child: Text("รายละเอียด : ",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold
-                            ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("สรรพคุณ :",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black)),
+                          SizedBox(
+                            height: 15,
                           ),
-                        ),
-                        Expanded(
-                          child: Text("${widget.product.productDetail}",
-                            style: TextStyle(
-                              fontSize: 15,
-                              //color: Colors.blue
-                              //fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ],
+                          Text(
+                              "${widget.product.productProperties}",
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xFF4c4c4c))),
+                        ],
+                      ),
                     ),
-                    Divider(
-                      color: Colors.grey,
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 85,
-                          child: Text("สรรพคุณ : ",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold
-                            ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("วิธีใช้ :",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black)),
+                          SizedBox(
+                            height: 15,
                           ),
-                        ),
-                        Expanded(
-                          child: Text("${widget.product.productProperties}",
-                            style: TextStyle(
-                              fontSize: 15,
-                              //fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 85,
-                          child: Text("วิธีใช้ : ",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text("${widget.product.productHowTo}",
-                            style: TextStyle(
-                              fontSize: 15,
-                              //fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ],
+                          Text(
+                              "${widget.product.productHowTo}",
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xFF4c4c4c))),
+                        ],
+                      ),
                     ),
                     Divider(
                       color: Colors.deepOrange,
@@ -540,15 +609,16 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                 child: ProductRelationTypePage(product: widget.product,),
               ),*/
               Container(
-                decoration: BoxDecoration(color: Colors.blueGrey),
+                decoration: BoxDecoration(color: Colors.white),
                 child: TabBar(
                   controller: _RelationProductTab,
+                  indicatorColor: Colors.orangeAccent,
                   tabs: <Widget>[
                     Tab(
-                      child: Text('สินค้าหมวดเดียวกัน', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                      child: Text('สินค้าหมวดเดียวกัน', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black),),
                     ),
                     Tab(
-                      child: Text('สินค้าผู้ผลิตเดียวกัน', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                      child: Text('สินค้าผู้ผลิตเดียวกัน', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black),),
                     ),
                   ],
                 )
@@ -662,23 +732,29 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
             ),
             (widget.product.productSize != "ไม่มี")
             ? Container(
-                child: MaterialButton(
-                  color: Colors.deepOrange,
-                  textColor: Colors.white,
-                  minWidth: double.infinity,
-                  height: 50,
-                  child: Text(
-                    "หยิบใส่ตะกร้า",
-                    style: new TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                    ),
-                  ),
-                  //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
-                  onPressed: () {
-                    addToOrder();
-                  },
+                decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: [Colors.pink[600]!.withOpacity(0.95),Colors.orange[600]!.withOpacity(0.95)],
                 ),
+              ),
+              child: MaterialButton(
+                //color: Colors.red[400],
+                textColor: Colors.white,
+                minWidth: double.infinity,
+                height: 50,
+                child: Text(
+                  "หยิบใส่ตะกร้า",
+                  style: new TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+                //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
+                onPressed: () {
+                  addToOrder();
+                },
+              ),
               )
             : Container(
               child: MaterialButton(

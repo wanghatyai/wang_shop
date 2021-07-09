@@ -104,8 +104,9 @@ class _ProductProPageState extends State<ProductProPage> {
 
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: Text("สินค้าโปรโมชั่น"),
+          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
+          title: Text("สินค้าโปรโมชั่น", style: TextStyle(color: Colors.deepOrange),),
           actions: <Widget>[
             IconButton(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -189,12 +190,12 @@ class _ProductProPageState extends State<ProductProPage> {
                                 )
                               ],
                             ),
-                            title: Text('${productAll[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                            title: Text('${productAll[index].productCode}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text('${productAll[index].productCode}'),
-                                Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                                Text('${productAll[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black), overflow: TextOverflow.ellipsis),
+                                Text('${productAll[index].productNameENG}', overflow: TextOverflow.ellipsis),
                                 productAll[index].productProLimit != "" ?
                                   Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red)) : Text(''),
                               ],
