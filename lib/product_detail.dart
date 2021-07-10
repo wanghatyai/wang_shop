@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:wang_shop/database_helper.dart';
@@ -283,13 +284,16 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                       padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
                       color: Colors.white,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text("รหัสสินค้า".toUpperCase(),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black)),
+                          Container(
+                            width: 85,
+                            child: Text("รหัสสินค้า : ".toUpperCase(),
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black)),
+                          ),
                           Text("${widget.product.productCode}",
                               style: TextStyle(
                                   fontSize: 16,
@@ -762,15 +766,24 @@ class _productDetailPageState extends State<productDetailPage> with SingleTicker
                 textColor: Colors.white,
                 minWidth: double.infinity,
                 height: 50,
-                child: Text(
-                  "กรุณาติดต่อฝ่ายขาย",
-                  style: new TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.phone,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      " กรุณาติดต่อฝ่ายขาย",
+                      style: new TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ],
                 ),
                 //onPressed: (){Navigator.pushReplacementNamed(context, '/Home');},
                 onPressed: () {
+                  launch("tel://0635252927");
                   //addToOrder();
                 },
               ),
