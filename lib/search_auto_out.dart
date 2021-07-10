@@ -241,8 +241,9 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("ค้นหา"),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text("ค้นหา", style: TextStyle(color: Colors.deepOrange),),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -359,12 +360,12 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                          )
                        ],
                      ),
-                     title: Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                     title: Text('${a.productCode}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),),
                      subtitle: Column(
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: <Widget>[
-                         Text('${a.productCode}'),
-                         Text('${a.productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                         Text('${a.productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black), overflow: TextOverflow.ellipsis),
+                         Text('${a.productNameENG}', overflow: TextOverflow.ellipsis),
                          (a.productProLimit != "" && a.productProStatus == '2')
                              ? Text('สั่งขั้นต่ำ ${a.productProLimit} : ${a.productUnit1}', style: TextStyle(color: Colors.red))
                              : Text(''),
@@ -391,8 +392,21 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                height: 100,
              ),
              Container(
-               color: Colors.red,
-               child: Text('*** 10 อันดับสินค้าขายดีประจำเดือน ***', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold,) ),
+               padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+               decoration: BoxDecoration(
+                 //borderRadius: BorderRadius.circular(20),
+                 gradient: LinearGradient(
+                   colors: [Colors.pink[400]!.withOpacity(0.95),Colors.orange[600]!.withOpacity(0.95)],
+                 ),
+               ),
+               child: Row(
+                 children: [
+                   Icon(Icons.flash_on_outlined,
+                     color: Colors.white,
+                   ),
+                   Text(' 10 อันดับขายดีประจำเดือน', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
+                 ],
+               ),
              ),
              ListView.builder(
                shrinkWrap: true,
@@ -426,12 +440,12 @@ class _searchAutoOutPageState extends State<searchAutoOutPage> {
                          )
                        ],
                      ),
-                     title: Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+                     title: Text('${productTop[index].productCode}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),),
                      subtitle: Column(
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: <Widget>[
-                         Text('${productTop[index].productCode}'),
-                         Text('${productTop[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                         Text('${productTop[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black), overflow: TextOverflow.ellipsis),
+                         Text('${productTop[index].productNameENG}', overflow: TextOverflow.ellipsis),
                          (productTop[index].productProLimit != "" && productTop[index].productProStatus == '2')
                              ? Text('สั่งขั้นต่ำ ${productTop[index].productProLimit} : ${productTop[index].productUnit1}', style: TextStyle(color: Colors.red))
                              : Text(''),
