@@ -140,6 +140,7 @@ class _ProductRelationCompanyPageState extends State<ProductRelationCompanyPage>
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Text('${productRelationCompany[index].productCode}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),),
                                     Text('${productRelationCompany[index].productName}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
                                     Text('${productRelationCompany[index].productNameENG}', style: TextStyle(fontSize: 10), overflow: TextOverflow.ellipsis),
                                   ],
