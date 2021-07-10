@@ -95,8 +95,9 @@ class _OrderBillCheckStatusPageState extends State<OrderBillCheckStatusPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: Text("รายการ - $orderStatusText"),
+          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
+          title: Text("รายการ - $orderStatusText", style: TextStyle(color: Colors.deepOrange),),
         ),
         body: CustomScrollView(
             slivers: <Widget>[
@@ -151,9 +152,12 @@ class _OrderBillCheckStatusPageState extends State<OrderBillCheckStatusPage> {
                               ],
                             ),
                             trailing: IconButton(
-                                icon: Icon(Icons.view_list, color: Colors.purple, size: 40,),
+                                icon: Icon(Icons.view_list, color: Colors.deepOrange, size: 40,),
                                 onPressed: (){
                                   //addToOrderFast(productAll[index]);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => OrderBillCheckStatusDetailPage(OrderBillval: orderBillTempsAll[index])));
                                 }
                             ),
                           );

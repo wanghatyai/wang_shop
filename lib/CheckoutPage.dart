@@ -621,7 +621,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 height: 1,
                 width: double.infinity,
               ),
-              addressAction()
+              //addressAction()
             ],
           ),
         ),

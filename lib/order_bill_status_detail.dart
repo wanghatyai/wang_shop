@@ -172,8 +172,9 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("รายละเอียดรายการในบิล"),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text("รายละเอียดรายการในบิล", style: TextStyle(color: Colors.deepOrange),),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -259,7 +260,7 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
                             ],
                           ),
                           trailing: IconButton(
-                              icon: Icon(Icons.add_to_photos, color: Colors.teal, size: 40,),
+                              icon: Icon(Icons.add_circle, color: Colors.deepOrange, size: 40,),
                               onPressed: (){
                                 addToOrderFast(productAll[index]);
                               }
@@ -269,13 +270,23 @@ class _OrderBillStatusDetailPageState extends State<OrderBillStatusDetailPage> {
                       },
                       itemCount: orderBillDetailAll != null ? orderBillDetailAll.length : 0,
                     ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.deepOrange,
-                      child: Text('/// สินค้าขายดีประจำเดือน ///', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),),
-                    ),
+                  Container(
+                      padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
+                      //color: Colors.red,
+                      decoration: BoxDecoration(
+                        //borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          colors: [Colors.pink[400]!.withOpacity(0.95),Colors.orange[600]!.withOpacity(0.95)],
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.flash_on_outlined,
+                            color: Colors.white,
+                          ),
+                          Text('สินค้าขายดีประจำเดือน', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),),
+                        ],
+                      )
                   ),
                   Container(
                     height: 4150,

@@ -103,8 +103,9 @@ class _ProductGimPageState extends State<ProductGimPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("สินค้ามีของแถม"),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text("สินค้ามีของแถม", style: TextStyle(color: Colors.deepOrange),),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -171,13 +172,29 @@ class _ProductGimPageState extends State<ProductGimPage> {
                     context,
                     MaterialPageRoute(builder: (context) => productDetailPage(product: productAll[index])));
               },
-              leading: Image.network('https://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
-              title: Text('${productAll[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
+              leading: Stack(
+                children: <Widget>[
+                  Image.network('https://www.wangpharma.com/cms/product/${productAll[index].productPic}', fit: BoxFit.cover, width: 70, height: 70,),
+                  (productAll[index].productProStatus == '2')?
+                  Container(
+                    padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                    width: 30,
+                    height: 20,
+                    color: Colors.red,
+                    child: Text('Pro', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                  ) : Container(
+                    padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                    width: 30,
+                    height: 20,
+                  )
+                ],
+              ),
+              title: Text('${productAll[index].productCode}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.teal),),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('${productAll[index].productCode}'),
-                  Text('${productAll[index].productNameENG}', style: TextStyle(color: Colors.blue), overflow: TextOverflow.ellipsis),
+                  Text('${productAll[index].productName}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black), overflow: TextOverflow.ellipsis),
+                  Text('${productAll[index].productNameENG}', overflow: TextOverflow.ellipsis),
                   (productAll[index].productProLimit != "" && productAll[index].productProStatus == '2')
                       ? Text('สั่งขั้นต่ำ ${productAll[index].productProLimit} : ${productAll[index].productUnit1}', style: TextStyle(color: Colors.red))
                       : Text(''),
