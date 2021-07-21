@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,6 +19,7 @@ import 'package:wang_shop/order_bill_check_status.dart';
 import 'package:package_info/package_info.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:wang_shop/product_recent.dart';
 
 
 class MemberPage extends StatefulWidget {
@@ -343,9 +345,15 @@ class _MemberPageState extends State<MemberPage> {
             // usually buttons at the bottom of the dialog
             FlatButton(
               child: new Text("Ok"),
-              onPressed: () {
-                _clearDB();
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              onPressed: () async {
+                await _clearDB();
+                if(Platform.isAndroid){
+                  SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                }else{
+                  Navigator.pushReplacementNamed(context, '/Main');
+                  //SystemNavigator.pop();
+                }
+                //SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                 //Navigator.of(context).pop();
               },
             ),
@@ -527,11 +535,18 @@ class _MemberPageState extends State<MemberPage> {
                                 ],
                               ),
                             ),
-                            Column(
-                              children: <Widget>[
-                                Icon(Icons.playlist_add_check, size: 40, color: Colors.teal,),
-                                Text('สินค้าสั่งประจำ')
-                              ],
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ProductRecentPage()));
+                              },
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(Icons.playlist_add_check, size: 40, color: Colors.teal,),
+                                  Text('สินค้าสั่งประจำ')
+                                ],
+                              ),
                             ),
                             InkWell(
                               onTap: (){
