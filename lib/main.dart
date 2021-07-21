@@ -109,6 +109,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'WangPharma',
           routes: <String,WidgetBuilder>{
+            '/Main': (BuildContext context) => MyApp(),
             '/Home': (BuildContext context) => Home(),
             '/Order': (BuildContext context) => OrderPage(),
           },
