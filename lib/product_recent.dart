@@ -106,8 +106,9 @@ class _ProductRecomPageState extends State<ProductRecentPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("สินค้าสั่งล่าสุด"),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text("สินค้าสั่งล่าสุด", style: TextStyle(color: Colors.deepOrange),),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
